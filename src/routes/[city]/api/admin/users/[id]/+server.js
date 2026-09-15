@@ -89,7 +89,6 @@ export async function DELETE({ locals, params }) {
 		})
 	}
 
-	const token = DirectusService.getServerToken()
 	const [city, targetUser] = await Promise.all([resolveCity(params.city, { token }), getTargetUser(id, token)])
 	if (!city) return new Response(JSON.stringify({ error: `Unknown city "${params.city}".` }), { status: 404, headers: { 'Content-Type': 'application/json' } })
 	if (!targetUser || !canManageUser(locals.user, targetUser)) return new Response(JSON.stringify({ error: 'Forbidden: user is outside your city.' }), { status: 403, headers: { 'Content-Type': 'application/json' } })
