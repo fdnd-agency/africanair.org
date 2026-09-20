@@ -3,5 +3,5 @@ client: 'KNMI'
 status: 'active'
 years: [2]
 main_link: 'https://africanair.org/'
-dev_link: 'https://airpollutionafrica.dev.fdnd.nl/'
+dev_link: 'https://africanair-dev.netlify.app/'
 tech_stack: ['SvelteKit', 'Directus']
