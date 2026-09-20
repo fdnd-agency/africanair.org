@@ -2,6 +2,6 @@ title: 'Africanair.org'
 client: 'KNMI'
 status: 'active'
 years: [2]
-main_link: 'https://airpollutionafrica.agency.fdnd.nl/'
+main_link: 'https://africanair.org/'
 dev_link: 'https://airpollutionafrica.dev.fdnd.nl/'
 tech_stack: ['SvelteKit', 'Directus']
