@@ -1,0 +1,9 @@
+@font-face {
+    font-family: inter;
+    src: url(/src/lib/assets/fonts/inter.woff2);
+}
+
+html {
+    font-family: inter;
+    font-weight: 700;
+}
