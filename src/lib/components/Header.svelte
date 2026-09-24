@@ -302,4 +302,14 @@
       transform: translateY(0) scale(1);
     }
   }
+
+  :global(nav.mobile.popover-fallback) {
+    display: none;
+
+    &.fallback-open {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
 </style>
