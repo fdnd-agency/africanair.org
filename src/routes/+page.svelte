@@ -1,1 +1,1 @@
-<p>Here goes the homepage</p>
+<p>Here goes the</p>

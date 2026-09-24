@@ -1,1 +1,1 @@
-// detail page here
+// pa
