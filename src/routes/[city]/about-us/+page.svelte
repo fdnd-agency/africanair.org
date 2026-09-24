@@ -5,12 +5,10 @@
     import location from '$lib/assets/pictures/Location.svg'
 </script>
 
-
 <h1>About us</h1>
-
 <details>
     <summary>
-        <div class="icon">
+        <div class="logo-icon">
             <img src="{info}" alt="info logo">
         </div>
         
@@ -43,7 +41,7 @@
 
 <details>
     <summary>
-        <div class="icon">
+        <div class="logo-icon">
             <img src="{globe}" alt="Globe logo">
         </div>
 
@@ -66,7 +64,7 @@
 
 <details>
     <summary>
-        <div class="icon">
+        <div class="logo-icon">
             <img src="{handshake}" alt="Handshake logo">
         </div>
 
@@ -89,7 +87,7 @@
 
 <details>
     <summary>
-        <div class="icon">
+        <div class="logo-icon">
             <img src="{location}" alt="Location logo">
         </div>
 
@@ -113,17 +111,19 @@
 
 <style>
     h1 {
-        padding: 1rem;
+        width: min(90%, 40.625rem);
+        margin: 0 auto;
+        padding: 1rem 1.25rem;
     }
 
     details {
         margin-right: auto;
         margin-left: auto;
-        border-radius: 1rem;
         position: relative;
+        border-radius: 1rem;
         width: min(90%, 40.625rem);
-        padding: 20px;
-        background-color: white;
+        padding: 1.25rem;
+        background-color: var(--background-primary);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         cursor: pointer;
         margin-bottom: 1rem;
@@ -137,42 +137,84 @@
             display: flex;
             align-items: center;
 
-            &::after {
-                content: '';
-                position: absolute;
-                cursor: pointer;
-            }
-
-
-            .icon {
+            .logo-icon {
                 align-self: stretch;
                 border-right: 3px solid #0087F1;
                 flex: 0 0 60px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
-                img {
-
-                }
             }
 
-
             section {
+                min-width: 0;
                 margin-left: 1rem;
-
-
 
                 h3 {
                     font-weight: 600;
                     margin-bottom: 1rem;
+                    transition: margin-bottom 250ms ease;
                 }
 
                 p {
+                    max-height: 15rem;
+                    transform: translateY(0);
+                    overflow: hidden;
                     font-weight: 400;
+                    opacity: 1;
                     text-wrap: balance;
+                    transition: max-height 250ms ease, opacity 180ms ease, transform 250ms ease;
                 }
             }
+        }
+
+        .full-text {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+
+            p {
+                min-height: 0;
+                overflow: hidden;
+                font-weight: 400;
+            }
+        }
+
+        &[open] {
+            summary {
+                section {
+                    h3 {
+                        margin-bottom: 0;
+                    }
+
+                    p {
+                        max-height: 0;
+                        opacity: 0;
+                    }
+                }
+            }
+
+            .full-text {
+                grid-template-rows: 1fr;
+                opacity: 1;
+                animation-name: details-show 150ms ease-in-out;
+
+                p {
+                    padding-top: 1rem;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+
+    @keyframes details-show {
+        from {
+            opacity: 0;
+            transform: translateY(-0.5rem);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 </style>
