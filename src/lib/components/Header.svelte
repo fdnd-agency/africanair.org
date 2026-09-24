@@ -17,19 +17,21 @@
 </script>
 
 <header>
-  <Picture 
-    avif={logoAvif}
-    webp={logoWebp}
-    png={logoPng}
-    darkAvif={logoDarkAvif}
-    darkWebp={logoDarkWebp}
-    darkPng={logoDarkPng}
-    alt="Africanair logo"
-    width="230"
-    height="80"
-    loading="eager"
-    fetchpriority="high"
-  />
+  <a href="/">
+    <Picture 
+      avif={logoAvif}
+      webp={logoWebp}
+      png={logoPng}
+      darkAvif={logoDarkAvif}
+      darkWebp={logoDarkWebp}
+      darkPng={logoDarkPng}
+      alt="Africanair logo"
+      width="230"
+      height="80"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </a>
 
   <button popovertarget="mobilenav">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,19 +42,19 @@
 
   <!-- mobile nav -->
   <nav id="mobilenav" popover class="mobile">
-		<button popovertarget="mobilenav">
-			<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-			<span>Menu</span>
-		</button>
-		<ul>
-			{#each navLinks as link}
-				<li>
-					<a href={link.href}>{link.label}</a>
-				</li>
-			{/each}
-		</ul>
+    <header>
+      <h3>Africanair.org</h3>
+      <button popovertarget="mobilenav">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="currentColor"/>
+        </svg>
+        <span>Close</span>
+      </button>
+    </header>
+
+    {#each navLinks as link}
+        <a href={link.href}>{link.label}</a>
+    {/each}
 
   </nav>
 
@@ -84,6 +86,7 @@
 
     button {
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 0.5rem;
       background: none;
@@ -110,10 +113,7 @@
     flex-direction: column;
 		width: 100%;
 		height: 100%;
-    gap: 1rem;
     border: none;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    margin-top: 1rem;
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -152,10 +152,9 @@
     }
 
     a {
-      text-decoration: none;
       color: inherit;
-      padding: 0.5rem;
-      border-radius: 6px;
+      padding: 1rem;
+      border-radius: var(--border-radius-s);
       transition: background-color 0.2s ease, transform 0.2s ease;
       
       &:active {
