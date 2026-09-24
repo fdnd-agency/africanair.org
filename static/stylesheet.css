@@ -99,3 +99,7 @@ body {
   line-height: var(--line-height);
   list-style: none;
 }
+
+main {
+  margin: 1rem;
+}
