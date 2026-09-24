@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import Picture from '$lib/components/Picture.svelte';
 
   import logoAvif from '$lib/assets/logo.avif';
@@ -14,6 +15,30 @@
     { href: '/login', label: 'Login' },
     { href: '/share-data', label: 'Share data' }
   ];
+
+  let mobileNav;
+  let menuButton;
+  let closeButton;
+
+  // fallback for popover element if it is not supported
+  onMount(() => {
+    if ('popover' in HTMLElement.prototype) return;
+
+    const toggleButtons = [menuButton, closeButton];
+
+    mobileNav.classList.add('popover-fallback');
+
+    const toggleMobileNav = (event) => {
+      event.preventDefault();
+      mobileNav.classList.toggle('fallback-open');
+    };
+
+    toggleButtons.forEach((button) => button.addEventListener('click', toggleMobileNav));
+
+    return () => {
+      toggleButtons.forEach((button) => button.removeEventListener('click', toggleMobileNav));
+    };
+  });
 </script>
 
 <header>
@@ -33,7 +58,7 @@
     />
   </a>
 
-  <button popovertarget="mobilenav">
+  <button bind:this={menuButton} popovertarget="mobilenav">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
@@ -41,10 +66,10 @@
   </button>
 
   <!-- mobile nav -->
-  <nav id="mobilenav" popover class="mobile">
+  <nav bind:this={mobileNav} id="mobilenav" popover class="mobile">
     <header>
       <h3>Africanair.org</h3>
-      <button popovertarget="mobilenav">
+      <button bind:this={closeButton} popovertarget="mobilenav">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="currentColor"/>
         </svg>
@@ -120,7 +145,6 @@
 			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
 			overlay 0.3s allow-discrete,
 			display 0.3s allow-discrete;
-
     &::backdrop {
       background-color: rgba(0, 0, 0, 0);
       transition: background-color 0.3s ease,
@@ -160,6 +184,16 @@
       &:active {
         transform: scale(0.98);
       }
+    }
+  }
+
+  :global(nav.mobile.popover-fallback) {
+    display: none;
+
+    &.fallback-open {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
   }
 </style>
