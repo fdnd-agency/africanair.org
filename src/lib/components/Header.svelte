@@ -42,7 +42,7 @@
 </script>
 
 <header>
-  <a href="/">
+  <a class="logo" href="/">
     <Picture 
       avif={logoAvif}
       webp={logoWebp}
@@ -93,31 +93,45 @@
 
 <style>
   header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: auto;
     width: 100%;
-    justify-content: space-between;
     align-items: center;
     padding: 1rem;
     box-sizing: border-box;
-
-    nav.desktop {
-      display: none;
-      gap: 1.5rem;
+    gap: 1rem;
+    
+    a.logo {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: center;
+      display: flex;
+      align-items: center;
 
       @media (min-width: 789px) {
-        display: flex;
+        grid-column: 1;
+        justify-self: start;
       }
     }
 
     button {
       display: flex;
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.25rem;
       background: none;
       border: none;
       cursor: pointer;
       transition: opacity 0.2s ease;
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
 
       &:hover {
         opacity: 0.7;
@@ -128,28 +142,40 @@
       }
     }
 
-    svg {
-      width: 1.5rem;
-      height: 1.5rem;
+    nav.desktop {
+      display: none;
+
+      @media (min-width: 789px) {
+        display: flex;
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        gap: 1.5rem;
+      }
+    }
+
+    @media (min-width: 789px) {
+      grid-template-columns: auto 1fr;
     }
   }
 
   nav.mobile {
     flex-direction: column;
-		width: 100%;
-		height: 100%;
+    width: 100%;
+    height: 100%;
     border: none;
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-			overlay 0.3s allow-discrete,
-			display 0.3s allow-discrete;
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+    
     &::backdrop {
       background-color: rgba(0, 0, 0, 0);
       transition: background-color 0.3s ease,
-				overlay 0.3s allow-discrete,
-				display 0.3s allow-discrete;
+        overlay 0.3s allow-discrete,
+        display 0.3s allow-discrete;
     }
 
     &:popover-open {
