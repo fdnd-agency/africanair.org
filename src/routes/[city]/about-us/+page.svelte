@@ -73,14 +73,12 @@
         background-color: var(--background-primary);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
-        /* .logo-icon {
-            border-right: 3px solid #0087F1;
-        } */
-
         .card-content {
             margin-inline-start: 1rem;
 
-
+            h2 {
+              text-wrap: balance;
+            }
 
             p {
                 margin-block-start: 1rem;
