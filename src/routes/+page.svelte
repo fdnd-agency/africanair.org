@@ -1,10 +1,7 @@
+<script>
+  import ThemeSwitch from "$lib/components/ThemeSwitch.svelte";
+</script>
 
-<main>
-    <section>
-        hhoidoei
-    </section>
-</main>
+<p>Here goes the homepage</p>
 
-<style>
-    
-</style>
+<ThemeSwitch />
