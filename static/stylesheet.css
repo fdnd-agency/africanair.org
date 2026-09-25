@@ -28,7 +28,6 @@
 :root {
   color-scheme: light dark;
 
-
   --font-size-xs: 0.75rem;
   --font-size-s: 1rem;
   --font-size-m: 1.25rem;
@@ -36,7 +35,6 @@
   --font-size-xl: 2rem;
 
   --line-height: 1.5;
-
 
   --spacing-2xs: 0.25rem;
   --spacing-xs: 0.5rem;
@@ -47,17 +45,14 @@
   --spacing-2xl: 2rem;
   --spacing-3xl: 3.5rem;
 
-
   --border-radius-s: 0.5rem;
   --border-radius-m: 1rem;
   --border-radius-l: 6.25rem;
-
 
   --brand-primary: #007bcf;
   --brand-secondary: light-dark(#007bcf, #044e89);
 
   --primary-pressed: #005894;
-
 
   --status-good: #00d794;
   --status-medium: #ffbd00;
@@ -69,24 +64,19 @@
   --status-high-bg: light-dark(#f9e8d9, #111e32);
   --status-dangerous-bg: light-dark(#f9d9d9, #111e32);
 
-  
   --alert-danger-bg: light-dark(#ffe5e6, #3b1a1a);
   --alert-danger-border: #f00;
-
 
   --background-primary: light-dark(#fff, #08142e);
   --background-secondary: light-dark(#fff, #111e32);
 
-
   --border-dropdown: light-dark(#007bcf, #00558e);
   --border-components: light-dark(#e5e5e5, #212c43);
-
 
   --text-primary: light-dark(#000, #fff);
   --text-secondary: light-dark(#808080, #838996);
   --text-brand-logo: light-dark(#404040, #c1c4cb);
   --text-primary-inverse: #fff;
-
 
   --button-primary: light-dark(#fff, #0f2241);
 }
@@ -98,6 +88,11 @@ body {
   font-weight: 400; /* Sets baseline for inheritance */
   line-height: var(--line-height);
   list-style: none;
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
 }
 
 main {
