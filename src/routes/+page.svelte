@@ -1,1 +1,10 @@
-<p>Here goes the homepage</p>
+
+<main>
+    <section>
+        hhoidoei
+    </section>
+</main>
+
+<style>
+    
+</style>

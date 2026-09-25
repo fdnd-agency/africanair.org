@@ -76,9 +76,10 @@
   --text-primary: light-dark(#000, #fff);
   --text-secondary: light-dark(#808080, #838996);
   --text-brand-logo: light-dark(#404040, #c1c4cb);
-  --text-primary-inverse: #fff;
+  --text-primary-inverse: light-dark(#fff, #000);
 
   --button-primary: light-dark(#fff, #0f2241);
+  --button-inverse: light-dark(#0f2241, #fff);
 }
 
 body {
@@ -88,6 +89,14 @@ body {
   font-weight: 400; /* Sets baseline for inheritance */
   line-height: var(--line-height);
   list-style: none;
+}
+
+main {
+  margin: 1rem;
+}
+
+a {
+  text-decoration: none;
 }
 
 h1 {
