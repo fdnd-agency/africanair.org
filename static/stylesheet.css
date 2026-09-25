@@ -100,3 +100,10 @@ body {
   list-style: none;
 }
 
+main {
+  margin: 1rem;
+}
+
+a {
+  text-decoration: none;
+}
