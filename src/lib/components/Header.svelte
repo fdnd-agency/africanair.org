@@ -165,7 +165,7 @@
           
           @media (prefers-reduced-motion: no-preference) {
             text-decoration: none;
-            background-color: var(--button-secondary);
+            background-color: var(--button-inverse);
             color: var(--text-primary-inverse);
           }
         }
