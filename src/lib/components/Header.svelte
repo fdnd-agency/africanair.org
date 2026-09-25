@@ -152,6 +152,24 @@
         justify-self: end;
         gap: 1.5rem;
       }
+
+      a {
+        color: var(--text-primary);
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius-m);
+        transition: color 0.15s ease, background-color 0.15s ease, text-decoration 0.15 ease;
+        
+
+        &:hover {
+          text-decoration: underline;
+          
+          @media (prefers-reduced-motion: no-preference) {
+            text-decoration: none;
+            background-color: var(--button-secondary);
+            color: var(--text-primary-inverse);
+          }
+        }
+      }
     }
 
     @media (min-width: 789px) {
