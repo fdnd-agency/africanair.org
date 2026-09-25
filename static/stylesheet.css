@@ -79,7 +79,7 @@
   --text-primary-inverse: light-dark(#fff, #000);
 
   --button-primary: light-dark(#fff, #0f2241);
-  --button-secondary: light-dark(#0f2241, #fff);
+  --button-inverse: light-dark(#0f2241, #fff);
 }
 
 body {
