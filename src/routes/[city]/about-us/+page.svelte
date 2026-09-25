@@ -1,8 +1,8 @@
 <script>
-  import info from "$lib/assets/pictures/Info.svg"
-  import globe from "$lib/assets/pictures/Globe.svg"
-  import handshake from "$lib/assets/pictures/Handshake.svg"
-  import location from "$lib/assets/pictures/Location.svg"
+  import info from "$lib/assets/Info.svg"
+  import globe from "$lib/assets/Globe.svg"
+  import handshake from "$lib/assets/Handshake.svg"
+  import location from "$lib/assets/Location.svg"
 
   const aboutUs = [
     {
