@@ -70,8 +70,13 @@
         grid-template-columns: 60px minmax(0, 1fr);
         padding: 1.25rem;
         border-radius: 1rem;
-        background-color: var(--background-primary);
+        background-color: var(--background-secondary);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border: 1.5px solid var(--border-components);
+
+        .logo-icon {
+          border-right: 3px solid #0087F1;
+        }
 
         .card-content {
             margin-inline-start: 1rem;
@@ -82,7 +87,6 @@
 
             p {
                 margin-block-start: 1rem;
-                font-weight: 400;
                 text-wrap: balance;
             }
         }
