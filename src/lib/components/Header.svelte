@@ -216,8 +216,8 @@
     max-width: 100vw;
     max-height: 100vh;
     border: none;
-    background-color: var(--bg-primary, #ffffff);
-    color: var(--text-primary, #000000);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
 
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
@@ -291,7 +291,7 @@
       background-color: rgba(0, 0, 0, 0);
     }
   }
-  
+
   :global(nav.mobile.popover-fallback) {
     display: none;
 
