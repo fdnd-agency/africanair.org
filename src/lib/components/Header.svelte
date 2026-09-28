@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Picture from "$lib/components/Picture.svelte";
+  import ThemeSwitch from "./ThemeSwitch.svelte";
 
   import logoAvif from "$lib/assets/images/logo.avif";
   import logoWebp from "$lib/assets/images/logo.webp";
@@ -20,11 +21,11 @@
   let menuButton;
   let closeButton;
 
-  // fallback for popover element if it is not supported
+  // Fallback for browsers without native Popover API support
   onMount(() => {
     if ("popover" in HTMLElement.prototype) return;
 
-    const toggleButtons = [menuButton, closeButton];
+    const toggleButtons = [menuButton, closeButton].filter(Boolean);
 
     mobileNav.classList.add("popover-fallback");
 
@@ -46,6 +47,21 @@
 </script>
 
 <header>
+  <!-- Mobile Menu Button (Left) -->
+  <button bind:this={menuButton} popovertarget="mobilenav" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M4 6H20M4 12H20M4 18H20"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    <span>Menu</span>
+  </button>
+
+  <!-- Logo (Center on mobile, Left on desktop) -->
   <a class="logo" href="/">
     <Picture
       avif={logoAvif}
@@ -62,24 +78,11 @@
     />
   </a>
 
-  <button bind:this={menuButton} popovertarget="mobilenav">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M4 6H20M4 12H20M4 18H20"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-    <span>Menu</span>
-  </button>
-
-  <!-- mobile nav -->
-  <nav bind:this={mobileNav} id="mobilenav" popover class="mobile">
-    <header>
+  <!-- Mobile Nav Popover -->
+  <nav bind:this={mobileNav} id="mobilenav" popover="auto" class="mobile">
+    <header class="mobile-header">
       <h3>Africanair.org</h3>
-      <button bind:this={closeButton} popovertarget="mobilenav">
+      <button bind:this={closeButton} popovertarget="mobilenav" aria-label="Close menu">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
@@ -92,12 +95,17 @@
       </button>
     </header>
 
-    {#each navLinks as link}
-      <a href={link.href}>{link.label}</a>
-    {/each}
+    <div class="mobile-links">
+      {#each navLinks as link}
+        <a href={link.href}>{link.label}</a>
+      {/each}
+    </div>
   </nav>
 
-  <!-- desktop nav -->
+  <!-- Theme Switch (Right on mobile and desktop) -->
+  <ThemeSwitch class="themeswitch" />
+
+  <!-- Desktop Nav (Left-aligned next to logo) -->
   <nav class="desktop">
     {#each navLinks as link}
       <a href={link.href}>{link.label}</a>
@@ -110,94 +118,116 @@
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: auto;
+    height: fit-content;
     width: 100%;
     align-items: center;
     padding: 1rem;
     box-sizing: border-box;
     gap: 1rem;
 
-    a.logo {
-      grid-column: 2;
-      grid-row: 1;
-      justify-self: center;
-      display: flex;
-      align-items: center;
-
-      @media (min-width: 789px) {
-        grid-column: 1;
-        justify-self: start;
-      }
-    }
-
-    button {
-      display: flex;
-      grid-column: 1;
-      grid-row: 1;
-      justify-self: start;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-
-      &:hover {
-        opacity: 0.7;
-      }
-
-      @media (min-width: 789px) {
-        display: none;
-      }
-    }
-
-    nav.desktop {
-      display: none;
-
-      @media (min-width: 789px) {
-        display: flex;
-        grid-column: 2;
-        grid-row: 1;
-        justify-self: end;
-        gap: 1.5rem;
-      }
-
-      a {
-        color: var(--text-primary);
-        padding: 0.5rem 1rem;
-        border-radius: var(--border-radius-m);
-        transition:
-          color 0.15s ease,
-          background-color 0.15s ease,
-          text-decoration 0.15 ease;
-
-        &:hover {
-          text-decoration: underline;
-
-          @media (prefers-reduced-motion: no-preference) {
-            text-decoration: none;
-            background-color: var(--button-primary-inverse);
-            color: var(--text-primary-inverse);
-          }
-        }
-      }
-    }
-
     @media (min-width: 789px) {
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
     }
   }
 
-  nav.mobile {
+  /* Mobile menu button (Left) */
+  button {
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
     border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    font-size: var(--font-size-s);
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    @media (min-width: 789px) {
+      display: none;
+    }
+  }
+
+  /* Logo */
+  a.logo {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+
+    @media (min-width: 789px) {
+      grid-column: 1;
+      justify-self: start;
+    }
+  }
+
+  /* Theme switch (Right) */
+  :global(.themeswitch) {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+  }
+
+  /* Desktop menu (Left next to logo) */
+  nav.desktop {
+    display: none;
+
+    @media (min-width: 789px) {
+      display: flex;
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: start;
+      gap: 1.5rem;
+    }
+
+    a {
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-m);
+      transition:
+        color 0.15s ease,
+        background-color 0.15s ease,
+        text-decoration 0.15s ease;
+
+      &:hover {
+        text-decoration: underline;
+
+        @media (prefers-reduced-motion: no-preference) {
+          text-decoration: none;
+          background-color: var(--button-primary-inverse);
+          color: var(--text-primary-inverse);
+        }
+      }
+    }
+  }
+
+  /* Mobile Popover Modal */
+  nav.mobile {
+    box-sizing: border-box;
+    padding: 1.5rem;
+    margin: 0;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border: none;
+    background-color: var(--bg-primary, #ffffff);
+    color: var(--text-primary, #000000);
+
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
     transition:
@@ -206,56 +236,79 @@
       overlay 0.3s allow-discrete,
       display 0.3s allow-discrete;
 
-    &::backdrop {
-      background-color: rgba(0, 0, 0, 0);
-      transition:
-        background-color 0.3s ease,
-        overlay 0.3s allow-discrete,
-        display 0.3s allow-discrete;
+    .mobile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+
+      button {
+        display: flex;
+      }
     }
 
-    &:popover-open {
+    .mobile-links {
       display: flex;
-      opacity: 1;
-      transform: translateY(0) scale(1);
+      flex-direction: column;
+      gap: 0.5rem;
 
-      &::backdrop {
-        background-color: rgba(0, 0, 0, 0.4);
-      }
+      a {
+        color: inherit;
+        padding: 1rem;
+        border-radius: var(--border-radius-s);
+        font-size: 1.25rem;
+        text-decoration: none;
+        transition:
+          background-color 0.2s ease,
+          transform 0.2s ease;
 
-      @starting-style {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-
-        &::backdrop {
-          background-color: rgba(0, 0, 0, 0);
+        &:active {
+          transform: scale(0.98);
         }
       }
     }
 
     @media (min-width: 789px) {
-      display: none;
-    }
-
-    a {
-      color: inherit;
-      padding: 1rem;
-      border-radius: var(--border-radius-s);
-      transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
-
-      &:active {
-        transform: scale(0.98);
-      }
+      display: none !important;
     }
   }
 
+  /* Top-layer popover rules defined at root level to prevent Svelte scoping issues */
+  nav.mobile:popover-open {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+  }
+
+  nav.mobile::backdrop {
+    background-color: rgba(0, 0, 0, 0);
+    transition:
+      background-color 0.3s ease,
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
+  }
+
+  nav.mobile:popover-open::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+
+    @starting-style {
+      background-color: rgba(0, 0, 0, 0);
+    }
+  }
+
+  /* Fallback for non-popover browsers */
   :global(nav.mobile.popover-fallback) {
     display: none;
 
     &.fallback-open {
       display: flex;
+      flex-direction: column;
       opacity: 1;
       transform: translateY(0) scale(1);
     }
