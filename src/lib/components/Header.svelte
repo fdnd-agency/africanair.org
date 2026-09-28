@@ -47,7 +47,6 @@
 </script>
 
 <header>
-  <!-- Mobile Menu Button (Left) -->
   <button bind:this={menuButton} popovertarget="mobilenav" aria-label="Open menu">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -61,7 +60,6 @@
     <span>Menu</span>
   </button>
 
-  <!-- Logo (Center on mobile, Left on desktop) -->
   <a class="logo" href="/">
     <Picture
       avif={logoAvif}
@@ -78,7 +76,6 @@
     />
   </a>
 
-  <!-- Mobile Nav Popover -->
   <nav bind:this={mobileNav} id="mobilenav" popover="auto" class="mobile">
     <header class="mobile-header">
       <h3>Africanair.org</h3>
@@ -102,10 +99,8 @@
     </div>
   </nav>
 
-  <!-- Theme Switch (Right on mobile and desktop) -->
   <ThemeSwitch class="themeswitch" />
 
-  <!-- Desktop Nav (Left-aligned next to logo) -->
   <nav class="desktop">
     {#each navLinks as link}
       <a href={link.href}>{link.label}</a>
@@ -130,12 +125,11 @@
     }
   }
 
-  /* Mobile menu button (Left) */
   button {
     display: flex;
     grid-column: 1;
     grid-row: 1;
-    justify-self: start;
+    justify-self: center;
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
@@ -173,7 +167,6 @@
     }
   }
 
-  /* Theme switch (Right) */
   :global(.themeswitch) {
     grid-column: 3;
     grid-row: 1;
@@ -181,7 +174,6 @@
     align-self: center;
   }
 
-  /* Desktop menu (Left next to logo) */
   nav.desktop {
     display: none;
 
@@ -214,7 +206,6 @@
     }
   }
 
-  /* Mobile Popover Modal */
   nav.mobile {
     box-sizing: border-box;
     padding: 1.5rem;
@@ -273,7 +264,6 @@
     }
   }
 
-  /* Top-layer popover rules defined at root level to prevent Svelte scoping issues */
   nav.mobile:popover-open {
     display: flex;
     flex-direction: column;
@@ -301,8 +291,7 @@
       background-color: rgba(0, 0, 0, 0);
     }
   }
-
-  /* Fallback for non-popover browsers */
+  
   :global(nav.mobile.popover-fallback) {
     display: none;
 
