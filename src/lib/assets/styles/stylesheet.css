@@ -1,20 +1,20 @@
 @font-face {
   font-family: "Inter";
-  src: url("inter.regular.ttf") format("truetype"); /* format tells the browser it's a .ttf-file before opening it */
+  src: url("../fonts/inter.regular.ttf") format("truetype"); /* format tells the browser it's a .ttf-file before opening it */
   font-weight: 400;
   font-display: swap; /* Renders downloaded font on user's device before loading website font */
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("inter.18pt-medium.ttf") format("truetype");
+  src: url("../fonts/inter.18pt-medium.ttf") format("truetype");
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("inter.18pt-semibold.ttf") format("truetype");
+  src: url("../fonts/inter.18pt-semibold.ttf") format("truetype");
   font-weight: 600;
   font-display: swap;
 }
@@ -94,6 +94,10 @@ body {
 
 main {
   margin: 1rem;
+
+  margin: 0 auto;
+  max-width: 600px;
+  width: 100%;
 }
 
 a {

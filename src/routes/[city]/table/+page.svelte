@@ -2,14 +2,16 @@
   let { data } = $props();
 </script>
 
-{#each data.data as data}
+<main>
+  {#each data.data as item}
   <ul>
-    <li>{data.sampling_point.location}</li>
-    <li>{data.tube.city.name}</li>
-    <li>{data.date}</li>
-    <li>{data.value}</li>
+    <li>{item.sampling_point.location}</li>
+    <li>{item.tube.city.name}</li>
+    <li>{item.date}</li>
+    <li>{item.value}</li>
   </ul>
-{/each}
+  {/each}
+</main>
 
 <style>
   ul {
