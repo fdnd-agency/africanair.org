@@ -181,8 +181,8 @@
 
           @media (prefers-reduced-motion: no-preference) {
             text-decoration: none;
-            background-color: var(--button-primary-inverse);
-            color: var(--text-primary-inverse);
+            background-color: var(--background-secondary);
+            color: var(--text-inverse);
           }
         }
       }
