@@ -164,7 +164,7 @@
         gap: 1.5rem;
       }
 
-      a {~
+      a {
         color: var(--text-primary);
         padding: 0.5rem 1rem;
         border-radius: var(--border-radius-m);
