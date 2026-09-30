@@ -3,18 +3,33 @@
 </script>
 
 <main>
-  {#each data.data as item}
-  <ul>
-    <li>{item.sampling_point.location}</li>
-    <li>{item.tube.city.name}</li>
-    <li>{item.date}</li>
-    <li>{item.value}</li>
-  </ul>
-  {/each}
+  <article>
+    <h2>Station name</h2>
+    <p>Location - Date</p>
+    <span>10.0</span>
+    <small>µg/m</small>
+    <span>Low</span>
+  </article>
+
+  <!-- {#each data.data as data}
+    <ul>
+      <li>{data.sampling_point.location}</li>
+      <li>{data.tube.city.name}</li>
+      <li>{data.date}</li>
+      <li>{data.value}</li>
+    </ul>
+  {/each} -->
 </main>
 
 <style>
   ul {
     margin-bottom: 1rem;
+  }
+
+  article {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-m);
+    border-radius: var(--border-radius-m);
   }
 </style>
