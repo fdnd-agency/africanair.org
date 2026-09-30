@@ -73,7 +73,7 @@
       border-radius: var(--border-radius-m);
       background-color: var(--background-secondary);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 1.5px solid var(--border-components);
+      border: 1.5px solid var(--border-color);
 
       @media (min-width: 400px) {
         padding: var(--spacing-l);
