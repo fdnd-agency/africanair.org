@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import 'maplibre-gl/dist/maplibre-gl.css';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+  import { belongsToCity } from '$lib/directus.js';
+  import { slugify } from '$lib/slugify.js';
 
   let { data } = $props();
   let mapContainer;
@@ -28,13 +30,6 @@
     return 'var(--status-dangerous)';
   };
 
-  const slugify = (value) =>
-    value
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-
   onMount(async () => {
     const maplibreglModule = await import('maplibre-gl');
     const maplibregl = maplibreglModule.default || maplibreglModule;
@@ -54,9 +49,8 @@
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
     const points = city.sampling_points.filter((point) => {
-      const pointCityId = typeof point.city_id === 'object' ? point.city_id?.id : point.city_id;
       return (
-        pointCityId === city.id &&
+        belongsToCity(point, city) &&
         Number.isFinite(Number(point.latitude)) &&
         Number.isFinite(Number(point.longitude))
       );
