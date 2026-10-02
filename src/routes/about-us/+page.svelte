@@ -63,7 +63,6 @@
 
     article {
       display: grid;
-      position: relative;
       row-gap: var(--spacing-xs);
       grid-template-columns: 60px minmax(0, 1fr);
       grid-template-rows: auto 1fr;
