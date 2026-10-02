@@ -1,6 +1,11 @@
-<label for="theme-switch">
+<script>
+  let className = "";
+  export { className as class };
+</script>
+
+<label class={className}>
   <input type="checkbox" id="theme-switch" />
-  <svg class="sun-icon">
+  <svg class="sun-icon" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="4"></circle>
     <path d="M12 2v2"></path>
     <path d="M12 20v2"></path>
@@ -11,7 +16,7 @@
     <path d="m6.34 17.66-1.41 1.41"></path>
     <path d="m19.07 4.93-1.41 1.41"></path>
   </svg>
-  <svg class="moon-icon">
+  <svg class="moon-icon" viewBox="0 0 24 24">
     <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
   </svg>
   <span>Theme</span>
@@ -19,15 +24,15 @@
 
 <style>
   label {
-    cursor: pointer;
-    position: absolute;
-    background-color: var(--background-primary);
-    border-radius: var(--border-radius-s);
-    padding: var(--spacing-2xs);
-    transition: background-color 0.15s ease-out;
-    display: flex;
+    position: relative; /* Changed from absolute to fit CSS Grid layout */
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
+    background-color: var(--background-primary);
+    border-radius: var(--border-radius-s);
+    padding: var(--spacing-2xs, 0.25rem);
+    transition: background-color 0.15s ease-out;
 
     &:hover {
       background-color: var(--button-primary-inverse);
@@ -47,10 +52,8 @@
     .sun-icon,
     .moon-icon {
       transition: color 0.15s ease-out;
-
       width: 1.5rem;
       height: 1.5rem;
-
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
@@ -59,47 +62,43 @@
     }
   }
 
-  @media (prefers-color-scheme: light) {
-    .sun-icon {
-      display: none;
-    }
+  .sun-icon {
+    display: none;
+  }
+  .moon-icon {
+    display: block;
+  }
 
-    .moon-icon {
-      display: block;
-    }
-
-    :global(html:has(#theme-switch:checked)) {
-      color-scheme: dark;
-
-      .sun-icon {
-        display: block;
-      }
-
-      .moon-icon {
-        display: none;
-      }
-    }
+  input:checked ~ .sun-icon {
+    display: block;
+  }
+  input:checked ~ .moon-icon {
+    display: none;
   }
 
   @media (prefers-color-scheme: dark) {
     .sun-icon {
       display: block;
     }
-
     .moon-icon {
       display: none;
     }
 
+    input:checked ~ .sun-icon {
+      display: none;
+    }
+    input:checked ~ .moon-icon {
+      display: block;
+    }
+  }
+
+  :global(html:has(#theme-switch:checked)) {
+    color-scheme: dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
     :global(html:has(#theme-switch:checked)) {
       color-scheme: light;
-
-      .sun-icon {
-        display: none;
-      }
-
-      .moon-icon {
-        display: block;
-      }
     }
   }
 </style>
