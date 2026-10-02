@@ -6,8 +6,10 @@
   import { slugify } from '$lib/slugify.js';
 
   let { data } = $props();
-  let mapContainer;
-  let map;
+  let mapContainer = $state(null);
+  let map = $state(null);
+  let maplibregl = $state(null);
+  let markers = [];
 
   const lightStyle = 'https://tiles.openfreemap.org/styles/positron';
   const darkStyle = 'https://tiles.openfreemap.org/styles/fiord';
@@ -30,9 +32,19 @@
     return 'var(--status-dangerous)';
   };
 
+  let points = $derived(
+    data.city.sampling_points.filter((point) => {
+      return (
+        belongsToCity(point, data.city) &&
+        Number.isFinite(Number(point.latitude)) &&
+        Number.isFinite(Number(point.longitude))
+      );
+    })
+  );
+
   onMount(async () => {
     const maplibreglModule = await import('maplibre-gl');
-    const maplibregl = maplibreglModule.default || maplibreglModule;
+    maplibregl = maplibreglModule.default || maplibreglModule;
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -48,30 +60,6 @@
     map.scrollZoom.enable();
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
-    const points = city.sampling_points.filter((point) => {
-      return (
-        belongsToCity(point, city) &&
-        Number.isFinite(Number(point.latitude)) &&
-        Number.isFinite(Number(point.longitude))
-      );
-    });
-
-    points.forEach((point) => {
-      const measurement = latestMeasurement(point.measurements);
-      const value = measurement ? Number(measurement.value) : null;
-      const markerLink = document.createElement('a');
-      const location = point.location || point.code || 'Sampling point';
-
-      markerLink.className = 'map-point-marker';
-      markerLink.href = `/${city.slug}/detail/${slugify(location)}`;
-      markerLink.title = `${location}${measurement ? `: ${value.toFixed(1)}` : ': no measurement data'}`;
-      markerLink.style.setProperty('--marker-color', markerColor(value));
-
-      new maplibregl.Marker({ element: markerLink })
-        .setLngLat([Number(point.longitude), Number(point.latitude)])
-        .addTo(map);
-    });
-
     const handleThemeChange = (event) => {
       if (map) {
         map.setStyle(event.matches ? darkStyle : lightStyle);
@@ -84,6 +72,34 @@
       mediaQuery.removeEventListener('change', handleThemeChange);
       if (map) map.remove();
     };
+  });
+
+  // Use $effect to reactively update map markers whenever `points` or `map` changes
+  $effect(() => {
+    if (!map || !maplibregl) return;
+
+    // Clear existing markers to prevent duplicates
+    markers.forEach((marker) => marker.remove());
+    markers = [];
+
+    // Add updated markers
+    points.forEach((point) => {
+      const measurement = latestMeasurement(point.measurements);
+      const value = measurement ? Number(measurement.value) : null;
+      const markerLink = document.createElement('a');
+      const location = point.location || point.code || 'Sampling point';
+
+      markerLink.className = 'map-point-marker';
+      markerLink.href = `/${data.city.slug}/detail/${slugify(location)}`;
+      markerLink.title = `${location}${measurement ? `: ${value.toFixed(1)}` : ': no measurement data'}`;
+      markerLink.style.setProperty('--marker-color', markerColor(value));
+
+      const marker = new maplibregl.Marker({ element: markerLink })
+        .setLngLat([Number(point.longitude), Number(point.latitude)])
+        .addTo(map);
+
+      markers.push(marker);
+    });
   });
 </script>
 
@@ -98,7 +114,6 @@
     width: 95%;
     height: 90dvh;
     margin: 0 auto;
-    
   }
 
   .map {
