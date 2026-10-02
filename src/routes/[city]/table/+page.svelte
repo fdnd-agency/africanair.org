@@ -1,9 +1,17 @@
 <script>
   let { data } = $props();
+
+  const measurements = data.measurements;
 </script>
 
 <main>
-  <article>
+  <ul>
+    {#each measurements as measurement}
+      <li>{measurement.value}</li>
+    {/each}
+  </ul>
+
+  <!-- <article>
     <span class="ellipse"></span>
     <h2>Krank High Business (industrial) Olam</h2>
     <p class="info">Kumasi - September 2026</p>
@@ -23,7 +31,7 @@
       <small>µg/m³</small>
       <span class="status">Low</span>
     </p>
-  </article>
+  </article> -->
 </main>
 
 <style>
