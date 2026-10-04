@@ -1,5 +1,5 @@
 <script>
-  import { enhance } from "$app/forms";
+  import { enhance } from "$app/forms"
   import lock from "$lib/assets/images/Lock.svg"
 </script>
 
@@ -11,9 +11,15 @@
 
     <p>Enter your email to receive a one-time login code</p>
 
-    <form method="POST">
+    <form method="POST" use:enhance>
       <label for="email">E-mail address</label>
-      <input placeholder="E-mail address" type="text" required autocomplete="email" />
+      <input
+        placeholder="E-mail address"
+        type="email"
+        name="email"
+        required
+        autocomplete="email"
+      />
       <button>Send Code</button>
     </form>
     <p>You’ll receive a 6-digit code by email within a few seconds.</p>
@@ -23,7 +29,7 @@
 <style>
   main {
     display: grid;
-    min-height: 100dvh;
+    min-height: 75dvh;
     place-items: center;
     padding: 1.875rem;
 
@@ -33,7 +39,7 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 29.375rem;
+      max-width: 26rem;
       padding: var(--spacing-2xl) var(--spacing-l);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-m);
@@ -41,57 +47,74 @@
 
       img {
         display: flex;
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: var(--spacing-xs);
+        border: 1px solid var(--primary);
+        border-radius: var(--border-radius-l);
+        box-sizing: content-box;
         align-items: center;
         margin: 0 auto;
+        box-shadow: 1px 0px 4px var(--primary);
+      }
+
+      h1 {
+        text-align: center;
+        text-wrap: balance;
       }
 
       p:first-of-type {
         text-align: center;
         text-wrap: balance;
-        margin-block-end: 2rem;
-        font-size: 1rem;
+        margin-block-end: var(--spacing-2xl);
+        font-size: var(--font-size-s);
         color: var(--text-secondary);
       }
 
       p:last-of-type {
-        font-size: 14px;
+        font-size: 0.875rem;
         color: var(--text-secondary);
         text-align: center;
         text-wrap: balance;
-        margin-block-start: 1rem;
+        margin-block-start: var(--spacing-m);
       }
 
       form {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        width: 100%;
+        gap: var(--spacing-m);
 
-        label[for='email'] {
-          display: none;
+        label[for="email"] {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          border: 0;
+          white-space: nowrap;
+        }
+
+        input, button {
+          width: 100%;
+          min-height: 2.5rem;
         }
 
         input {
-          background: var(--background-primary);
+          padding-inline: var(--spacing-xl);
           border: 1px solid var(--border-color);
-          width: 100%;
-          padding: .5rem;
           border-radius: var(--border-radius-l);
+          color: var(--text-primary);
+          background-color: var(--background-primary);
         }
 
         button {
-          padding: .5rem;
-          width: 100%;
-          border-radius: 1rem;
-          border: none;
-          background-color: var(--primary);
+          padding-inline: var(--spacing-xl);
+          border: 0;
+          border-radius: var(--border-radius-l);
+          color: var(--text-inverse);
           cursor: pointer;
+          background-color: var(--primary);
         }
-      }
-
-      h1 {
-        text-align: center;
       }
     }
   }
