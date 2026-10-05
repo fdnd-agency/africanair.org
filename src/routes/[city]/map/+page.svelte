@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import 'maplibre-gl/dist/maplibre-gl.css';
+  import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { belongsToCity } from '$lib/directus.js';
   import { slugify } from '$lib/slugify.js';
 
@@ -36,9 +37,10 @@
   );
 
   onMount(async () => {
-    // Dynamic import defers loading until the page is interactive
+
     const maplibreModule = await import('maplibre-gl');
     maplibregl = maplibreModule.default || maplibreModule;
+    maplibregl.setWorkerUrl(maplibreWorkerUrl);
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const city = data.city;
@@ -127,7 +129,7 @@
   }
 
   :global(.map-point-marker) {
-    width: 1.5rem; /* Expanded touch target size for accessibility */
+    width: 1.5rem;
     height: 1.5rem;
     background-color: var(--marker-color);
     padding: 0;
