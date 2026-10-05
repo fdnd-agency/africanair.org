@@ -12,7 +12,7 @@
   let markers = [];
 
   const lightStyle = 'https://tiles.openfreemap.org/styles/positron';
-  const darkStyle = 'https://tiles.openfreemap.org/styles/fiord';
+  const darkStyle = 'https://tiles.openfreemap.org/styles/dark';
 
   const latestMeasurement = (measurements = []) =>
     measurements
@@ -26,9 +26,9 @@
 
   const markerColor = (value) => {
     if (!Number.isFinite(value)) return 'var(--text-secondary)';
-    if (value < 20) return 'var(--status-good)';
-    if (value < 40) return 'var(--status-medium)';
-    if (value < 60) return 'var(--status-high)';
+    if (value < 21) return 'var(--status-good)';
+    if (value < 42) return 'var(--status-medium)';
+    if (value < 65) return 'var(--status-high)';
     return 'var(--status-dangerous)';
   };
 
@@ -109,32 +109,26 @@
 
 <style>
   section.map {
-    position: sticky;
-    top: 0;
-    width: 95%;
-    height: 90dvh;
+    display: flex;
+    width: 92%;
+    height: 87vh;
     margin: 0 auto;
   }
 
   .map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
     border-radius: var(--border-radius-m);
   }
 
   :global(.map-point-marker) {
-    display: block;
-    width: 18px;
-    height: 18px;
+    width: 1rem;
+    height: 1rem;
     background-color: var(--marker-color);
     padding: 0;
-    border: 2px solid var(--background-primary);
-    border-radius: 50%;
+    border-radius: var(--border-radius-l);
     text-decoration: none;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 1px 5px var(--marker-color);
     transition: transform 0.15s ease;
   }
 
