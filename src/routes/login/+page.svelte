@@ -1,6 +1,6 @@
 <script>
-  import { enhance } from "$app/forms"
-  import lock from "$lib/assets/images/Lock.svg"
+  import { enhance } from "$app/forms";
+  import lock from "$lib/assets/images/Lock.svg";
 </script>
 
 <main>
@@ -46,15 +46,12 @@
       background-color: var(--background-secondary);
 
       img {
-        display: flex;
         width: 2.25rem;
         height: 2.25rem;
         padding: var(--spacing-xs);
         border: 1px solid var(--primary);
         border-radius: var(--border-radius-l);
         box-sizing: content-box;
-        align-items: center;
-        margin: 0 auto;
         box-shadow: 1px 0px 4px var(--primary);
       }
 
@@ -86,6 +83,7 @@
         gap: var(--spacing-m);
 
         label[for="email"] {
+          /* Label is visually hidden but still readable with a screenreader. This has been done according to the design */
           position: absolute;
           width: 1px;
           height: 1px;
@@ -94,7 +92,8 @@
           white-space: nowrap;
         }
 
-        input, button {
+        input,
+        button {
           width: 100%;
           min-height: 2.5rem;
         }
@@ -105,6 +104,11 @@
           border-radius: var(--border-radius-l);
           color: var(--text-primary);
           background-color: var(--background-primary);
+
+          &:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
+          }
         }
 
         button {
@@ -114,6 +118,10 @@
           color: var(--text-inverse);
           cursor: pointer;
           background-color: var(--primary);
+
+          &:hover {
+            background-color: hsl(203, 93%, 34%);
+          }
         }
       }
     }
