@@ -160,8 +160,8 @@
 
   .map-point-marker {
     display: block;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1rem;
+    height: 1rem;
     background-color: var(--text-secondary);
     border-radius: 50%;
     text-decoration: none;
