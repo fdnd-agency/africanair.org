@@ -3,18 +3,18 @@
   import Picture from "$lib/components/Picture.svelte";
   import ThemeSwitch from "./ThemeSwitch.svelte";
 
-  import logoAvif from "$lib/assets/images/logo.avif";
-  import logoWebp from "$lib/assets/images/logo.webp";
-  import logoPng from "$lib/assets/images/logo.png";
+  import logoAvif from '$lib/assets/logo.avif';
+  import logoWebp from '$lib/assets/logo.webp';
+  import logoPng from '$lib/assets/logo.png';
 
-  import logoDarkAvif from "$lib/assets/images/logoDark.avif";
-  import logoDarkWebp from "$lib/assets/images/logoDark.webp";
-  import logoDarkPng from "$lib/assets/images/logoDark.png";
-
+  import logoDarkAvif from '$lib/assets/logoDark.avif';
+  import logoDarkWebp from '$lib/assets/logoDark.webp';
+  import logoDarkPng from '$lib/assets/logoDark.png';
+  
   const navLinks = [
-    { href: "/about", label: "About us" },
-    { href: "/login", label: "Login" },
-    { href: "/share-data", label: "Share data" },
+    { href: '/about', label: 'About us' },
+    { href: '/login', label: 'Login' },
+    { href: '/share-data', label: 'Share data' }
   ];
 
   let mobileNav;
@@ -23,25 +23,21 @@
 
   // Fallback for browsers without native Popover API support
   onMount(() => {
-    if ("popover" in HTMLElement.prototype) return;
+    if ('popover' in HTMLElement.prototype) return;
 
     const toggleButtons = [menuButton, closeButton].filter(Boolean);
 
-    mobileNav.classList.add("popover-fallback");
+    mobileNav.classList.add('popover-fallback');
 
     const toggleMobileNav = (event) => {
       event.preventDefault();
-      mobileNav.classList.toggle("fallback-open");
+      mobileNav.classList.toggle('fallback-open');
     };
 
-    toggleButtons.forEach((button) =>
-      button.addEventListener("click", toggleMobileNav),
-    );
+    toggleButtons.forEach((button) => button.addEventListener('click', toggleMobileNav));
 
     return () => {
-      toggleButtons.forEach((button) =>
-        button.removeEventListener("click", toggleMobileNav),
-      );
+      toggleButtons.forEach((button) => button.removeEventListener('click', toggleMobileNav));
     };
   });
 </script>
@@ -61,7 +57,7 @@
   </button>
 
   <a class="logo" href="/">
-    <Picture
+    <Picture 
       avif={logoAvif}
       webp={logoWebp}
       png={logoPng}
@@ -92,11 +88,10 @@
       </button>
     </header>
 
-    <div class="mobile-links">
-      {#each navLinks as link}
+    {#each navLinks as link}
         <a href={link.href}>{link.label}</a>
-      {/each}
-    </div>
+    {/each}
+
   </nav>
 
   <ThemeSwitch class="themeswitch" />
@@ -124,6 +119,13 @@
       grid-template-columns: auto 1fr auto;
     }
   }
+    
+    a.logo {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: center;
+      display: flex;
+      align-items: center;
 
   button {
     display: flex;
@@ -255,6 +257,12 @@
 
         &:active {
           transform: scale(0.98);
+      @starting-style {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+        
+        &::backdrop {
+          background-color: rgba(0, 0, 0, 0);
         }
       }
     }
