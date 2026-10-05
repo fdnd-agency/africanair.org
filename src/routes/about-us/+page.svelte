@@ -32,20 +32,18 @@
   ]
 </script>
 
-<main>
-  <h1>About us</h1>
-  <section>
-    {#each aboutUs as card}
-      <article>
-        <img src={card.icon} alt={card.alt} />
+<h1>About us</h1>
+<section>
+  {#each aboutUs as card}
+    <article>
+      <img src={card.icon} alt={card.alt} />
 
-        <h2>{card.title}</h2>
+      <h2>{card.title}</h2>
 
-        <p>{card.text}</p>
-      </article>
-    {/each}
-  </section>
-</main>
+      <p>{card.text}</p>
+    </article>
+  {/each}
+</section>
 
 <style>
   h1 {

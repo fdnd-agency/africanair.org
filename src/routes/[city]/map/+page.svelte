@@ -187,9 +187,8 @@
 <style>
   section.map-section {
     display: flex;
-    width: 92%;
+    width: 100%;
     height: 87dvh;
-    margin: 0 auto;
   }
 
   .map {
@@ -233,11 +232,6 @@
   .map-point-marker[data-status='dangerous'] {
     background-color: var(--status-dangerous);
     box-shadow: 0 1px 5px var(--status-dangerous);
-  }
-
-  .map-point-marker:hover,
-  .map-point-marker:focus-visible {
-    transform: scale(1.15);
   }
 
   .map-point-marker:focus-visible {
