@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte';
   import 'maplibre-gl/dist/maplibre-gl.css';
-  import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { belongsToCity } from '$lib/directus.js';
   import { slugify } from '$lib/slugify.js';
 
@@ -11,17 +10,12 @@
   let maplibregl = $state(null);
   let markers = [];
 
-  const lightStyle = 'https://tiles.openfreemap.org/styles/positron';
-  const darkStyle = 'https://tiles.openfreemap.org/styles/dark';
+  const lightStyle = '/positron.json';
+  const darkStyle = '/dark_matter.json';
 
   const latestMeasurement = (measurements = []) =>
     measurements
-      .filter(
-        (measurement) =>
-          measurement.value !== null &&
-          measurement.value !== '' &&
-          Number.isFinite(Number(measurement.value))
-      )
+      .filter((m) => m.value !== null && m.value !== '' && Number.isFinite(Number(m.value)))
       .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
   const markerColor = (value) => {
@@ -33,19 +27,18 @@
   };
 
   let points = $derived(
-    data.city.sampling_points.filter((point) => {
-      return (
+    data.city.sampling_points.filter(
+      (point) =>
         belongsToCity(point, data.city) &&
         Number.isFinite(Number(point.latitude)) &&
         Number.isFinite(Number(point.longitude))
-      );
-    })
+    )
   );
 
   onMount(async () => {
-    const maplibreglModule = await import('maplibre-gl');
-    maplibregl = maplibreglModule.default || maplibreglModule;
-    maplibregl.setWorkerUrl(maplibreWorkerUrl);
+    // Dynamic import defers loading until the page is interactive
+    const maplibreModule = await import('maplibre-gl');
+    maplibregl = maplibreModule.default || maplibreModule;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const city = data.city;
@@ -57,32 +50,37 @@
       zoom: 12,
       cooperativeGestures: true
     });
+
     map.scrollZoom.enable();
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
+    const resizeObserver = new ResizeObserver(() => {
+      map?.resize();
+    });
+
+    if (mapContainer) {
+      resizeObserver.observe(mapContainer);
+    }
+
     const handleThemeChange = (event) => {
-      if (map) {
-        map.setStyle(event.matches ? darkStyle : lightStyle);
-      }
+      if (map) map.setStyle(event.matches ? darkStyle : lightStyle);
     };
 
     mediaQuery.addEventListener('change', handleThemeChange);
 
     return () => {
+      resizeObserver.disconnect();
       mediaQuery.removeEventListener('change', handleThemeChange);
       if (map) map.remove();
     };
   });
 
-  // Use $effect to reactively update map markers whenever `points` or `map` changes
   $effect(() => {
     if (!map || !maplibregl) return;
 
-    // Clear existing markers to prevent duplicates
-    markers.forEach((marker) => marker.remove());
+    markers.forEach((m) => m.remove());
     markers = [];
 
-    // Add updated markers
     points.forEach((point) => {
       const measurement = latestMeasurement(point.measurements);
       const value = measurement ? Number(measurement.value) : null;
@@ -103,30 +101,37 @@
   });
 </script>
 
-<section class="map">
+<svelte:head>
+  <title>{data.city.name} Air Quality Map</title>
+  <meta name="description" content="Interactive air quality sampling map for {data.city.name}." />
+</svelte:head>
+
+<section class="map-section">
   <div bind:this={mapContainer} class="map"></div>
 </section>
 
 <style>
-  section.map {
+  section.map-section {
     display: flex;
     width: 92%;
-    height: 87vh;
+    height: 87dvh;
     margin: 0 auto;
   }
 
   .map {
+    position: relative;
     width: 100%;
     height: 100%;
     border-radius: var(--border-radius-m);
+    overflow: hidden;
   }
 
   :global(.map-point-marker) {
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem; /* Expanded touch target size for accessibility */
+    height: 1.5rem;
     background-color: var(--marker-color);
     padding: 0;
-    border-radius: var(--border-radius-l);
+    border-radius: 50%;
     text-decoration: none;
     box-shadow: 0 1px 5px var(--marker-color);
     transition: transform 0.15s ease;
@@ -134,7 +139,7 @@
 
   :global(.map-point-marker:hover),
   :global(.map-point-marker:focus-visible) {
-    transform: scale(1.12);
+    transform: scale(1.15);
   }
 
   :global(.map-point-marker:focus-visible) {
