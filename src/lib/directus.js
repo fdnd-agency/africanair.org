@@ -8,6 +8,7 @@ const samplingPointFields = [
 	'sampling_points.location',
 	'sampling_points.city_id.id'
 ];
+
 const measurementFields = [
 	'sampling_points.measurements.id',
 	'sampling_points.measurements.date',
