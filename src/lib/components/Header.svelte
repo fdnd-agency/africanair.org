@@ -88,10 +88,11 @@
       </button>
     </header>
 
-    {#each navLinks as link}
-        <a href={link.href}>{link.label}</a>
-    {/each}
-
+    <section class="mobile-links">
+      {#each navLinks as link}
+          <a href={link.href}>{link.label}</a>
+      {/each}
+    </section>  
   </nav>
 
   <ThemeSwitch class="themeswitch" />
