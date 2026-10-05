@@ -85,8 +85,8 @@ body {
 
 main {
   margin: 0 auto;
-  max-width: 600px;
   width: 100%;
+  padding-inline: 1rem;
 }
 
 a {
