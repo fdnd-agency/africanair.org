@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte';
   import 'maplibre-gl/dist/maplibre-gl.css';
-  import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { belongsToCity } from '$lib/directus.js';
   import { slugify } from '$lib/slugify.js';
 
@@ -37,10 +36,11 @@
   );
 
   onMount(async () => {
-
     const maplibreModule = await import('maplibre-gl');
     maplibregl = maplibreModule.default || maplibreModule;
-    maplibregl.setWorkerUrl(maplibreWorkerUrl);
+
+    // Direct CDN worker set to prevent Vite/Rolldown build crashes
+    maplibregl.setWorkerUrl('https://unpkg.com/maplibre-gl/dist/maplibre-gl-worker.js');
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const city = data.city;
@@ -88,11 +88,41 @@
       const value = measurement ? Number(measurement.value) : null;
       const markerLink = document.createElement('a');
       const location = point.location || point.code || 'Sampling point';
+      const color = markerColor(value);
 
-      markerLink.className = 'map-point-marker';
       markerLink.href = `/${data.city.slug}/detail/${slugify(location)}`;
       markerLink.title = `${location}${measurement ? `: ${value.toFixed(1)}` : ': no measurement data'}`;
-      markerLink.style.setProperty('--marker-color', markerColor(value));
+
+      // Set baseline marker styles directly in JS (no :global CSS required)
+      Object.assign(markerLink.style, {
+        display: 'block',
+        width: '1.5rem',
+        height: '1.5rem',
+        backgroundColor: color,
+        padding: '0',
+        borderRadius: '50%',
+        textDecoration: 'none',
+        boxShadow: `0 1px 5px ${color}`,
+        transition: 'transform 0.15s ease'
+      });
+
+      // Hover & Focus interactions without :global
+      const handleExpand = () => {
+        markerLink.style.transform = 'scale(1.15)';
+      };
+      const handleReset = () => {
+        markerLink.style.transform = 'scale(1)';
+        markerLink.style.outline = 'none';
+      };
+
+      markerLink.addEventListener('mouseenter', handleExpand);
+      markerLink.addEventListener('mouseleave', handleReset);
+      markerLink.addEventListener('focus', () => {
+        handleExpand();
+        markerLink.style.outline = '3px solid var(--text-primary)';
+        markerLink.style.outlineOffset = '2px';
+      });
+      markerLink.addEventListener('blur', handleReset);
 
       const marker = new maplibregl.Marker({ element: markerLink })
         .setLngLat([Number(point.longitude), Number(point.latitude)])
@@ -126,26 +156,5 @@
     height: 100%;
     border-radius: var(--border-radius-m);
     overflow: hidden;
-  }
-
-  :global(.map-point-marker) {
-    width: 1.5rem;
-    height: 1.5rem;
-    background-color: var(--marker-color);
-    padding: 0;
-    border-radius: 50%;
-    text-decoration: none;
-    box-shadow: 0 1px 5px var(--marker-color);
-    transition: transform 0.15s ease;
-  }
-
-  :global(.map-point-marker:hover),
-  :global(.map-point-marker:focus-visible) {
-    transform: scale(1.15);
-  }
-
-  :global(.map-point-marker:focus-visible) {
-    outline: 3px solid var(--text-primary);
-    outline-offset: 2px;
   }
 </style>
