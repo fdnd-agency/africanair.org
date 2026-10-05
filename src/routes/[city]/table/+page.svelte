@@ -1,26 +1,40 @@
 <script>
   let { data } = $props();
 
+  const cities = data.cities;
+  const samplingPoints = data.samplingPoints;
   const measurements = data.measurements;
 </script>
 
 <main>
+  <!-- <ul>
+    {#each cities as city}
+      <li>{city.name}</li>
+    {/each}
+  </ul>
+  <ul>
+    {#each samplingPoints as samplingPoint}
+      <li>{samplingPoint.location}</li>
+    {/each}
+  </ul>
   <ul>
     {#each measurements as measurement}
       <li>{measurement.value}</li>
     {/each}
-  </ul>
+  </ul> -->
 
-  <!-- <article>
-    <span class="ellipse"></span>
-    <h2>Krank High Business (industrial) Olam</h2>
-    <p class="info">Kumasi - September 2026</p>
-    <p class="measurement">
-      <span class="value">10.0</span>
-      <small>µg/m³</small>
-      <span class="status">Low</span>
-    </p>
-  </article>
+  {#each samplingPoints as samplingPoint}
+    <article>
+      <span class="ellipse"></span>
+      <h2>{samplingPoint.location}</h2>
+      <p class="info">{samplingPoint.city.name} - September 2026</p>
+      <p class="measurement">
+        <span class="value">10.0</span>
+        <small>µg/m³</small>
+        <span class="status">Low</span>
+      </p>
+    </article>
+  {/each}
 
   <article>
     <span class="ellipse"></span>
@@ -31,7 +45,7 @@
       <small>µg/m³</small>
       <span class="status">Low</span>
     </p>
-  </article> -->
+  </article>
 </main>
 
 <style>
