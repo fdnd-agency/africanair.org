@@ -24,7 +24,7 @@
 
 <style>
   label {
-    position: relative; /* Changed from absolute to fit CSS Grid layout */
+    position: relative;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -35,13 +35,13 @@
     transition: background-color 0.15s ease-out;
 
     &:hover {
-      background-color: var(--button-primary-inverse);
+      background-color: var(--background-secondary);
 
       .sun-icon,
       .moon-icon,
       span {
-        stroke: var(--text-primary-inverse);
-        color: var(--text-primary-inverse);
+        stroke: var(--text-primary);
+        color: var(--text-primary);
       }
     }
 
@@ -62,6 +62,7 @@
     }
   }
 
+  /* Default Icon Display (Light Mode Preference) */
   .sun-icon {
     display: none;
   }
@@ -76,6 +77,7 @@
     display: none;
   }
 
+  /* Dark Mode Icon display */
   @media (prefers-color-scheme: dark) {
     .sun-icon {
       display: block;
@@ -91,13 +93,12 @@
       display: block;
     }
   }
-
-  :global(html:has(#theme-switch:checked)) {
+  :global(html:has(input[type="checkbox"]:checked)) {
     color-scheme: dark;
   }
 
   @media (prefers-color-scheme: dark) {
-    :global(html:has(#theme-switch:checked)) {
+    :global(html:has(input[type="checkbox"]:checked)) {
       color-scheme: light;
     }
   }

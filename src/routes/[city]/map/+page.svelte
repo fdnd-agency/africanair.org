@@ -34,7 +34,6 @@
     )
   );
 
-  // Svelte action attaches the template node directly to MapLibre
   function registerMarker(node, params) {
     let marker = null;
 
@@ -61,6 +60,13 @@
     };
   }
 
+  // Helper to determine if the document currently resolves to dark mode
+  function isDocumentDark() {
+    if (typeof window === 'undefined') return false;
+    const rootStyle = getComputedStyle(document.documentElement);
+    return rootStyle.colorScheme === 'dark' || rootStyle.getPropertyValue('color-scheme').includes('dark');
+  }
+
   onMount(async () => {
     const maplibreModule = await import('maplibre-gl');
     maplibregl = maplibreModule.default || maplibreModule;
@@ -72,12 +78,12 @@
     const workerUrl = URL.createObjectURL(workerBlob);
     maplibregl.setWorkerUrl(workerUrl);
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const city = data.city;
+    let currentThemeIsDark = isDocumentDark();
 
     map = new maplibregl.Map({
       container: mapContainer,
-      style: mediaQuery.matches ? darkStyle : lightStyle,
+      style: currentThemeIsDark ? darkStyle : lightStyle,
       center: [Number(city.longitude), Number(city.latitude)],
       zoom: 12,
       cooperativeGestures: true
@@ -98,16 +104,56 @@
       resizeObserver.observe(mapContainer);
     }
 
-    const handleThemeChange = (event) => {
-      if (map) map.setStyle(event.matches ? darkStyle : lightStyle);
+    // Function to safely switch map style
+    const updateMapStyle = (toDark) => {
+      if (!map) return;
+      const targetStyle = toDark ? darkStyle : lightStyle;
+
+      const applyStyle = () => {
+        if (map.getStyle().sprite !== targetStyle) {
+          map.setStyle(targetStyle);
+        }
+      };
+
+      if (map.isStyleLoaded()) {
+        applyStyle();
+      } else {
+        map.once('style.load', applyStyle);
+      }
     };
 
-    mediaQuery.addEventListener('change', handleThemeChange);
+    // Observe changes to <html> attributes (triggered by :has(:checked) or style overrides)
+    const observer = new MutationObserver(() => {
+      const dark = isDocumentDark();
+      if (dark !== currentThemeIsDark) {
+        currentThemeIsDark = dark;
+        updateMapStyle(dark);
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['style', 'class', 'data-theme']
+    });
+
+    // Also fallback to checking document styles on user interaction (clicks)
+    const handleGlobalClick = () => {
+      setTimeout(() => {
+        const dark = isDocumentDark();
+        if (dark !== currentThemeIsDark) {
+          currentThemeIsDark = dark;
+          updateMapStyle(dark);
+        }
+      }, 0);
+    };
+
+    window.addEventListener('click', handleGlobalClick);
 
     return () => {
       URL.revokeObjectURL(workerUrl);
       resizeObserver.disconnect();
-      mediaQuery.removeEventListener('change', handleThemeChange);
+      observer.disconnect();
+      window.removeEventListener('click', handleGlobalClick);
       if (map) map.remove();
     };
   });
