@@ -120,7 +120,7 @@
           background-color: var(--primary);
 
           &:hover {
-            background-color: hsl(203, 93%, 34%);
+            background-color: hsl(205 100% 30%);
           }
         }
       }
