@@ -1,4 +1,5 @@
 <script>
+	import '$lib/assets/styles/stylesheet.css';
 	import favicon from '$lib/assets/icons/favicon.svg';
 	import Header from '$lib/components/Header.svelte';
 	let { children } = $props();
