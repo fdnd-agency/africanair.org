@@ -126,6 +126,7 @@
       justify-self: center;
       display: flex;
       align-items: center;
+    }
 
       @media (min-width: 789px) {
         grid-column: 1;
@@ -341,11 +342,19 @@
         &:active {
           transform: scale(0.98);
         }
+
+        @starting-style {
+          opacity: 0;
+          transform: translateY(-20px) scale(0.95);
+        }
+        &::backdrop {
+          background-color: rgba(0, 0, 0, 0);
+        }
       }
     }
 
     @media (min-width: 789px) {
-      display: none !important;
+      display: none;
     }
   }
 
