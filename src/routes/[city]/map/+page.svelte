@@ -2,15 +2,22 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import 'maplibre-gl/dist/maplibre-gl.css';
+  import * as maplibregl from 'maplibre-gl';
+  import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+
+  if (browser) {
+    maplibregl.setWorkerUrl(maplibreWorkerUrl);
+  }
+
   import { belongsToCity } from '$lib/directus.js';
   import { slugify } from '$lib/slugify.js';
 
   let { data } = $props();
 
   let mapContainer = $state(null);
-  let map = $state(null);
+  let map = null;
   let mapReady = $state(false);
-  let transformVersion = $state(0); // Triggers reactive projection recalculation
+  let transformVersion = $state(0);
 
   const lightStyle = '/positron.json';
   const darkStyle = '/dark_matter.json';
@@ -38,9 +45,7 @@
     })
   );
 
-  // Computes pixel positions directly within Svelte's reactive graph
   const projectedPoints = $derived.by(() => {
-    // Read transformVersion to recompute whenever the map moves
     void transformVersion;
 
     if (!map || !mapReady) return [];
@@ -141,7 +146,6 @@
 <section class="map-section">
   <div bind:this={mapContainer} class="map"></div>
 
-  <!-- Standard Svelte overlay with fully scoped CSS -->
   <div class="markers-overlay">
     {#each projectedPoints as p (p.id)}
       <a
@@ -169,16 +173,12 @@
     border-radius: var(--border-radius-m, 8px);
     overflow: hidden;
   }
-
-  /* Overlay sits directly over the canvas but allows map pan/pinch */
   .markers-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
   }
-
-  /* Fully scoped styles - zero :global() needed */
   .map-point-marker {
     position: absolute;
     top: 0;
