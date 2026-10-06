@@ -39,7 +39,7 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 25rem;
+      max-width: 25.7rem;
       padding: var(--spacing-2xl) var(--spacing-l);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-m);
@@ -120,7 +120,6 @@
           background-color: var(--primary);
 
           &:hover {
-            background-color: hsl(203, 93%, 34%);
             background-color: hsl(205 100% 30%);
           }
         }
