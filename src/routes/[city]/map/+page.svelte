@@ -1,21 +1,19 @@
 <script>
   import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
   import 'maplibre-gl/dist/maplibre-gl.css';
   import { belongsToCity } from '$lib/directus.js';
   import { slugify } from '$lib/slugify.js';
 
   let { data } = $props();
+
   let mapContainer = $state(null);
   let map = $state(null);
-  let maplibregl = $state(null);
+  let mapReady = $state(false);
+  let transformVersion = $state(0); // Triggers reactive projection recalculation
 
   const lightStyle = '/positron.json';
   const darkStyle = '/dark_matter.json';
-
-  const latestMeasurement = (measurements = []) =>
-    measurements
-      .filter((m) => m.value !== null && m.value !== '' && Number.isFinite(Number(m.value)))
-      .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
   const markerStatus = (value) => {
     if (!Number.isFinite(value)) return 'unknown';
@@ -25,193 +23,182 @@
     return 'dangerous';
   };
 
+  const latestMeasurement = (measurements = []) => {
+    const valid = measurements
+      .filter((m) => m.value !== null && m.value !== '' && Number.isFinite(Number(m.value)))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return valid.length > 0 ? valid[0] : null;
+  };
+
   let points = $derived(
-    data.city.sampling_points.filter(
-      (point) =>
-        belongsToCity(point, data.city) &&
-        Number.isFinite(Number(point.latitude)) &&
-        Number.isFinite(Number(point.longitude))
-    )
+    (data.city?.sampling_points || []).filter((point) => {
+      const lng = Number(point.longitude);
+      const lat = Number(point.latitude);
+      return belongsToCity(point, data.city) && Number.isFinite(lng) && Number.isFinite(lat);
+    })
   );
 
-  function registerMarker(node, params) {
-    let marker = null;
+  // Computes pixel positions directly within Svelte's reactive graph
+  const projectedPoints = $derived.by(() => {
+    // Read transformVersion to recompute whenever the map moves
+    void transformVersion;
 
-    function update({ point, map, maplibregl }) {
-      if (!map || !maplibregl) return;
-      if (!marker) {
-        marker = new maplibregl.Marker({ element: node })
-          .setLngLat([Number(point.longitude), Number(point.latitude)])
-          .addTo(map);
-      } else {
-        marker.setLngLat([Number(point.longitude), Number(point.latitude)]);
-      }
-    }
+    if (!map || !mapReady) return [];
 
-    update(params);
+    return points.map((point) => {
+      const lng = Number(point.longitude);
+      const lat = Number(point.latitude);
+      const pos = map.project([lng, lat]);
+      const m = latestMeasurement(point.measurements);
+      const val = m ? Number(m.value) : null;
+      const location = point.location || point.code || 'Sampling point';
 
-    return {
-      update(newParams) {
-        update(newParams);
-      },
-      destroy() {
-        if (marker) marker.remove();
-      }
-    };
-  }
+      return {
+        id: point.id || point.code || `${lat}-${lng}`,
+        x: pos.x,
+        y: pos.y,
+        slug: slugify(location),
+        status: markerStatus(val),
+        title: `${location}${m ? `: ${val.toFixed(1)}` : ': no measurement data'}`
+      };
+    });
+  });
 
-  // Helper to determine if the document currently resolves to dark mode
   function isDocumentDark() {
-    if (typeof window === 'undefined') return false;
-    const rootStyle = getComputedStyle(document.documentElement);
-    return rootStyle.colorScheme === 'dark' || rootStyle.getPropertyValue('color-scheme').includes('dark');
+    if (!browser) return false;
+    const root = document.documentElement;
+    const computed = getComputedStyle(root);
+    return (
+      root.getAttribute('data-theme') === 'dark' ||
+      root.classList.contains('dark') ||
+      computed.colorScheme === 'dark' ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    );
   }
 
   onMount(async () => {
-    const maplibreModule = await import('maplibre-gl');
-    maplibregl = maplibreModule.default || maplibreModule;
+    const mod = await import('maplibre-gl');
+    const maplibregl = mod.default || mod;
 
-    const workerBlob = new Blob(
-      [`import 'https://unpkg.com/maplibre-gl/dist/maplibre-gl-worker.mjs';`],
-      { type: 'application/javascript' }
-    );
-    const workerUrl = URL.createObjectURL(workerBlob);
-    maplibregl.setWorkerUrl(workerUrl);
+    const MapConstructor = maplibregl.Map || mod.Map;
+    const NavControl = maplibregl.NavigationControl || mod.NavigationControl;
 
-    const city = data.city;
-    let currentThemeIsDark = isDocumentDark();
+    const cityLng = Number(data.city?.longitude);
+    const cityLat = Number(data.city?.latitude);
+    const defaultCenter = [
+      Number.isFinite(cityLng) ? cityLng : 0,
+      Number.isFinite(cityLat) ? cityLat : 0
+    ];
 
-    map = new maplibregl.Map({
+    map = new MapConstructor({
       container: mapContainer,
-      style: currentThemeIsDark ? darkStyle : lightStyle,
-      center: [Number(city.longitude), Number(city.latitude)],
+      style: isDocumentDark() ? darkStyle : lightStyle,
+      center: defaultCenter,
       zoom: 12,
       cooperativeGestures: true
     });
 
-    map.scrollZoom.enable();
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+    if (NavControl) {
+      map.addControl(new NavControl({ showCompass: false }), 'top-right');
+    }
+
+    const updateCoords = () => {
+      transformVersion += 1;
+    };
+
+    map.on('move', updateCoords);
+    map.on('zoom', updateCoords);
+    map.on('resize', updateCoords);
 
     map.on('load', () => {
+      mapReady = true;
       map.resize();
+      updateCoords();
     });
 
     const resizeObserver = new ResizeObserver(() => {
       map?.resize();
+      updateCoords();
     });
-
-    if (mapContainer) {
-      resizeObserver.observe(mapContainer);
-    }
-
-    // Function to safely switch map style
-    const updateMapStyle = (toDark) => {
-      if (!map) return;
-      const targetStyle = toDark ? darkStyle : lightStyle;
-
-      const applyStyle = () => {
-        if (map.getStyle().sprite !== targetStyle) {
-          map.setStyle(targetStyle);
-        }
-      };
-
-      if (map.isStyleLoaded()) {
-        applyStyle();
-      } else {
-        map.once('style.load', applyStyle);
-      }
-    };
-
-    // Observe changes to <html> attributes (triggered by :has(:checked) or style overrides)
-    const observer = new MutationObserver(() => {
-      const dark = isDocumentDark();
-      if (dark !== currentThemeIsDark) {
-        currentThemeIsDark = dark;
-        updateMapStyle(dark);
-      }
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['style', 'class', 'data-theme']
-    });
-
-    // Also fallback to checking document styles on user interaction (clicks)
-    const handleGlobalClick = () => {
-      setTimeout(() => {
-        const dark = isDocumentDark();
-        if (dark !== currentThemeIsDark) {
-          currentThemeIsDark = dark;
-          updateMapStyle(dark);
-        }
-      }, 0);
-    };
-
-    window.addEventListener('click', handleGlobalClick);
+    if (mapContainer) resizeObserver.observe(mapContainer);
 
     return () => {
-      URL.revokeObjectURL(workerUrl);
       resizeObserver.disconnect();
-      observer.disconnect();
-      window.removeEventListener('click', handleGlobalClick);
-      if (map) map.remove();
+      if (map) {
+        map.off('move', updateCoords);
+        map.off('zoom', updateCoords);
+        map.off('resize', updateCoords);
+        map.remove();
+      }
     };
   });
 </script>
 
 <svelte:head>
   <title>{data.city.name} Air Quality Map</title>
-  <meta name="description" content="Interactive air quality sampling map for {data.city.name}." />
 </svelte:head>
 
 <section class="map-section">
   <div bind:this={mapContainer} class="map"></div>
 
-  <div class="markers-wrapper">
-    {#each points as point (point.id || point.code || `${point.latitude}-${point.longitude}`)}
-      {@const measurement = latestMeasurement(point.measurements)}
-      {@const value = measurement ? Number(measurement.value) : null}
-      {@const location = point.location || point.code || 'Sampling point'}
-
+  <!-- Standard Svelte overlay with fully scoped CSS -->
+  <div class="markers-overlay">
+    {#each projectedPoints as p (p.id)}
       <a
-        href="/{data.city.slug}/detail/{slugify(location)}"
-        title="{location}{measurement ? `: ${value.toFixed(1)}` : ': no measurement data'}"
+        href="/{data.city.slug}/detail/{p.slug}"
+        title={p.title}
         class="map-point-marker"
-        data-status={markerStatus(value)}
-        use:registerMarker={{ point, map, maplibregl }}
+        data-status={p.status}
+        style="transform: translate3d({p.x}px, {p.y}px, 0);"
       ></a>
     {/each}
   </div>
 </section>
 
 <style>
-  section.map-section {
-    display: flex;
-    width: 100%;
-    height: 87dvh;
-  }
-
-  .map {
+  .map-section {
     position: relative;
     width: 100%;
-    height: 100%;
-    border-radius: var(--border-radius-m);
+    height: 87dvh;
     overflow: hidden;
   }
 
-  .markers-wrapper {
-    display: none;
+  .map {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius-m, 8px);
+    overflow: hidden;
   }
 
+  /* Overlay sits directly over the canvas but allows map pan/pinch */
+  .markers-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Fully scoped styles - zero :global() needed */
   .map-point-marker {
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 1rem;
     height: 1rem;
+    margin-top: -0.5rem;
+    margin-left: -0.5rem;
     background-color: var(--text-secondary);
     border-radius: 50%;
     text-decoration: none;
     box-shadow: 0 1px 5px var(--text-secondary);
-    transition: transform 0.15s ease;
+    pointer-events: auto;
+    cursor: pointer;
+    will-change: transform;
+    transition: filter 0.15s ease;
+  }
+
+  .map-point-marker:hover {
+    filter: brightness(1.15) drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
   }
 
   .map-point-marker[data-status='good'] {
