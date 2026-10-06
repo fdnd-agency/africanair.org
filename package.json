@@ -17,6 +17,9 @@
 		"vite": "^8.0.16"
 	},
 	"dependencies": {
-		"maplibre-gl": "^6.11.2"
+		"bcryptjs": "^3.0.3",
+		"maplibre-gl": "^6.11.2",
+		"mongodb": "^7.7.0",
+		"resend": "^6.32.1"
 	}
 }

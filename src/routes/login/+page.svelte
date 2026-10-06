@@ -1,6 +1,8 @@
 <script>
-  import { enhance } from "$app/forms";
+  // import { enhance } from "$app/forms";
   import lock from "$lib/assets/images/Lock.svg";
+
+  let { form } = $props()
 </script>
 
 <main>
@@ -11,13 +13,14 @@
 
     <p>Enter your email to receive a one-time login code</p>
 
-    <form method="POST" use:enhance>
+    <form method="POST">
       <label for="email">E-mail address</label>
       <input
         placeholder="E-mail address"
         type="email"
         name="email"
         id="email"
+        value={form?.email ?? ''}
         required
         autocomplete="email"
       />
