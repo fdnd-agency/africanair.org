@@ -20,15 +20,15 @@
     "openmaptiles:version": "3.x",
     "maputnik:renderer": "mlgljs"
   },
-  "light": {"anchor": "viewport"},
+  "light": { "anchor": "viewport" },
   "sources": {
     "openmaptiles": {
       "type": "vector",
-      "url": "https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+      "url": "https://tiles.openfreemap.org/planet"
     }
   },
-  "sprite": "https://openmaptiles.github.io/dark-matter-gl-style/sprite",
-  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+  "sprite": "https://tiles.openfreemap.org/sprites/dark",
+  "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
