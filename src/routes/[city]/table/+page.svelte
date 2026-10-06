@@ -1,51 +1,29 @@
 <script>
   let { data } = $props();
 
-  const cities = data.cities;
-  const samplingPoints = data.samplingPoints;
-  const measurements = data.measurements;
+  const { samplingPoints } = data;
+
+  const dateRefactor = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+  };
 </script>
 
 <main>
-  <!-- <ul>
-    {#each cities as city}
-      <li>{city.name}</li>
-    {/each}
-  </ul>
-  <ul>
-    {#each samplingPoints as samplingPoint}
-      <li>{samplingPoint.location}</li>
-    {/each}
-  </ul>
-  <ul>
-    {#each measurements as measurement}
-      <li>{measurement.value}</li>
-    {/each}
-  </ul> -->
-
   {#each samplingPoints as samplingPoint}
     <article>
       <span class="ellipse"></span>
       <h2>{samplingPoint.location}</h2>
-      <p class="info">{samplingPoint.city.name} - September 2026</p>
-      <p class="measurement">
-        <span class="value">10.0</span>
-        <small>µg/m³</small>
-        <span class="status">Low</span>
+      <p>
+        {samplingPoint.city.name} - {dateRefactor(samplingPoint.date_updated)}
       </p>
-    </article>
-  {/each}
-
-  <article>
-    <span class="ellipse"></span>
-    <h2>Ahoydo roundabout</h2>
-    <p class="info">Kumasi - August 2026</p>
-    <p class="measurement">
       <span class="value">10.0</span>
       <small>µg/m³</small>
-      <span class="status">Low</span>
-    </p>
-  </article>
+      <span class="status">Dangerous</span>
+    </article>
+  {/each}
 </main>
 
 <style>
@@ -53,6 +31,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding: 1rem;
 
     article {
       background-color: var(--background-secondary);
@@ -61,77 +40,87 @@
       border-radius: var(--border-radius-m);
       display: grid;
       align-items: center;
+      grid-template-columns: 1fr auto;
       grid-template-areas:
-        "station ellipse"
-        "info info"
-        "measurement measurement";
+        "station value"
+        "station unit"
+        "info unit"
+        "info status";
+      padding-left: clamp(1rem, -3.286rem + 18.286vw, 3rem);
 
       @media (min-width: 375px) {
-        grid-template-columns:
-          clamp(2rem, 0.5rem + 8vw, 3.5rem)
-          1fr auto;
-        padding-left: clamp(1rem, 10.667vw - 1rem, 3rem);
+        grid-template-columns: clamp(2rem, -2.286rem + 18.286vw, 4rem) 1fr auto;
         grid-template-areas:
-          "ellipse station measurement"
-          "ellipse info measurement";
+          "ellipse station value"
+          "ellipse station unit"
+          "ellipse info unit"
+          "ellipse info status";
       }
 
       .ellipse {
-        display: block;
-        width: var(--spacing-s);
         aspect-ratio: 1;
         background-color: var(--status-good);
         border-radius: var(--border-radius-l);
         box-shadow: 0 0 var(--spacing-m) var(--status-good);
         grid-area: ellipse;
-
-        @media (max-width: 375px) {
-          align-self: start;
-          justify-self: end;
-        }
+        width: clamp(var(--spacing-s), 0.214rem + 2.286vw, var(--spacing-m));
+        display: none;
 
         @media (min-width: 375px) {
-          width: var(--spacing-m);
+          display: block;
         }
       }
 
       h2 {
         grid-area: station;
-        font-size: var(--font-size-m);
+        font-size: clamp(
+          var(--font-size-s),
+          0.464rem + 2.286vw,
+          var(--font-size-m)
+        );
       }
 
-      .info {
+      p {
         grid-area: info;
+        font-size: clamp(
+          var(--font-size-xs),
+          0.214rem + 2.286vw,
+          var(--font-size-s)
+        );
       }
 
-      .measurement {
-        grid-area: measurement;
+      .value {
+        grid-area: value;
+        color: var(--status-good);
+        font-weight: 600;
+        font-size: clamp(
+          var(--font-size-s),
+          0.464rem + 2.286vw,
+          var(--font-size-m)
+        );
+        text-align: center;
+      }
+
+      small {
+        grid-area: unit;
+        color: var(--text-secondary);
+        font-size: var(--font-size-xs);
+        text-align: center;
+      }
+
+      .status {
+        grid-area: status;
         display: flex;
-        align-items: center;
-        gap: var(--spacing-xs);
-
-        @media (min-width: 375px) {
-          flex-direction: column;
-          gap: var(--spacing-2xs);
-        }
-
-        .value {
-          color: var(--status-good);
-          font-weight: 600;
-        }
-
-        small {
-          color: var(--text-secondary);
-        }
-
-        .status {
-          display: flex;
-          justify-content: center;
-          color: var(--status-good);
-          border: 1px solid var(--status-good);
-          width: 7rem;
-          border-radius: var(--border-radius-m);
-        }
+        justify-content: center;
+        color: var(--status-good);
+        border: 1px solid var(--status-good);
+        padding: 0 var(--spacing-m);
+        border-radius: var(--border-radius-m);
+        font-size: clamp(
+          var(--font-size-xs),
+          0.214rem + 2.286vw,
+          var(--font-size-s)
+        );
       }
     }
   }
