@@ -17,6 +17,7 @@
         placeholder="E-mail address"
         type="email"
         name="email"
+        id="email"
         required
         autocomplete="email"
       />
