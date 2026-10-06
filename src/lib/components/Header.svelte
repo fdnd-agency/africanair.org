@@ -3,18 +3,18 @@
   import Picture from "$lib/components/Picture.svelte";
   import ThemeSwitch from "./ThemeSwitch.svelte";
 
-  import logoAvif from "$lib/assets/images/logo.avif";
-  import logoWebp from "$lib/assets/images/logo.webp";
-  import logoPng from "$lib/assets/images/logo.png";
+  import logoAvif from '$lib/assets/logo.avif';
+  import logoWebp from '$lib/assets/logo.webp';
+  import logoPng from '$lib/assets/logo.png';
 
-  import logoDarkAvif from "$lib/assets/images/logoDark.avif";
-  import logoDarkWebp from "$lib/assets/images/logoDark.webp";
-  import logoDarkPng from "$lib/assets/images/logoDark.png";
-
+  import logoDarkAvif from '$lib/assets/logoDark.avif';
+  import logoDarkWebp from '$lib/assets/logoDark.webp';
+  import logoDarkPng from '$lib/assets/logoDark.png';
+  
   const navLinks = [
-    { href: "/about", label: "About us" },
-    { href: "/login", label: "Login" },
-    { href: "/share-data", label: "Share data" },
+    { href: '/about', label: 'About us' },
+    { href: '/login', label: 'Login' },
+    { href: '/share-data', label: 'Share data' }
   ];
 
   let mobileNav;
@@ -23,25 +23,21 @@
 
   // Fallback for browsers without native Popover API support
   onMount(() => {
-    if ("popover" in HTMLElement.prototype) return;
+    if ('popover' in HTMLElement.prototype) return;
 
     const toggleButtons = [menuButton, closeButton].filter(Boolean);
 
-    mobileNav.classList.add("popover-fallback");
+    mobileNav.classList.add('popover-fallback');
 
     const toggleMobileNav = (event) => {
       event.preventDefault();
-      mobileNav.classList.toggle("fallback-open");
+      mobileNav.classList.toggle('fallback-open');
     };
 
-    toggleButtons.forEach((button) =>
-      button.addEventListener("click", toggleMobileNav),
-    );
+    toggleButtons.forEach((button) => button.addEventListener('click', toggleMobileNav));
 
     return () => {
-      toggleButtons.forEach((button) =>
-        button.removeEventListener("click", toggleMobileNav),
-      );
+      toggleButtons.forEach((button) => button.removeEventListener('click', toggleMobileNav));
     };
   });
 </script>
@@ -61,7 +57,7 @@
   </button>
 
   <a class="logo" href="/">
-    <Picture
+    <Picture 
       avif={logoAvif}
       webp={logoWebp}
       png={logoPng}
@@ -119,6 +115,11 @@
     padding: 1rem;
     box-sizing: border-box;
     gap: 1rem;
+
+    @media (min-width: 789px) {
+      grid-template-columns: auto 1fr auto;
+    }
+  }
     
     a.logo {
       grid-column: 2;
@@ -128,110 +129,27 @@
       align-items: center;
     }
 
-      @media (min-width: 789px) {
-        grid-column: 1;
-        justify-self: start;
-      }
-    }
-  }
-
-    button {
-      display: flex;
-      grid-column: 1;
-      grid-row: 1;
-      justify-self: start;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-
-      &:hover {
-        opacity: 0.7;
-      }
-
-      @media (min-width: 789px) {
-        display: none;
-      }
-    }
-
-    nav.desktop {
-      display: none;
-
-      @media (min-width: 789px) {
-        display: flex;
-        grid-column: 2;
-        grid-row: 1;
-        justify-self: end;
-        gap: 1.5rem;
-      }
-
-      a {
-        color: var(--text-primary);
-        padding: 0.5rem 1rem;
-        border-radius: var(--border-radius-m);
-        transition: color 0.15s ease, background-color 0.15s ease, text-decoration 0.15 ease;
-        
-
-        &:hover {
-          text-decoration: underline;
-          
-          @media (prefers-reduced-motion: no-preference) {
-            text-decoration: none;
-            background-color: var(--button-inverse);
-            color: var(--text-primary-inverse);
-          }
-        }
-      }
-    }
-
-    @media (min-width: 789px) {
-      grid-template-columns: auto 1fr;
-    }
-
-  nav.mobile {
+  button {
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
     border: none;
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      overlay 0.3s allow-discrete,
-      display 0.3s allow-discrete;
-    
-    &::backdrop {
-      background-color: rgba(0, 0, 0, 0);
-      transition: background-color 0.3s ease,
-        overlay 0.3s allow-discrete,
-        display 0.3s allow-discrete;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    font-size: var(--font-size-s);
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
     }
 
-    &:popover-open {
-      display: flex;
-      opacity: 1;
-      transform: translateY(0) scale(1);
-
-      &::backdrop {
-        background-color: rgba(0, 0, 0, 0.4);
-      }
-
-      @starting-style {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-        
-        &::backdrop {
-          background-color: rgba(0, 0, 0, 0);
-        }
-      }
+    &:hover {
+      opacity: 0.7;
     }
 
     @media (min-width: 789px) {
@@ -392,16 +310,6 @@
     &.fallback-open {
       display: flex;
       flex-direction: column;
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  :global(nav.mobile.popover-fallback) {
-    display: none;
-
-    &.fallback-open {
-      display: flex;
       opacity: 1;
       transform: translateY(0) scale(1);
     }

@@ -40,17 +40,10 @@ export const actions = {
 
     const user = await usersCollection.findOne({ email })
 
-    /*
-     * Verwijder een bestaande tijdelijke of ingelogde sessie.
-     * Daarna maken we een nieuwe sessie aan.
-     */
+    // Remove an existing temporary or logged-in session. 
     await destroySession(cookies)
 
-    /*
-     * Ook voor een onbekend e-mailadres wordt een tijdelijke sessie gemaakt
-     * en volgt dezelfde redirect. Daardoor is minder eenvoudig af te leiden
-     * welke adressen een account hebben.
-     */
+    // A temporary session is also created for an unknown email address
     await createSession(cookies, {
       pendingEmail: email
     });
