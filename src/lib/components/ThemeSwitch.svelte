@@ -35,7 +35,7 @@
     transition: background-color 0.15s ease-out;
 
     &:hover {
-      background-color: var(--background-secondary);
+      background-color: var(--background-primary);
 
       .sun-icon,
       .moon-icon,

@@ -4,6 +4,7 @@
   import 'maplibre-gl/dist/maplibre-gl.css';
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+  import Legend from '$lib/components/Legend.svelte';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -142,10 +143,9 @@
 <svelte:head>
   <title>{data.city.name} Air Quality Map</title>
 </svelte:head>
-
+<Legend/>
 <section class="map-section">
   <div bind:this={mapContainer} class="map"></div>
-
   <div class="markers-overlay">
     {#each projectedPoints as p (p.id)}
       <a
