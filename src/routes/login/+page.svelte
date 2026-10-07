@@ -79,7 +79,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: var(--spacing-m);
+        gap: var(--spacing-s);
 
         label[for="email"] {
           font-size: var(--font-size-xs);
@@ -95,7 +95,7 @@
 
         input {
           padding-inline: var(--spacing-xl);
-          border: 1px solid var(--border-color);
+          border: 2px solid var(--border-color);
           border-radius: var(--border-radius-l);
           color: var(--text-primary);
           background-color: var(--background-primary);
