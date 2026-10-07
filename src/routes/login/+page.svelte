@@ -1,6 +1,6 @@
 <script>
   import { enhance } from "$app/forms"
-  import lock from "$lib/assets/images/Lock.svg"
+  import lock from "$lib/assets/images/Lock2.svg"
 </script>
 
 <main>
@@ -40,9 +40,10 @@
       width: 100%;
       max-width: 22rem;
       padding: var(--spacing-2xl) var(--spacing-l);
-      border: 1px solid var(--border-color);
+      border: 1.5px solid var(--border-color);
       border-radius: var(--border-radius-m);
       background-color: var(--background-secondary);
+      filter: drop-shadow(5px 5px 5px var(--border-color));
 
       img {
         width: 2.25rem;
@@ -51,7 +52,6 @@
         border: 1px solid var(--primary);
         border-radius: var(--border-radius-l);
         box-sizing: content-box;
-        box-shadow: 1px 0px 4px var(--primary);
       }
 
       h1 {
