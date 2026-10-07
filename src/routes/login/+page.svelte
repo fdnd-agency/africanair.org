@@ -82,7 +82,7 @@
         gap: var(--spacing-s);
 
         label[for="email"] {
-          font-size: var(--font-size-xs);
+          font-size: 0.813rem;
           font-weight: 600;
           margin-left: var(--spacing-m);
         }
