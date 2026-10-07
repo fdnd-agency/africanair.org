@@ -43,7 +43,7 @@
       border: 1.5px solid var(--border-color);
       border-radius: var(--border-radius-m);
       background-color: var(--background-secondary);
-      filter: drop-shadow(10px 12px 3px var(--border-color));
+      filter: drop-shadow(5px 10px 3px var(--border-color));
 
       img {
         width: 2.25rem;
