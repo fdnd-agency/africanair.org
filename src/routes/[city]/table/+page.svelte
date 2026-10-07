@@ -191,25 +191,22 @@
 
         &.low {
           color: var(--status-good);
-          
           border: 1px solid var(--status-good);
         }
 
         &.medium {
           color: var(--status-medium);
-          
           border: 1px solid var(--status-medium);
         }
 
         &.high {
           color: var(--status-high);
-          
           border: 1px solid var(--status-high);
         }
 
         &.dangerous {
           color: var(--status-dangerous);
-          background-: 1px solid var(--status-dangerous);
+          border: 1px solid var(--status-dangerous);
         }
       }
     }
