@@ -1,6 +1,6 @@
 <script>
-  import { enhance } from "$app/forms";
-  import lock from "$lib/assets/images/Lock.svg";
+  import { enhance } from "$app/forms"
+  import lock from "$lib/assets/images/Lock.svg"
 </script>
 
 <main>
@@ -31,7 +31,6 @@
     display: grid;
     min-height: 75dvh;
     place-items: center;
-    padding: 1.875rem;
 
     section {
       display: flex;
@@ -39,7 +38,7 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 25.7rem;
+      max-width: 22rem;
       padding: var(--spacing-2xl) var(--spacing-l);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-m);
@@ -63,7 +62,7 @@
       p:first-of-type {
         text-align: center;
         text-wrap: balance;
-        margin-block-end: var(--spacing-2xl);
+        margin-block-end: var(--spacing-l);
         font-size: var(--font-size-s);
         color: var(--text-secondary);
       }
@@ -83,13 +82,9 @@
         gap: var(--spacing-m);
 
         label[for="email"] {
-          /* Label is visually hidden but still readable with a screenreader. This has been done according to the design */
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          overflow: hidden;
-          border: 0;
-          white-space: nowrap;
+          font-size: var(--font-size-xs);
+          font-weight: 600;
+          margin-left: var(--spacing-m);
         }
 
         input,
@@ -113,7 +108,7 @@
 
         button {
           padding-inline: var(--spacing-xl);
-          border: 0;
+          border: none;
           border-radius: var(--border-radius-l);
           color: var(--text-inverse);
           cursor: pointer;
