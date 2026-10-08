@@ -105,6 +105,7 @@
     position: relative;
     display: inline-block;
     z-index: 50;
+    padding-block: 2rem;
   }
 
   summary {
@@ -137,9 +138,9 @@
 
   section {
     position: absolute;
-    top: 100%;
     left: 0;
     width: 80vw;
+    max-width: 30rem;
     background-color: var(--background-secondary);
     padding: 1.25rem;
     border-radius: 0 1.5rem 1.5rem 1.5rem;

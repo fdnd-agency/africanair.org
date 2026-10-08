@@ -42,6 +42,10 @@
     max-width: 25rem;
     gap: 1rem;
 
+    h2 {
+      font-size: var(--font-size-m);
+    }
+
     div.legend-gradient {
       display: block;
       height: 1.2rem;
