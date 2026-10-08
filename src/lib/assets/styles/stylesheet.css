@@ -52,13 +52,14 @@
   --primary: light-dark(hsl(205 100% 40%), hsl(205 100% 40%));
 
   --background-primary: light-dark(hsl(0 0% 100%), hsl(220 70% 12%));
-  --background-secondary: light-dark(hsl(215 50% 12%),hsl(0 0% 100%));
+  --background-secondary: light-dark(hsl(215 50% 12%), hsl(0 0% 100%));
 
   --text-primary: light-dark(hsl(0 0% 5%), hsl(0 0% 95%));
   --text-secondary: light-dark(hsl(0 0% 30%), hsl(0 0% 70%));
   --text-inverse: light-dark(hsl(0 0% 95%), hsl(0 0% 5%));
 
   --border-color: light-dark(hsl(0 0% 90%), hsl(220 35% 20%));
+  --border-lightmode-only: light-dark(hsl(220 35% 20%), hsla(220, 35%, 20%, 0));
 
   --status-good: light-dark(hsl(160 100% 58%), hsl(160 100% 58%));
   --status-medium: light-dark(hsl(50 100% 50%), hsl(50 100% 50%));
@@ -80,7 +81,6 @@ body {
   font-family: "Inter", sans-serif;
   font-weight: 400; /* Sets baseline for inheritance */
   line-height: var(--line-height);
-  list-style: none;
 }
 
 main {
