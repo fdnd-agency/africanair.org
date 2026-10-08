@@ -9,8 +9,8 @@
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
   }
 
-  import { belongsToCity } from '$lib/directus.js';
   import { slugify } from '$lib/slugify.js';
+  import DatePicker from '$lib/components/DatePicker.svelte';
 
   let { data } = $props();
 
@@ -38,16 +38,15 @@
   };
 
   let points = $derived(
-    (data.city?.sampling_points || []).filter((point) => {
+    (data.sampling_points || []).filter((point) => {
       const lng = Number(point.longitude);
       const lat = Number(point.latitude);
-      return belongsToCity(point, data.city) && Number.isFinite(lng) && Number.isFinite(lat);
+      return Number.isFinite(lng) && Number.isFinite(lat);
     })
   );
 
   const projectedPoints = $derived.by(() => {
     void transformVersion;
-
     if (!map || !mapReady) return [];
 
     return points.map((point) => {
@@ -91,8 +90,8 @@
     const cityLng = Number(data.city?.longitude);
     const cityLat = Number(data.city?.latitude);
     const defaultCenter = [
-      Number.isFinite(cityLng) ? cityLng : 0,
-      Number.isFinite(cityLat) ? cityLat : 0
+      Number.isFinite(cityLng) ? cityLng : -1.63,
+      Number.isFinite(cityLat) ? cityLat : 6.68
     ];
 
     map = new MapConstructor({
@@ -121,6 +120,23 @@
       updateCoords();
     });
 
+    const themeObserver = new MutationObserver(() => {
+      if (!map) return;
+      map.setStyle(isDocumentDark() ? darkStyle : lightStyle);
+    });
+
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme', 'style']
+    });
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleMediaChange = () => {
+      if (!map) return;
+      map.setStyle(isDocumentDark() ? darkStyle : lightStyle);
+    };
+    mediaQuery.addEventListener('change', handleMediaChange);
+
     const resizeObserver = new ResizeObserver(() => {
       map?.resize();
       updateCoords();
@@ -128,6 +144,8 @@
     if (mapContainer) resizeObserver.observe(mapContainer);
 
     return () => {
+      themeObserver.disconnect();
+      mediaQuery.removeEventListener('change', handleMediaChange);
       resizeObserver.disconnect();
       if (map) {
         map.off('move', updateCoords);
@@ -140,12 +158,17 @@
 </script>
 
 <svelte:head>
-  <title>{data.city.name} Air Quality Map</title>
+  <title>{data.city?.name || 'City'} Air Quality Map</title>
 </svelte:head>
 
 <section class="map-section">
+    <DatePicker
+      selectedYear={data.selectedYear}
+      selectedMonth={data.selectedMonth}
+      availableYears={data.availableYears}
+      availableMonthsByYear={data.availableMonthsByYear}
+    />
   <div bind:this={mapContainer} class="map"></div>
-
   <div class="markers-overlay">
     {#each projectedPoints as p (p.id)}
       <a
@@ -166,19 +189,21 @@
     height: 87dvh;
     overflow: hidden;
   }
-
+  
   .map {
     width: 100%;
     height: 100%;
     border-radius: var(--border-radius-m, 8px);
     overflow: hidden;
   }
+
   .markers-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
   }
+
   .map-point-marker {
     position: absolute;
     top: 0;
@@ -187,10 +212,10 @@
     height: 1rem;
     margin-top: -0.5rem;
     margin-left: -0.5rem;
-    background-color: var(--text-secondary);
+    background-color: var(--text-secondary, #888);
     border-radius: 50%;
     text-decoration: none;
-    box-shadow: 0 1px 5px var(--text-secondary);
+    box-shadow: 0 1px 5px var(--text-secondary, #888);
     pointer-events: auto;
     cursor: pointer;
     will-change: transform;
@@ -202,27 +227,27 @@
   }
 
   .map-point-marker[data-status='good'] {
-    background-color: var(--status-good);
-    box-shadow: 0 1px 5px var(--status-good);
+    background-color: var(--status-good, #22c55e);
+    box-shadow: 0 1px 5px var(--status-good, #22c55e);
   }
 
   .map-point-marker[data-status='medium'] {
-    background-color: var(--status-medium);
-    box-shadow: 0 1px 5px var(--status-medium);
+    background-color: var(--status-medium, #eab308);
+    box-shadow: 0 1px 5px var(--status-medium, #eab308);
   }
 
   .map-point-marker[data-status='high'] {
-    background-color: var(--status-high);
-    box-shadow: 0 1px 5px var(--status-high);
+    background-color: var(--status-high, #f97316);
+    box-shadow: 0 1px 5px var(--status-high, #f97316);
   }
 
   .map-point-marker[data-status='dangerous'] {
-    background-color: var(--status-dangerous);
-    box-shadow: 0 1px 5px var(--status-dangerous);
+    background-color: var(--status-dangerous, #ef4444);
+    box-shadow: 0 1px 5px var(--status-dangerous, #ef4444);
   }
 
   .map-point-marker:focus-visible {
-    outline: 3px solid var(--text-primary);
+    outline: 3px solid var(--text-primary, #000);
     outline-offset: 2px;
   }
 </style>
