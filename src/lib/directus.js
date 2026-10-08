@@ -118,3 +118,83 @@ export async function fetchCityMeasurements(fetch, citySlug, year, month) {
     sampling_points: Array.from(pointMap.values())
   };
 }
+
+/**
+ * Fetches all historical measurements for a single specific sampling point inside a city.
+ */
+export async function fetchSamplingPointDetail(fetch, citySlug, pointSlug) {
+  const url = new URL('/items/apa_measurements', directusUrl);
+  // Only filter by city slug, which we know works reliably
+  url.searchParams.set('filter[sampling_point][city][slug][_eq]', citySlug);
+  url.searchParams.set(
+    'fields',
+    'id,date,value,sampling_point.id,sampling_point.code,sampling_point.location,sampling_point.latitude,sampling_point.longitude,sampling_point.city.id,sampling_point.city.name,sampling_point.city.slug'
+  );
+  url.searchParams.set('limit', '10000');
+  url.searchParams.set('sort', '-date');
+
+  const response = await fetch(url);
+  if (!response.ok) throw error(502, 'Could not load sampling point data');
+
+  const { data } = await response.json();
+  if (!data || data.length === 0) {
+    return {
+      city: { name: citySlug, slug: citySlug },
+      sampling_point: null,
+      measurements: []
+    };
+  }
+
+  // Helper to convert strings like "Hospital KATH" into "hospital-kath"
+  const slugify = (str) =>
+    str ? str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '';
+
+  // Filter measurements for this specific sampling point in JavaScript
+  const pointItems = data.filter((item) => {
+    const sp = item?.sampling_point;
+    if (!sp) return false;
+    return (
+      slugify(sp.code) === pointSlug ||
+      slugify(sp.location) === pointSlug ||
+      sp.code === pointSlug
+    );
+  });
+
+  if (pointItems.length === 0) {
+    return {
+      city: { name: citySlug, slug: citySlug },
+      sampling_point: null,
+      measurements: []
+    };
+  }
+
+  const firstValidCity = pointItems.find((d) => d?.sampling_point?.city)?.sampling_point?.city;
+  const city = {
+    id: firstValidCity?.id,
+    name: firstValidCity?.name || citySlug,
+    slug: firstValidCity?.slug || citySlug
+  };
+
+  const sp = pointItems[0].sampling_point;
+  const sampling_point = sp
+    ? {
+        id: sp.id,
+        code: sp.code,
+        location: sp.location || sp.code,
+        latitude: sp.latitude,
+        longitude: sp.longitude
+      }
+    : null;
+
+  const measurements = pointItems.map((item) => ({
+    id: item.id,
+    date: item.date,
+    value: item.value
+  }));
+
+  return {
+    city,
+    sampling_point,
+    measurements
+  };
+}
