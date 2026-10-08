@@ -1,98 +1,75 @@
 import { error } from '@sveltejs/kit';
 
-const directusUrl = 'https://fdnd-agency.directus.app';
+const API_URL = 'https://fdnd-agency.directus.app';
 
-export async function fetchAvailableDates(fetch, citySlug) {
-  const url = new URL('/items/apa_measurements', directusUrl);
-  url.searchParams.set('filter[sampling_point][city][slug][_eq]', citySlug);
-  url.searchParams.set('fields', 'date');
-  url.searchParams.set('limit', '-1');
-  url.searchParams.set('sort', '-date');
+const slugify = (str) =>
+  str ? str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '';
 
-  try {
-    const res = await fetch(url);
-    if (!res.ok) {
-      console.error('Directus date fetch error:', res.status);
-      return { years: [], monthsByYear: {} };
-    }
+async function request(fetch, endpoint, params = {}) {
+  const url = new URL(endpoint, API_URL);
+  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
 
-    const { data } = await res.json();
-    if (!Array.isArray(data)) return { years: [], monthsByYear: {} };
-
-    const periodMap = new Map();
-
-    for (const item of data) {
-      if (!item?.date) continue;
-      // Fast ISO string parsing ("2026-08-01..." -> "2026", "08")
-      const y = item.date.substring(0, 4);
-      const mo = item.date.substring(5, 7);
-
-      if (!periodMap.has(y)) {
-        periodMap.set(y, new Set());
-      }
-      periodMap.get(y).add(mo);
-    }
-
-    // Sort years descending ("2026", "2025", ...)
-    const years = Array.from(periodMap.keys()).sort((a, b) => Number(b) - Number(a));
-    const monthsByYear = {};
-
-    for (const y of years) {
-      // Sort months ascending ("01", "02", ... "08")
-      monthsByYear[y] = Array.from(periodMap.get(y)).sort((a, b) => Number(a) - Number(b));
-    }
-
-    return { years, monthsByYear };
-  } catch (err) {
-    console.error('Failed to parse dates:', err);
-    return { years: [], monthsByYear: {} };
-  }
+  const res = await fetch(url);
+  if (!res.ok) throw error(502, 'Could not load data from Directus');
+  return (await res.json()).data;
 }
 
-/**
- * Fetches city details and measurements for a specific year and month.
- */
-export async function fetchCityMeasurements(fetch, citySlug, year, month) {
-  const url = new URL('/items/apa_measurements', directusUrl);
-  url.searchParams.set('filter[sampling_point][city][slug][_eq]', citySlug);
-  url.searchParams.set(
-    'fields',
-    'id,date,value,sampling_point.id,sampling_point.code,sampling_point.location,sampling_point.latitude,sampling_point.longitude,sampling_point.city.id,sampling_point.city.name,sampling_point.city.slug,sampling_point.city.latitude,sampling_point.city.longitude'
+export async function fetchAvailableDates(fetch, citySlug) {
+  const data = await request(fetch, '/items/apa_measurements', {
+    'filter[sampling_point][city][slug][_eq]': citySlug,
+    fields: 'date',
+    limit: '-1',
+    sort: '-date'
+  });
+
+  if (!Array.isArray(data)) return { years: [], monthsByYear: {} };
+
+  const periodMap = new Map();
+  for (const { date } of data) {
+    if (!date) continue;
+    const [year, month] = [date.substring(0, 4), date.substring(5, 7)];
+    if (!periodMap.has(year)) periodMap.set(year, new Set());
+    periodMap.get(year).add(month);
+  }
+
+  const years = Array.from(periodMap.keys()).sort((a, b) => Number(b) - Number(a));
+  const monthsByYear = Object.fromEntries(
+    years.map((y) => [y, Array.from(periodMap.get(y)).sort((a, b) => Number(a) - Number(b))])
   );
-  url.searchParams.set('limit', '10000');
+
+  return { years, monthsByYear };
+}
+
+export async function fetchCityMeasurements(fetch, citySlug, year, month) {
+  const filter = { 'filter[sampling_point][city][slug][_eq]': citySlug };
 
   if (year && month) {
-    const y = parseInt(year, 10);
-    const m = parseInt(month, 10);
-    const startDate = new Date(Date.UTC(y, m - 1, 1, 0, 0, 0)).toISOString();
-    const endDate = new Date(Date.UTC(y, m, 0, 23, 59, 59, 999)).toISOString();
-    url.searchParams.set('filter[date][_between]', `${startDate},${endDate}`);
+    const start = new Date(Date.UTC(Number(year), Number(month) - 1, 1)).toISOString();
+    const end = new Date(Date.UTC(Number(year), Number(month), 0, 23, 59, 59, 999)).toISOString();
+    filter['filter[date][_between]'] = `${start},${end}`;
   }
 
-  const response = await fetch(url);
-  if (!response.ok) throw error(502, 'Could not load measurement data');
+  const data = await request(fetch, '/items/apa_measurements', {
+    ...filter,
+    fields: 'id,date,value,sampling_point.id,sampling_point.code,sampling_point.location,sampling_point.latitude,sampling_point.longitude,sampling_point.city.id,sampling_point.city.name,sampling_point.city.slug,sampling_point.city.latitude,sampling_point.city.longitude',
+    limit: '10000'
+  });
 
-  const { data } = await response.json();
-  if (!data || data.length === 0) {
-    return {
-      city: { name: citySlug, slug: citySlug, latitude: null, longitude: null },
-      sampling_points: []
-    };
+  if (!data?.length) {
+    return { city: { name: citySlug, slug: citySlug, latitude: null, longitude: null }, sampling_points: [] };
   }
 
-  const firstValidCity = data.find((d) => d?.sampling_point?.city)?.sampling_point?.city;
+  const firstCity = data.find((d) => d?.sampling_point?.city)?.sampling_point?.city;
   const city = {
-    id: firstValidCity?.id,
-    name: firstValidCity?.name || citySlug,
-    slug: firstValidCity?.slug || citySlug,
-    latitude: firstValidCity?.latitude,
-    longitude: firstValidCity?.longitude
+    id: firstCity?.id,
+    name: firstCity?.name || citySlug,
+    slug: firstCity?.slug || citySlug,
+    latitude: firstCity?.latitude,
+    longitude: firstCity?.longitude
   };
 
   const pointMap = new Map();
-
-  for (const item of data) {
-    const sp = item.sampling_point;
+  for (const { id, date, value, sampling_point: sp } of data) {
     if (!sp) continue;
 
     if (!pointMap.has(sp.id)) {
@@ -106,95 +83,49 @@ export async function fetchCityMeasurements(fetch, citySlug, year, month) {
       });
     }
 
-    pointMap.get(sp.id).measurements.push({
-      id: item.id,
-      date: item.date,
-      value: item.value
-    });
+    pointMap.get(sp.id).measurements.push({ id, date, value });
   }
 
-  return {
-    city,
-    sampling_points: Array.from(pointMap.values())
-  };
+  return { city, sampling_points: Array.from(pointMap.values()) };
 }
 
-/**
- * Fetches all historical measurements for a single specific sampling point inside a city.
- */
 export async function fetchSamplingPointDetail(fetch, citySlug, pointSlug) {
-  const url = new URL('/items/apa_measurements', directusUrl);
-  // Only filter by city slug, which we know works reliably
-  url.searchParams.set('filter[sampling_point][city][slug][_eq]', citySlug);
-  url.searchParams.set(
-    'fields',
-    'id,date,value,sampling_point.id,sampling_point.code,sampling_point.location,sampling_point.latitude,sampling_point.longitude,sampling_point.city.id,sampling_point.city.name,sampling_point.city.slug'
-  );
-  url.searchParams.set('limit', '10000');
-  url.searchParams.set('sort', '-date');
-
-  const response = await fetch(url);
-  if (!response.ok) throw error(502, 'Could not load sampling point data');
-
-  const { data } = await response.json();
-  if (!data || data.length === 0) {
-    return {
-      city: { name: citySlug, slug: citySlug },
-      sampling_point: null,
-      measurements: []
-    };
-  }
-
-  // Helper to convert strings like "Hospital KATH" into "hospital-kath"
-  const slugify = (str) =>
-    str ? str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '';
-
-  // Filter measurements for this specific sampling point in JavaScript
-  const pointItems = data.filter((item) => {
-    const sp = item?.sampling_point;
-    if (!sp) return false;
-    return (
-      slugify(sp.code) === pointSlug ||
-      slugify(sp.location) === pointSlug ||
-      sp.code === pointSlug
-    );
+  const data = await request(fetch, '/items/apa_measurements', {
+    'filter[sampling_point][city][slug][_eq]': citySlug,
+    fields: 'id,date,value,sampling_point.id,sampling_point.code,sampling_point.location,sampling_point.latitude,sampling_point.longitude,sampling_point.city.id,sampling_point.city.name,sampling_point.city.slug',
+    limit: '10000',
+    sort: '-date'
   });
 
-  if (pointItems.length === 0) {
-    return {
-      city: { name: citySlug, slug: citySlug },
-      sampling_point: null,
-      measurements: []
-    };
+  if (!data?.length) {
+    return { city: { name: citySlug, slug: citySlug }, sampling_point: null, measurements: [] };
   }
 
-  const firstValidCity = pointItems.find((d) => d?.sampling_point?.city)?.sampling_point?.city;
+  const pointItems = data.filter(({ sampling_point: sp }) => {
+    return sp && (slugify(sp.code) === pointSlug || slugify(sp.location) === pointSlug || sp.code === pointSlug);
+  });
+
+  if (!pointItems.length) {
+    return { city: { name: citySlug, slug: citySlug }, sampling_point: null, measurements: [] };
+  }
+
+  const firstCity = pointItems.find((d) => d?.sampling_point?.city)?.sampling_point?.city;
   const city = {
-    id: firstValidCity?.id,
-    name: firstValidCity?.name || citySlug,
-    slug: firstValidCity?.slug || citySlug
+    id: firstCity?.id,
+    name: firstCity?.name || citySlug,
+    slug: firstCity?.slug || citySlug
   };
 
   const sp = pointItems[0].sampling_point;
-  const sampling_point = sp
-    ? {
-        id: sp.id,
-        code: sp.code,
-        location: sp.location || sp.code,
-        latitude: sp.latitude,
-        longitude: sp.longitude
-      }
-    : null;
-
-  const measurements = pointItems.map((item) => ({
-    id: item.id,
-    date: item.date,
-    value: item.value
-  }));
-
-  return {
-    city,
-    sampling_point,
-    measurements
+  const sampling_point = {
+    id: sp.id,
+    code: sp.code,
+    location: sp.location || sp.code,
+    latitude: sp.latitude,
+    longitude: sp.longitude
   };
+
+  const measurements = pointItems.map(({ id, date, value }) => ({ id, date, value }));
+
+  return { city, sampling_point, measurements };
 }
