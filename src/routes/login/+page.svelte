@@ -30,6 +30,7 @@
   main {
     display: grid;
     min-height: 75dvh;
+    max-width: 64ch;
     place-items: center;
 
     section {

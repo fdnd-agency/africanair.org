@@ -50,6 +50,7 @@
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+    max-width: 64ch;
 
     article {
       border: 1px solid var(--border-color);
