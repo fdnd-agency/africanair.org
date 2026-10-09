@@ -1,20 +1,20 @@
 @font-face {
   font-family: "Inter";
-  src: url('/fonts/inter.regular.ttf') format('truetype'); /* format tells the browser it's a .ttf-file before opening it */
+  src: url('/inter.regular.ttf') format('truetype'); /* format tells the browser it's a .ttf-file before opening it */
   font-weight: 400;
   font-display: swap; /* Renders downloaded font on user's device before loading website font */
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/inter.18pt-medium.ttf") format("truetype");
+  src: url("/inter.18pt-medium.ttf") format("truetype");
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/inter.18pt-semibold.ttf") format("truetype");
+  src: url("/inter.18pt-semibold.ttf") format("truetype");
   font-weight: 600;
   font-display: swap;
 }
@@ -49,44 +49,49 @@
   --border-radius-m: 1rem;
   --border-radius-l: 6.25rem;
 
-  --primary: light-dark(hsl(205 100% 40%), hsl(205 100% 40%));
+  --primary: hsl(205 100% 40%);
 
   --background-primary: light-dark(hsl(0 0% 100%), hsl(220 70% 12%));
-  --background-secondary: light-dark(hsl(0 0% 100%), hsl(215 50% 12%));
+  --background-secondary: light-dark(hsl(215 50% 12%), hsl(0 0% 100%));
 
   --text-primary: light-dark(hsl(0 0% 5%), hsl(0 0% 95%));
   --text-secondary: light-dark(hsl(0 0% 30%), hsl(0 0% 70%));
-  --text-inverse: light-dark(hsl(0 0% 95%), hsl(0 0% 95%));
+  --text-inverse: light-dark(hsl(0 0% 95%), hsl(0 0% 5%));
 
   --border-color: light-dark(hsl(0 0% 90%), hsl(220 35% 20%));
+  --border-lightmode-only: light-dark(hsl(220 35% 20%), hsla(220, 35%, 20%, 0));
 
-  --status-good: light-dark(hsl(160 100% 58%), hsl(160 100% 58%));
-  --status-medium: light-dark(hsl(50 100% 50%), hsl(50 100% 50%));
-  --status-high: light-dark(hsl(30 100% 50%), hsl(30 100% 50%));
-  --status-dangerous: light-dark(hsl(0 100% 42%), hsl(0 100% 42%));
+  --status-good: hsl(160 100% 58%);
+  --status-medium: hsl(50 100% 50%);
+  --status-high: hsl(30 100% 50%);
+  --status-dangerous: hsl(0 100% 42%);
 
   --status-good-background: light-dark(hsl(160 70% 92%), hsl(215 50% 12%));
   --status-medium-background: light-dark(hsl(50 70% 92%), hsl(215 50% 12%));
   --status-high-background: light-dark(hsl(30 70% 92%), hsl(215 50% 12%));
   --status-dangerous-background: light-dark(hsl(0 70% 92%), hsl(215 50% 12%));
 
-  --alert-text: light-dark(hsl(0 100% 42%), hsl(0 100% 42%));
-  --alert-background: light-dark(hsl(0 100% 10%), hsl(0 100% 10%));
+  --alert-text: hsl(0 100% 42%);
+  --alert-background: hsl(0 100% 10%);
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1400px;
   background-color: var(--background-primary);
   color: var(--text-primary);
   font-family: "Inter", sans-serif;
   font-weight: 400; /* Sets baseline for inheritance */
   line-height: var(--line-height);
-  list-style: none;
 }
 
 main {
   margin: 0 auto;
   width: 100%;
   padding-inline: 1rem;
+  
 }
 
 a {

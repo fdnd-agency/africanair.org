@@ -1,32 +1,23 @@
-import { error } from '@sveltejs/kit';
-import {
-	cityDetailFields,
-	cityPointLookupFields,
-	fetchCity,
-	belongsToCity
-} from '$lib/directus.js';
-import { slugify } from '$lib/slugify.js';
+import { fetchSamplingPointDetail, fetchAvailableDates } from '$lib/directus.js';
 
 export async function load({ fetch, params }) {
-	const city = await fetchCity(fetch, params.city, cityPointLookupFields);
+  const citySlug = params.city;
+  const pointSlug = params.slug;
 
-	const pointSummary = (city.sampling_points || []).find((samplingPoint) => {
-		const location = samplingPoint.location || samplingPoint.code || 'Sampling point';
-		return belongsToCity(samplingPoint, city) && slugify(location) === params.slug;
-	});
+  const { years, monthsByYear } = await fetchAvailableDates(fetch, citySlug);
 
-	if (!pointSummary) {
-		throw error(404, 'Sampling point not found');
-	}
+  // Load all measurements for this specific sampling point
+  const { city, sampling_point, measurements } = await fetchSamplingPointDetail(
+    fetch,
+    citySlug,
+    pointSlug
+  );
 
-	const cityWithMeasurements = await fetchCity(fetch, params.city, cityDetailFields, {
-		samplingPointId: pointSummary.id
-	});
-	const point = (cityWithMeasurements.sampling_points || []).find(
-		(samplingPoint) => samplingPoint.id === pointSummary.id
-	);
-
-	if (!point) throw error(404, 'Sampling point not found');
-
-	return { city: { name: city.name, slug: city.slug }, point };
+  return {
+    city,
+    sampling_point,
+    measurements,
+    availableYears: years,
+    availableMonthsByYear: monthsByYear
+  };
 }

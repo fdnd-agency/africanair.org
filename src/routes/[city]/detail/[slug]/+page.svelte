@@ -11,7 +11,7 @@
 
   // extract and filter the data 
   const measurements = $derived(
-    (data.point.measurements || [])
+    (data.measurements || [])
       .filter((m) => m.value !== null && m.value !== '' && Number.isFinite(Number(m.value)))
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   );
@@ -83,14 +83,14 @@
 </script>
 
 <svelte:head>
-  <title>{data.point.location} | {data.city.name} | Africanair</title>
+  <title>{data.sampling_point?.location} | {data.city.name} | Africanair</title>
 </svelte:head>
 
 <section class="detail-page">
   <nav>
     <a href="/{data.city.slug}/map">{data.city.name}</a>
     <span>/</span>
-    <span>{data.point.location || data.point.code}</span>
+    <span>{data.sampling_point?.location || data.sampling_point?.code}</span>
   </nav>
 
   {#if latestMeasurement}

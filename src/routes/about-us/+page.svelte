@@ -1,8 +1,8 @@
 <script>
-  import info from "$lib/assets/Info.svg"
-  import globe from "$lib/assets/Globe.svg"
-  import handshake from "$lib/assets/Handshake.svg"
-  import location from "$lib/assets/Location.svg"
+  import info from "$lib/assets/images/Info.svg"
+  import globe from "$lib/assets/images/Globe.svg"
+  import handshake from "$lib/assets/images/Handshake.svg"
+  import location from "$lib/assets/images/Location.svg"
 
   const aboutUs = [
     {
@@ -66,7 +66,7 @@
       grid-template-rows: auto 1fr;
       padding: var(--spacing-2xs);
       border-radius: var(--border-radius-m);
-      background-color: var(--background-secondary);
+      background-color: var(--background-primary);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
       border: 1.5px solid var(--border-color);
 
