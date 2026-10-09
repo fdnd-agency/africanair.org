@@ -143,9 +143,15 @@
   <title>{data.city.name} Air Quality Map</title>
 </svelte:head>
 
-<section class="map-section">
+<section>
+  <header class="map-header">
+    <div>
+      <h1>{data.city.name}</h1>
+      <p>Ghana, West Africa</p>
+    </div>
+    <!-- <Datepicker /> -->
+  </header>
   <div bind:this={mapContainer} class="map"></div>
-
   <div class="markers-overlay">
     {#each projectedPoints as p (p.id)}
       <a
@@ -160,11 +166,16 @@
 </section>
 
 <style>
-  .map-section {
+  section {
     position: relative;
     width: 100%;
     height: 87dvh;
     overflow: hidden;
+
+    header.map-header {
+      display: flex;
+      justify-content: såpace-between;
+    }
   }
 
   .map {
