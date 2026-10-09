@@ -5,8 +5,8 @@
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import Legend from '$lib/components/Legend.svelte';
-  import { slugify } from '$lib/slugify.js';
   import DatePicker from '$lib/components/DatePicker.svelte';
+  import { slugify } from '$lib/slugify.js';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -15,7 +15,7 @@
   let { data } = $props();
 
   let mapContainer = $state(null);
-  let map = null;
+  let map = $state(null);
   let activeMarkers = [];
 
   const lightStyle = '/positron.json';
@@ -159,24 +159,17 @@
 <section>
   <header class="map-header">
     <div>
-      <h1>{data.city.name}</h1>
+      <h1>{data.city?.name}</h1>
       <p>Ghana, West Africa</p>
     </div>
-    <!-- <Datepicker /> -->
+    <DatePicker
+      selectedYear={data.selectedYear}
+      selectedMonth={data.selectedMonth}
+      availableYears={data.availableYears}
+      availableMonthsByYear={data.availableMonthsByYear}
+    />
+    <Legend />
   </header>
-  <div bind:this={mapContainer} class="map"></div>
-  <div class="markers-overlay">
-    {#each projectedPoints as p (p.id)}
-      <a
-        href="/{data.city.slug}/detail/{p.slug}"
-        title={p.title}
-        class="map-point-marker"
-        data-status={p.status}
-        style="transform: translate3d({p.x}px, {p.y}px, 0);"
-      ></a>
-    {/each}
-  </div>
-
   <div bind:this={mapContainer} class="map"></div>
 </section>
 
@@ -189,7 +182,7 @@
 
     header.map-header {
       display: flex;
-      justify-content: såpace-between;
+      justify-content: space-between;
     }
   }
 
@@ -198,11 +191,6 @@
     height: 100%;
     border-radius: var(--border-radius-m, 8px);
     overflow: hidden;
-  }
-
-  div.presenattie {
-    display: flex;
-    justify-content: space-between;
   }
 
   /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
