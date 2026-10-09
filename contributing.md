@@ -14,6 +14,11 @@ Bronnen
 
 Wanneer er meerdere versies van een component worden gemaakt, vermeld je het versienummer in de issue-naam.
 
+## Team canvas 
+
+<img width="1450" height="1019" alt="Group 3" src="https://github.com/user-attachments/assets/fbdbfa27-9e95-424e-813e-9d51a4bc802e" />
+
+
 ## Branches
 
 Voor ieder component wordt een aparte branch aangemaakt.
