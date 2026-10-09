@@ -156,28 +156,41 @@
   <title>{data.city?.name || 'City'} Air Quality Map</title>
 </svelte:head>
 
-
-
-<section class="map-section">
-  <div class="presenattie">
-    <DatePicker
-      selectedYear={data.selectedYear}
-      selectedMonth={data.selectedMonth}
-      availableYears={data.availableYears}
-      availableMonthsByYear={data.availableMonthsByYear}
-    />
-    <Legend />
+<section>
+  <header class="map-header">
+    <div>
+      <h1>{data.city.name}</h1>
+      <p>Ghana, West Africa</p>
+    </div>
+    <!-- <Datepicker /> -->
+  </header>
+  <div bind:this={mapContainer} class="map"></div>
+  <div class="markers-overlay">
+    {#each projectedPoints as p (p.id)}
+      <a
+        href="/{data.city.slug}/detail/{p.slug}"
+        title={p.title}
+        class="map-point-marker"
+        data-status={p.status}
+        style="transform: translate3d({p.x}px, {p.y}px, 0);"
+      ></a>
+    {/each}
   </div>
 
   <div bind:this={mapContainer} class="map"></div>
 </section>
 
 <style>
-  .map-section {
+  section {
     position: relative;
     width: 100%;
     height: 87dvh;
-    margin-bottom: 4rem;
+    overflow: hidden;
+
+    header.map-header {
+      display: flex;
+      justify-content: såpace-between;
+    }
   }
 
   .map {
