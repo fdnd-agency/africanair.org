@@ -9,9 +9,6 @@
     availableMonthsByYear = {}
   } = $props();
 
-  // Control the open/closed state of the details dropdown
-  let isOpen = $state(false);
-
   function formatMonth(monthNumber, format = 'short') {
     const num = parseInt(monthNumber, 10);
     if (!num || isNaN(num)) return monthNumber;
@@ -41,9 +38,6 @@
     if (y) nextUrl.searchParams.set('year', y);
     if (m) nextUrl.searchParams.set('month', m);
 
-    // Close the dropdown when a selection is made
-    isOpen = false;
-
     goto(nextUrl.toString(), {
       keepFocus: true,
       noScroll: true,
@@ -53,7 +47,7 @@
 </script>
 
 <!-- Bind open state here -->
-<details bind:open={isOpen}>
+<details>
   <summary>
     <span>{currentMonthLabel} {selectedYear}</span>
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

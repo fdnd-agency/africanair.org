@@ -5,8 +5,8 @@
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import Legend from '$lib/components/Legend.svelte';
-  import { slugify } from '$lib/slugify.js';
   import DatePicker from '$lib/components/DatePicker.svelte';
+  import { slugify } from '$lib/slugify.js';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -15,7 +15,7 @@
   let { data } = $props();
 
   let mapContainer = $state(null);
-  let map = null;
+  let map = $state(null);
   let activeMarkers = [];
 
   const lightStyle = '/positron.json';
@@ -170,7 +170,6 @@
   </div>
 
   <div bind:this={mapContainer} class="map"></div>
-
   <div class="markers-overlay">
     {#each projectedPoints as p (p.id)}
       <a
@@ -182,6 +181,8 @@
       ></a>
     {/each}
   </div>
+
+  <div bind:this={mapContainer} class="map"></div>
 </section>
 
 <style>
@@ -193,7 +194,7 @@
 
     header.map-header {
       display: flex;
-      justify-content: såpace-between;
+      justify-content: space-between;
     }
   }
 
@@ -202,11 +203,6 @@
     height: 100%;
     border-radius: var(--border-radius-m, 8px);
     overflow: hidden;
-  }
-
-  div.presenattie {
-    display: flex;
-    justify-content: space-between;
   }
 
   /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
