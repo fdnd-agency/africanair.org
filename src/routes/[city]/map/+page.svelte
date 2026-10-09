@@ -170,14 +170,31 @@
   </div>
 
   <div bind:this={mapContainer} class="map"></div>
+
+  <div class="markers-overlay">
+    {#each projectedPoints as p (p.id)}
+      <a
+        href="/{data.city.slug}/detail/{p.slug}"
+        title={p.title}
+        class="map-point-marker"
+        data-status={p.status}
+        style="transform: translate3d({p.x}px, {p.y}px, 0);"
+      ></a>
+    {/each}
+  </div>
 </section>
 
 <style>
-  .map-section {
+  section {
     position: relative;
     width: 100%;
     height: 87dvh;
     margin-bottom: 4rem;
+
+    header.map-header {
+      display: flex;
+      justify-content: såpace-between;
+    }
   }
 
   .map {
