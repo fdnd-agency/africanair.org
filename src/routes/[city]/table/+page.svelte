@@ -1,7 +1,7 @@
 <script>
   let { data } = $props();
 
-  const { measurements } = data;
+  const { points } = data;
 
   const dateRefactor = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -10,9 +10,19 @@
     });
   };
 
+  const valueRefactor = (value) => {
+    if (value === null || value === undefined) {
+      return "N/A";
+    }
+    return Number(value).toFixed(1);
+  };
+
   const standardEU = [20, 40, 80];
 
   const statusChecker = (value) => {
+    if (value === null || value === undefined) {
+      return "empty";
+    }
     if (value < standardEU[0]) {
       return "low";
     } else if (value < standardEU[1]) {
@@ -22,20 +32,20 @@
     } else if (value >= standardEU[2]) {
       return "dangerous";
     }
+    return "empty";
   };
 </script>
 
 <main>
-  {#each measurements as measurement}
-    {@const roundedValue = Number(measurement.value ?? 0).toFixed(1)}
-    {@const status = statusChecker(measurement.value)}
-    <article class="{status}">
+  {#each points as point}
+    {@const roundedValue = valueRefactor(point.measurements[0]?.value)}
+    {@const status = statusChecker(point.measurements[0]?.value)}
+
+    <article class={status}>
       <span class="ellipse {status}"></span>
-      <h2>{measurement.sampling_point.location}</h2>
+      <h2>{point.location}</h2>
       <p>
-        {measurement.sampling_point.city.name} - {dateRefactor(
-          measurement.sampling_point.date_updated,
-        )}
+        {point.city_id.name} - {dateRefactor(point.measurements[0]?.date)}
       </p>
       <span class="value {status}">{roundedValue}</span>
       <small>µg/m³</small>
@@ -46,17 +56,15 @@
 
 <style>
   main {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    max-width: 64ch;
+    display: grid;
+    gap: var(--spacing-m);
+    padding: var(--spacing-m);
 
     article {
       border: 1px solid var(--border-color);
-      /* box-shadow: 2px 2px 2px var(--border-color); */
       padding: var(--spacing-m);
       border-radius: var(--border-radius-m);
+      background-color: var(--background-secondary);
       display: grid;
       align-items: center;
       grid-template-columns: 1fr auto;
@@ -65,26 +73,32 @@
         "station unit"
         "info unit"
         "info status";
-      padding-left: clamp(1rem, -3.286rem + 18.286vw, 3rem);
+      padding-left: clamp(var(--spacing-m), -3.286rem + 18.286vw, 3rem);
 
       &.low {
-          background-color: var(--status-good-background);
-        }
+        background-color: var(--status-good-background);
+      }
 
-        &.medium {
-          background-color: var(--status-medium-background);
-        }
+      &.medium {
+        background-color: var(--status-medium-background);
+      }
 
-        &.high {
-          background-color: var(--status-high-background);
-        }
+      &.high {
+        background-color: var(--status-high-background);
+      }
 
-        &.dangerous {
-          background-color: var(--status-dangerous-background);
-        }
+      &.dangerous {
+        background-color: var(--status-dangerous-background);
+      }
+
+      &.empty {
+        background-color: var(--status-empty-background);
+      }
 
       @media (min-width: 375px) {
-        grid-template-columns: clamp(2rem, -2.286rem + 18.286vw, 4rem) 1fr auto;
+        grid-template-columns:
+          clamp(var(--spacing-2xl), -2.286rem + 18.286vw, 4rem)
+          1fr auto;
         grid-template-areas:
           "ellipse station value"
           "ellipse station unit"
@@ -95,7 +109,7 @@
       .ellipse {
         aspect-ratio: 1;
         border-radius: var(--border-radius-l);
-        box-shadow: 0 0 var(--spacing-xl) var(--status-good);
+        box-shadow: 0 0 var(--spacing-xl) var(--status-empty);
         grid-area: ellipse;
         width: clamp(var(--spacing-s), 0.214rem + 2.286vw, var(--spacing-m));
         display: none;
@@ -118,6 +132,11 @@
         &.dangerous {
           background-color: var(--status-dangerous);
           box-shadow: 0 0 var(--spacing-xl) var(--status-dangerous);
+        }
+
+        &.empty {
+          background-color: var(--status-empty);
+          box-shadow: 0 0 var(--spacing-xl) var(--status-empty);
         }
 
         @media (min-width: 375px) {
@@ -168,6 +187,10 @@
         &.dangerous {
           color: var(--status-dangerous);
         }
+
+        &.empty {
+          color: var(--status-empty);
+        }
       }
 
       small {
@@ -208,6 +231,11 @@
         &.dangerous {
           color: var(--status-dangerous);
           border: 1px solid var(--status-dangerous);
+        }
+
+        &.empty {
+          color: var(--status-empty);
+          border: 1px solid var(--status-empty);
         }
       }
     }
