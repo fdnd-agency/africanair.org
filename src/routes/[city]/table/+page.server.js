@@ -14,6 +14,8 @@ export async function load({ params }) {
   URLParams.append("filter[city_id][name][_icontains]", params.city);
   URLParams.append("deep[measurements][_sort]", "-date");
   URLParams.append("deep[measurements][_limit]", "1");
+  // Doens't work yet because values are a string.
+  // URLParams.append("sort", "-measurements.value")
 
   const pointsResponse = await fetch(`${baseURL}?${URLParams}`);
   const pointsData = await pointsResponse.json();
