@@ -5,6 +5,10 @@
   const { points } = data;
 </script>
 
+<svelte:head>
+  <title>Air Quality Measurements - Table View</title>
+</svelte:head>
+
 <main>
   {#each points as point}
     <MeasurementListItem {point} />
