@@ -1,5 +1,3 @@
-export const csr = false; // makes sure the component works only based on server side rendering
-
 export async function load({ params }) {
   const baseURL = "https://fdnd-agency.directus.app/items/apa_sampling_points";
 
