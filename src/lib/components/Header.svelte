@@ -12,7 +12,7 @@
   import logoDarkPng from '$lib/assets/logoDark.png';
   
   const navLinks = [
-    { href: '/about', label: 'About us' },
+    { href: '/about-us', label: 'About us' },
     { href: '/login', label: 'Login' },
     { href: '/share-data', label: 'Share data' }
   ];
