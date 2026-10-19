@@ -20,7 +20,7 @@
 <style>
   label {
     cursor: pointer;
-    position: absolute;
+    /* position: absolute; */
     background-color: var(--background-primary);
     border-radius: var(--border-radius-s);
     padding: var(--spacing-2xs);
@@ -30,13 +30,13 @@
     align-items: center;
 
     &:hover {
-      background-color: var(--button-primary-inverse);
+      background-color: var(--text-primary);
 
       .sun-icon,
       .moon-icon,
       span {
-        stroke: var(--text-primary-inverse);
-        color: var(--text-primary-inverse);
+        stroke: var(--text-inverse);
+        color: var(--text-inverse);
       }
     }
 
