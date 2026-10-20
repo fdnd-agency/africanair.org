@@ -1,0 +1,13 @@
+<!-- <script>
+    import Viewtoggle from "$lib/components/molecules/Viewtoggle.svelte";
+
+    let { children } = $props()
+</script>
+
+<main>
+    <h1>Kumasi</h1>
+
+    <Viewtoggle />
+
+    {@render children()}
+</main> -->
