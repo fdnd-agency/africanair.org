@@ -26,8 +26,6 @@
 
   let currentMonthLabel = $derived(formatMonth(selectedMonth, 'short'));
 
-  // Builds a plain URL for a year/month combination.
-  // If the month doesn't exist in the chosen year, fall back to its first month.
   function hrefFor(year, month) {
     const validMonths = availableMonthsByYear[year] || [];
     const m = validMonths.includes(month) ? month : validMonths[0] || '';
@@ -46,13 +44,11 @@
     </svg>
   </summary>
 
-  <!-- Plain links: normal GET navigation without JS, intercepted by SvelteKit's router with JS -->
   <section
     data-sveltekit-noscroll
     data-sveltekit-keepfocus
     data-sveltekit-replacestate
   >
-    <!-- Years Section -->
     <fieldset class="section-group">
       <legend class="section-title">Select the year</legend>
       <div class="pill-grid">
@@ -71,8 +67,7 @@
     </fieldset>
 
     <hr class="divider" />
-
-    <!-- Months Section -->
+    
     <fieldset class="section-group">
       <legend class="section-title">Select the month</legend>
       <div class="pill-grid">
