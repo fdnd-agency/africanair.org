@@ -4,7 +4,6 @@
   import 'maplibre-gl/dist/maplibre-gl.css';
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
-  import Legend from '$lib/components/Legend.svelte';
   import { slugify } from '$lib/slugify.js';
   import DatePicker from '$lib/components/DatePicker.svelte';
 
@@ -13,6 +12,11 @@
   }
 
   let { data } = $props();
+
+  // Reactive derived states matching page data updates
+  let samplingPoints = $derived(data.sampling_points || []);
+  let selectedYear = $derived(data.selectedYear);
+  let selectedMonth = $derived(data.selectedMonth);
 
   let mapContainer = $state(null);
   let map = null;
@@ -37,7 +41,7 @@
   };
 
   let points = $derived(
-    (data.sampling_points || []).filter((point) => {
+    (samplingPoints || []).filter((point) => {
       const lng = Number(point.longitude);
       const lat = Number(point.latitude);
       return Number.isFinite(lng) && Number.isFinite(lat);
@@ -63,7 +67,6 @@
       const status = markerStatus(val);
       const title = `${location}${m ? `: ${val.toFixed(1)}` : ': no measurement data'}`;
 
-      // Create element
       const el = document.createElement('a');
       el.className = 'map-point-marker';
       el.href = `/${data.city?.slug}/detail/${slug}`;
@@ -76,18 +79,6 @@
 
       activeMarkers.push(marker);
     });
-  }
-
-  function isDocumentDark() {
-    if (!browser) return false;
-    const root = document.documentElement;
-    const computed = getComputedStyle(root);
-    return (
-      root.getAttribute('data-theme') === 'dark' ||
-      root.classList.contains('dark') ||
-      computed.colorScheme === 'dark' ||
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
   }
 
   onMount(async () => {
@@ -106,7 +97,7 @@
 
     map = new MapConstructor({
       container: mapContainer,
-      style: isDocumentDark() ? darkStyle : lightStyle,
+      style: document.documentElement.classList.contains('dark') ? darkStyle : lightStyle,
       center: defaultCenter,
       zoom: 12,
       cooperativeGestures: true
@@ -120,33 +111,14 @@
       map.resize();
       syncMarkers(ml);
     });
-
-    const themeObserver = new MutationObserver(() => {
-      if (!map) return;
-      map.setStyle(isDocumentDark() ? darkStyle : lightStyle);
-    });
-
-    themeObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class', 'data-theme', 'style']
-    });
-
-    const resizeObserver = new ResizeObserver(() => {
-      map?.resize();
-    });
-    if (mapContainer) resizeObserver.observe(mapContainer);
-
-    return () => {
-      themeObserver.disconnect();
-      resizeObserver.disconnect();
-      activeMarkers.forEach((m) => m.remove());
-      map?.remove();
-    };
   });
 
-  // Re-sync markers if the points array updates dynamically
+  // Redraws map markers whenever `points` changes.
+  // `points` is read BEFORE the `map` check so the effect always tracks it,
+  // even on its first run when `map` is still null.
   $effect(() => {
-    if (map && points) {
+    const current = points;
+    if (map && current) {
       syncMarkers(maplibregl);
     }
   });
@@ -156,32 +128,39 @@
   <title>{data.city?.name || 'City'} Air Quality Map</title>
 </svelte:head>
 
-<section>
+<main>
   <header class="map-header">
     <div>
       <h1>{data.city.name}</h1>
       <p>Ghana, West Africa</p>
     </div>
-    <!-- <Datepicker /> -->
+    <DatePicker
+      {selectedYear}
+      {selectedMonth}
+      availableYears={data.availableYears}
+      availableMonthsByYear={data.availableMonthsByYear}
+    />
   </header>
-  <div bind:this={mapContainer} class="map"></div>
-  <div class="markers-overlay">
-    {#each projectedPoints as p (p.id)}
-      <a
-        href="/{data.city.slug}/detail/{p.slug}"
-        title={p.title}
-        class="map-point-marker"
-        data-status={p.status}
-        style="transform: translate3d({p.x}px, {p.y}px, 0);"
-      ></a>
-    {/each}
-  </div>
 
   <div bind:this={mapContainer} class="map"></div>
-</section>
+
+  <!-- Fallback when JavaScript is unavailable -->
+  <noscript>
+    <ul>
+      {#each points as point}
+        {@const m = latestMeasurement(point.measurements)}
+        <li>
+          <a href="/{data.city.slug}/detail/{slugify(point.location || point.code)}">
+            {point.location || point.code}: {m ? Number(m.value).toFixed(1) : 'no measurement data'}
+          </a>
+        </li>
+      {/each}
+    </ul>
+  </noscript>
+</main>
 
 <style>
-  section {
+  main {
     position: relative;
     width: 100%;
     height: 87dvh;
@@ -189,7 +168,7 @@
 
     header.map-header {
       display: flex;
-      justify-content: såpace-between;
+      justify-content: space-between;
     }
   }
 
@@ -200,12 +179,6 @@
     overflow: hidden;
   }
 
-  div.presenattie {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
   :global(.map-point-marker) {
     width: 1rem;
     height: 1rem;

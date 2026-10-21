@@ -1,6 +1,5 @@
 <script>
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
 
   let {
     selectedYear = '',
@@ -9,7 +8,6 @@
     availableMonthsByYear = {}
   } = $props();
 
-  // Control the open/closed state of the details dropdown
   let isOpen = $state(false);
 
   function formatMonth(monthNumber, format = 'short') {
@@ -28,31 +26,18 @@
 
   let currentMonthLabel = $derived(formatMonth(selectedMonth, 'short'));
 
-  function handleDateClick(type, value) {
-    let y = type === 'year' ? value : selectedYear;
-    let m = type === 'month' ? value : selectedMonth;
-
-    const validMonths = availableMonthsByYear[y] || [];
-    if (!validMonths.includes(m)) {
-      m = validMonths[0] || '';
-    }
-
-    const nextUrl = new URL($page.url);
-    if (y) nextUrl.searchParams.set('year', y);
-    if (m) nextUrl.searchParams.set('month', m);
-
-    // Close the dropdown when a selection is made
-    isOpen = false;
-
-    goto(nextUrl.toString(), {
-      keepFocus: true,
-      noScroll: true,
-      replaceState: false
-    });
+  // Builds a plain URL for a year/month combination.
+  // If the month doesn't exist in the chosen year, fall back to its first month.
+  function hrefFor(year, month) {
+    const validMonths = availableMonthsByYear[year] || [];
+    const m = validMonths.includes(month) ? month : validMonths[0] || '';
+    const url = new URL($page.url);
+    url.searchParams.set('year', year);
+    if (m) url.searchParams.set('month', m);
+    return url.pathname + url.search;
   }
 </script>
 
-<!-- Bind open state here -->
 <details bind:open={isOpen}>
   <summary>
     <span>{currentMonthLabel} {selectedYear}</span>
@@ -61,20 +46,26 @@
     </svg>
   </summary>
 
-  <section>
+  <!-- Plain links: normal GET navigation without JS, intercepted by SvelteKit's router with JS -->
+  <section
+    data-sveltekit-noscroll
+    data-sveltekit-keepfocus
+    data-sveltekit-replacestate
+  >
     <!-- Years Section -->
     <fieldset class="section-group">
       <legend class="section-title">Select the year</legend>
       <div class="pill-grid">
         {#each availableYears as y}
-          <button
-            type="button"
+          <a
             class="pill-btn"
             class:active={selectedYear === y}
-            onclick={() => handleDateClick('year', y)}
+            aria-current={selectedYear === y ? 'true' : undefined}
+            href={hrefFor(y, selectedMonth)}
+            onclick={() => (isOpen = false)}
           >
             {y}
-          </button>
+          </a>
         {/each}
       </div>
     </fieldset>
@@ -86,14 +77,15 @@
       <legend class="section-title">Select the month</legend>
       <div class="pill-grid">
         {#each selectableMonths as m}
-          <button
-            type="button"
+          <a
             class="pill-btn"
             class:active={selectedMonth === m.value}
-            onclick={() => handleDateClick('month', m.value)}
+            aria-current={selectedMonth === m.value ? 'true' : undefined}
+            href={hrefFor(selectedYear, m.value)}
+            onclick={() => (isOpen = false)}
           >
             {m.label}
-          </button>
+          </a>
         {/each}
       </div>
     </fieldset>
@@ -125,7 +117,6 @@
     border-radius: var(--border-radius-m) var(--border-radius-m) 0 0;
     background-color: var(--background-secondary);
     color: var(--text-inverse);
-
   }
 
   svg {
@@ -138,7 +129,7 @@
 
   section {
     position: absolute;
-    left: 0;
+    right: 0;
     width: 80vw;
     max-width: 30rem;
     background-color: var(--background-secondary);
@@ -179,6 +170,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
     height: 2rem;
     width: 100%;
     border-radius: var(--border-radius-l);
@@ -186,6 +178,7 @@
     background-color: transparent;
     color: var(--text-inverse);
     font-weight: 500;
+    text-decoration: none;
     cursor: pointer;
     transition: all 0.15s ease;
   }
