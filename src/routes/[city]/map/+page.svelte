@@ -6,6 +6,7 @@
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { slugify } from '$lib/slugify.js';
   import DatePicker from '$lib/components/DatePicker.svelte';
+  import Legend from '$lib/components/Legend.svelte';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -99,7 +100,7 @@
       container: mapContainer,
       style: document.documentElement.classList.contains('dark') ? darkStyle : lightStyle,
       center: defaultCenter,
-      zoom: 12,
+      zoom: 11.5,
       cooperativeGestures: true
     });
 
@@ -113,9 +114,6 @@
     });
   });
 
-  // Redraws map markers whenever `points` changes.
-  // `points` is read BEFORE the `map` check so the effect always tracks it,
-  // even on its first run when `map` is still null.
   $effect(() => {
     const current = points;
     if (map && current) {
@@ -140,11 +138,11 @@
       availableYears={data.availableYears}
       availableMonthsByYear={data.availableMonthsByYear}
     />
+    
   </header>
 
   <div bind:this={mapContainer} class="map"></div>
-
-  <!-- Fallback when JavaScript is unavailable -->
+  <Legend/>
   <noscript>
     <ul>
       {#each points as point}
@@ -163,18 +161,22 @@
   main {
     position: relative;
     width: 100%;
-    height: 87dvh;
     overflow: hidden;
 
     header.map-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+
+      p {
+        color: var(--text-secondary);
+      }
     }
   }
 
-  .map {
+  div.map {
     width: 100%;
-    height: 100%;
+    height: 57dvh;
     border-radius: var(--border-radius-m, 8px);
     overflow: hidden;
   }

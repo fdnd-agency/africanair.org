@@ -40,10 +40,12 @@
     height: fit-content;
     width: 100%;
     max-width: 25rem;
-    gap: 1rem;
+    margin-top: var(--spacing-s);
+    gap: var(--spacing-xs);
 
     h2 {
-      font-size: var(--font-size-m);
+      font-size: var(--font-size-s);
+      color: var(--text-secondary);
     }
 
     div.legend-gradient {
@@ -79,11 +81,12 @@
           display: flex;
           flex-direction: column;
           p {
+            font-size: 0.8rem;
             margin: 0;
-            line-height: 1.2;
+            line-height: 1.5;
+
 
             &:nth-child(2) {
-              font-size: var(--font-size-s);
               color: var(--text-secondary);
             }
           }

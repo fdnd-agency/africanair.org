@@ -67,7 +67,7 @@
     </fieldset>
 
     <hr class="divider" />
-    
+
     <fieldset class="section-group">
       <legend class="section-title">Select the month</legend>
       <div class="pill-grid">
@@ -88,6 +88,7 @@
 </details>
 
 <style>
+
   details {
     position: relative;
     display: inline-block;
@@ -99,10 +100,9 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.4rem;
+    padding: 0.4rem 1rem;
     color: var(--text-primary);
     border: 2px solid var(--background-secondary);
-    font-weight: 700;
     cursor: pointer;
     border-radius: var(--border-radius-l);
     transition: all 0.15s ease;
@@ -129,7 +129,7 @@
     max-width: 30rem;
     background-color: var(--background-secondary);
     padding: 1.25rem;
-    border-radius: 0 1.5rem 1.5rem 1.5rem;
+    border-radius: 1.5rem 0 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
