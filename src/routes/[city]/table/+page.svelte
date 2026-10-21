@@ -1,5 +1,5 @@
 <script>
-  import MeasurementListItem from "$lib/components/MeasurementListItem.svelte";
+  import MeasurementListItem from "$lib/components/molecules/MeasurementListItem.svelte";
 
   let { data } = $props();
   const { points } = data;
