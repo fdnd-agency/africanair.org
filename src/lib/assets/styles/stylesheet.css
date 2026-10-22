@@ -93,7 +93,7 @@ main {
   margin: 0 auto;
   width: 100%;
   padding-inline: 1rem;
-  max-width: 64ch;
+  max-width: 1600px;
 }
 
 a {
