@@ -1,5 +1,7 @@
 <script>
   import MeasurementListItem from "$lib/components/molecules/MeasurementListItem.svelte";
+  import Viewtoggle from "$lib/components/molecules/Viewtoggle.svelte";
+  import DatePicker from '$lib/components/DatePicker.svelte';
 
   let { data } = $props();
   const { points } = data;
@@ -10,6 +12,7 @@
 </svelte:head>
 
 <main>
+  <Viewtoggle />
   {#each points as point}
     <MeasurementListItem {point} />
   {/each}

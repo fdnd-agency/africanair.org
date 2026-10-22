@@ -128,6 +128,7 @@
 </svelte:head>
 
 <main>
+  <Viewtoggle />
   <header class="map-header">
     <div>
       <h1>{data.city?.name}</h1>
