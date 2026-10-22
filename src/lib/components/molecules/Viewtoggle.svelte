@@ -25,7 +25,7 @@
       </li>
     </ul>
 
-    {#if tab.label === "Table" && active}
+    {#if tab.id === "table" && active}
       <p>Dit moet alleen zichtbaar zijn in de table</p>
     {/if}
   {/each}
