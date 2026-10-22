@@ -19,11 +19,13 @@
 <main>
     <nav>
         {#each tabs as tab }
+        {@const href =  `/${page.city}/${tab.id}`}
+        {@const active = page.url.pathname === href}
         <ul>
             <li>
-                <button onclick={value === tab.id}>
+                <a {href} class:active aria-current={active ? 'page' : undefined}>
                     {tab.label}
-                </button>
+                </a>
             </li>
         </ul>
         {/each}
