@@ -1,8 +1,6 @@
 <script>
     import { page } from "$app/state";
 
-    let {children} = $props()
-    
     const tabs = [
         {
             id: 'map',
@@ -55,10 +53,6 @@
                         border-bottom: 1px solid var(--primary)
                     }
                 }
-            }
-
-            li:nth-of-type(1) {
-                border-right: 1px solid black;
             }
         }
     }
