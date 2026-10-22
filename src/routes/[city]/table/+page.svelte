@@ -11,8 +11,8 @@
   <title>Air Quality Measurements - Table View</title>
 </svelte:head>
 
+<Viewtoggle />
 <main>
-  <Viewtoggle />
   {#each points as point}
     <MeasurementListItem {point} />
   {/each}

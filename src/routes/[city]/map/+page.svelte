@@ -127,8 +127,8 @@
   <title>{data.city?.name || 'City'} Air Quality Map</title>
 </svelte:head>
 
+<Viewtoggle />
 <main>
-  <Viewtoggle />
   <header class="map-header">
     <div>
       <h1>{data.city?.name}</h1>
