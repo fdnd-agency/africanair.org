@@ -20,7 +20,7 @@
   let selectedMonth = $derived(data.selectedMonth);
 
   let mapContainer = $state(null);
-  let map = null;
+  let map = $state(null);
   let activeMarkers = [];
 
   const lightStyle = '/positron.json';
@@ -129,7 +129,7 @@
 <main>
   <header class="map-header">
     <div>
-      <h1>{data.city.name}</h1>
+      <h1>{data.city?.name}</h1>
       <p>Ghana, West Africa</p>
     </div>
     <DatePicker
@@ -181,6 +181,7 @@
     overflow: hidden;
   }
 
+  /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
   :global(.map-point-marker) {
     width: 1rem;
     height: 1rem;
