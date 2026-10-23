@@ -6,8 +6,8 @@
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { slugify } from '$lib/slugify.js';
-  import DatePicker from '$lib/components/DatePicker.svelte';
-  import Legend from '$lib/components/Legend.svelte';
+  import DatePicker from '$lib/components/molecules/DatePicker.svelte';
+  import Legend from '$lib/components/molecules/Legend.svelte';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
