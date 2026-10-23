@@ -24,6 +24,10 @@
     justify-content: space-between;
     gap: 1rem;
     margin-block: 1rem;
+
+    p {
+      color: var(--text-secondary);
+    }
   }
   
   form {
