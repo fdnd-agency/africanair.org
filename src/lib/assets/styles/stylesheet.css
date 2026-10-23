@@ -52,11 +52,12 @@
   --primary: hsl(205 100% 40%);
 
   --background-primary: light-dark(hsl(0 0% 100%), hsl(220 70% 12%));
-  --background-secondary: light-dark(hsl(0 0% 100%), hsl(215 50% 12%));
+  --background-secondary: light-dark(hsl(215 50% 12%),hsl(0 0% 100%));
 
   --text-primary: light-dark(hsl(0 0% 5%), hsl(0 0% 95%));
   --text-secondary: light-dark(hsl(0 0% 30%), hsl(0 0% 70%));
   --text-inverse: light-dark(hsl(0 0% 95%), hsl(0 0% 5%));
+  --text-light: hsl(0 0% 95%);
 
   --border-color: light-dark(hsl(0 0% 90%), hsl(220 35% 20%));
   --border-lightmode-only: light-dark(hsl(220 35% 20%), hsla(220, 35%, 20%, 0));
@@ -93,7 +94,7 @@ main {
   margin: 0 auto;
   width: 100%;
   padding-inline: 1rem;
-  max-width: 64ch;
+  max-width: 1600px;
 }
 
 a {
@@ -103,4 +104,10 @@ a {
 h1 {
   font-size: var(--font-size-xl);
   font-weight: 600;
+}
+
+
+/* hide links to the map website */
+.maplibregl-ctrl-bottom-right  {
+  display: none;
 }
