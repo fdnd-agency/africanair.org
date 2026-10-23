@@ -4,7 +4,6 @@
   import handshake from "$lib/assets/images/Handshake.svg"
   import location from "$lib/assets/images/Location.svg"
 
-
   const aboutUs = [
     {
       icon: info,
