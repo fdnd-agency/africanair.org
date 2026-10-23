@@ -64,9 +64,6 @@
     background-color: var(--background-primary);
 
     article {
-      color-scheme: light dark;
-      --lighter-border-color: hsl(0 0% 90%), hsl(220 35% 40%);
-
       display: grid;
       row-gap: var(--spacing-xs);
       grid-template-columns: 60px minmax(0, 1fr);
@@ -75,14 +72,10 @@
       border-radius: var(--border-radius-m);
       background-color: var(--background-primary);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 1.5px solid var(--lighter-border-color);
+      border: 2px solid var(--border-color);
 
       @media (min-width: 400px) {
         padding: var(--spacing-l);
-      }
-
-      @media (min-width: 1000px) {
-        border: 1.5px solid light-dark(var(--lighter-border-color));
       }
 
       img {
