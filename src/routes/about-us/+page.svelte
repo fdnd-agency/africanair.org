@@ -75,10 +75,14 @@
       border-radius: var(--border-radius-m);
       background-color: var(--background-primary);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 1.5px solid light-dark(var(--lighter-border-color));
+      border: 1.5px solid var(--lighter-border-color);
 
       @media (min-width: 400px) {
         padding: var(--spacing-l);
+      }
+
+      @media (min-width: 1000px) {
+        border: 1.5px solid light-dark(var(--lighter-border-color));
       }
 
       img {
