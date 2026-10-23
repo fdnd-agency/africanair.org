@@ -1,20 +1,20 @@
 <script>
   import { onMount } from "svelte";
   import Picture from "$lib/components/atoms/Picture.svelte";
-  import ThemeSwitch from "../atoms/ThemeSwitch.svelte";
+  import ThemeSwitch from "$lib/components/molecules/ThemeSwitch.svelte";
 
-  import logoAvif from '$lib/assets/logo.avif';
-  import logoWebp from '$lib/assets/logo.webp';
-  import logoPng from '$lib/assets/logo.png';
+  import logoAvif from "$lib/assets/logo.avif";
+  import logoWebp from "$lib/assets/logo.webp";
+  import logoPng from "$lib/assets/logo.png";
 
-  import logoDarkAvif from '$lib/assets/logoDark.avif';
-  import logoDarkWebp from '$lib/assets/logoDark.webp';
-  import logoDarkPng from '$lib/assets/logoDark.png';
-  
+  import logoDarkAvif from "$lib/assets/logoDark.avif";
+  import logoDarkWebp from "$lib/assets/logoDark.webp";
+  import logoDarkPng from "$lib/assets/logoDark.png";
+
   const navLinks = [
-    { href: '/about', label: 'About us' },
-    { href: '/login', label: 'Login' },
-    { href: '/share-data', label: 'Share data' }
+    { href: "/about", label: "About us" },
+    { href: "/login", label: "Login" },
+    { href: "/share-data", label: "Share data" },
   ];
 
   let mobileNav;
@@ -23,27 +23,35 @@
 
   // Fallback for browsers without native Popover API support
   onMount(() => {
-    if ('popover' in HTMLElement.prototype) return;
+    if ("popover" in HTMLElement.prototype) return;
 
     const toggleButtons = [menuButton, closeButton].filter(Boolean);
 
-    mobileNav.classList.add('popover-fallback');
+    mobileNav.classList.add("popover-fallback");
 
     const toggleMobileNav = (event) => {
       event.preventDefault();
-      mobileNav.classList.toggle('fallback-open');
+      mobileNav.classList.toggle("fallback-open");
     };
 
-    toggleButtons.forEach((button) => button.addEventListener('click', toggleMobileNav));
+    toggleButtons.forEach((button) =>
+      button.addEventListener("click", toggleMobileNav),
+    );
 
     return () => {
-      toggleButtons.forEach((button) => button.removeEventListener('click', toggleMobileNav));
+      toggleButtons.forEach((button) =>
+        button.removeEventListener("click", toggleMobileNav),
+      );
     };
   });
 </script>
 
 <header>
-  <button bind:this={menuButton} popovertarget="mobilenav" aria-label="Open menu">
+  <button
+    bind:this={menuButton}
+    popovertarget="mobilenav"
+    aria-label="Open menu"
+  >
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M4 6H20M4 12H20M4 18H20"
@@ -57,7 +65,7 @@
   </button>
 
   <a class="logo" href="/">
-    <Picture 
+    <Picture
       avif={logoAvif}
       webp={logoWebp}
       png={logoPng}
@@ -75,7 +83,11 @@
   <nav bind:this={mobileNav} id="mobilenav" popover="auto" class="mobile">
     <header class="mobile-header">
       <h3>Africanair.org</h3>
-      <button bind:this={closeButton} popovertarget="mobilenav" aria-label="Close menu">
+      <button
+        bind:this={closeButton}
+        popovertarget="mobilenav"
+        aria-label="Close menu"
+      >
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
@@ -90,9 +102,9 @@
 
     <section class="mobile-links">
       {#each navLinks as link}
-          <a href={link.href}>{link.label}</a>
+        <a href={link.href}>{link.label}</a>
       {/each}
-    </section>  
+    </section>
   </nav>
 
   <ThemeSwitch class="themeswitch" />
@@ -120,14 +132,14 @@
       grid-template-columns: auto 1fr auto;
     }
   }
-    
-    a.logo {
-      grid-column: 2;
-      grid-row: 1;
-      justify-self: center;
-      display: flex;
-      align-items: center;
-    }
+
+  a.logo {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+  }
 
   button {
     display: flex;
