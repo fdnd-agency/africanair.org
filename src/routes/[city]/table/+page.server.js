@@ -1,13 +1,26 @@
-export const csr = false; // makes sure the component works only based on server side rendering
+export async function load({ params }) {
+  const baseURL = "https://fdnd-agency.directus.app/items/apa_sampling_points";
 
-export async function load() {
+  // console.log(params.city);
 
-  const measurementsResponse = await fetch(
-    "https://fdnd-agency.directus.app/items/apa_measurements?fields=*.*.*",
+  const URLParams = new URLSearchParams();
+
+  URLParams.append(
+    "fields",
+    "location,city_id.name,measurements.value,measurements.date",
   );
-  const measurementsData = await measurementsResponse.json();
+  URLParams.append("filter[city_id][name][_icontains]", params.city);
+  URLParams.append("deep[measurements][_sort]", "-date");
+  URLParams.append("deep[measurements][_limit]", "1");
+  // Doens't work yet because values are a string.
+  // URLParams.append("sort", "-measurements.value")
+
+  const pointsResponse = await fetch(`${baseURL}?${URLParams}`);
+  const pointsData = await pointsResponse.json();
+
+  // console.log(pointsResponse)
 
   return {
-    measurements: measurementsData.data,
+    points: pointsData.data,
   };
 }

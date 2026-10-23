@@ -34,6 +34,7 @@ async function request(fetch, endpoint, params = {}) {
 
 // 1. Fetch available dates directly for the city using the new relation path
 export async function fetchAvailableDates(fetch, citySlug) {
+  // Query cities -> sampling_points -> measurements
   const data = await request(fetch, '/items/apa_cities', {
     'filter[slug][_eq]': citySlug,
     fields: 'sampling_points.measurements.date'

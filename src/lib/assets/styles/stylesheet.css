@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Inter";
-  src: url('/inter.regular.ttf') format('truetype'); /* format tells the browser it's a .ttf-file before opening it */
+  src: url("/inter.regular.ttf") format("truetype"); /* format tells the browser it's a .ttf-file before opening it */
   font-weight: 400;
   font-display: swap; /* Renders downloaded font on user's device before loading website font */
 }
@@ -52,7 +52,7 @@
   --primary: hsl(205 100% 40%);
 
   --background-primary: light-dark(hsl(0 0% 100%), hsl(220 70% 12%));
-  --background-secondary: light-dark(hsl(215 50% 12%), hsl(0 0% 100%));
+  --background-secondary: light-dark(hsl(0 0% 100%), hsl(215 50% 12%));
 
   --text-primary: light-dark(hsl(0 0% 5%), hsl(0 0% 95%));
   --text-secondary: light-dark(hsl(0 0% 30%), hsl(0 0% 70%));
@@ -65,11 +65,13 @@
   --status-medium: hsl(50 100% 50%);
   --status-high: hsl(30 100% 50%);
   --status-dangerous: hsl(0 100% 42%);
+  --status-empty: hsl(0 0% 65%);
 
   --status-good-background: light-dark(hsl(160 70% 92%), hsl(215 50% 12%));
   --status-medium-background: light-dark(hsl(50 70% 92%), hsl(215 50% 12%));
   --status-high-background: light-dark(hsl(30 70% 92%), hsl(215 50% 12%));
   --status-dangerous-background: light-dark(hsl(0 70% 92%), hsl(215 50% 12%));
+  --status-empty-background: light-dark(hsl(0 0% 92%), hsl(215 50% 12%));
 
   --alert-text: hsl(0 100% 42%);
   --alert-background: hsl(0 100% 10%);
@@ -91,7 +93,7 @@ main {
   margin: 0 auto;
   width: 100%;
   padding-inline: 1rem;
-  
+  max-width: 64ch;
 }
 
 a {

@@ -11,6 +11,4 @@
 </svelte:head>
 
 <Header />
-<main>
   {@render children()}
-</main>
