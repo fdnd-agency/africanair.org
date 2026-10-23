@@ -43,6 +43,14 @@
     })
   );
 
+  // Derived list pairing each valid point with its latest measurement
+  let pointsWithLatest = $derived(
+    points.map((point) => ({
+      ...point,
+      latestMeasurement: latestMeasurement(point.measurements)
+    }))
+  );
+
   function syncMarkers(ModMaplibre) {
     if (!map) return;
 
@@ -110,7 +118,6 @@
 
   $effect(() => {
     const current = points;
-
     const currentStandard = $selectedStandard; 
     
     if (map && current && currentStandard) {
@@ -135,9 +142,10 @@
       availableYears={data.availableYears}
       availableMonthsByYear={data.availableMonthsByYear}
     />
-    
   </header>
-  <HighMeasurements />
+
+  <HighMeasurements measurements={pointsWithLatest} />
+
   <div bind:this={mapContainer} class="map"></div>
   <div class="desktop-styles">
     <Relatives/>
@@ -181,7 +189,6 @@
     overflow: hidden;
   }
 
-  /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
   :global(.map-point-marker) {
     width: 1rem;
     height: 1rem;

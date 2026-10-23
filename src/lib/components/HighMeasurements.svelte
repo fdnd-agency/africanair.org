@@ -1,10 +1,28 @@
 <script>
-  let stationshazardous = "11";
-  let elevated = "3";
+  import { statusChecker } from '$lib/relatives.js';
+
+  let { measurements = [] } = $props();
+  
+  let hazardousCount = $derived(
+    measurements.filter((p) => {
+      const val = p.latestMeasurement ? Number(p.latestMeasurement.value) : null;
+      return statusChecker(val) === 'dangerous';
+    }).length
+  );
+
+  let elevatedCount = $derived(
+    measurements.filter((p) => {
+      const val = p.latestMeasurement ? Number(p.latestMeasurement.value) : null;
+      const status = statusChecker(val);
+      return status === 'high' || status === 'medium';
+    }).length
+  );
 </script>
 
 <section>
-  <p><em>{stationshazardous}</em> stations are currently measuring hazrdous air quality <em>- {elevated} elevated </em></p>
+  <p>
+    <em>{hazardousCount}</em> stations are currently measuring hazardous air quality, with <em>{elevatedCount} elevated</em>
+  </p>
 </section>
 
 <style> 
@@ -19,7 +37,7 @@
     em {
       font-style: normal;
       font-weight: 700;
-      color: var(--alert-text)
+      color: var(--alert-text);
     }
   }
 </style>

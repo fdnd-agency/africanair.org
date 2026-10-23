@@ -101,12 +101,6 @@ a {
   text-decoration: none;
 }
 
-h1 {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-}
-
-
 /* hide links to the map website */
 .maplibregl-ctrl-bottom-right  {
   display: none;
