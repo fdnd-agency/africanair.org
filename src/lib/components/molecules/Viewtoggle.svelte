@@ -48,7 +48,7 @@
         text-align: center;
         a {
           display: block;
-          width: 40%;
+          width: 50%;
           margin-inline: auto;
           color: var(--text-primary);
 
