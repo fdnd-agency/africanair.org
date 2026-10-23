@@ -12,8 +12,11 @@
 </svelte:head>
 
 <main>
-  <!-- <DateDropdown /> -->
-  <SearchBar />
+  <div class="wrapper">
+    <DateDropdown />
+    <DateDropdown />
+    <SearchBar />
+  </div>
   {#each points as point}
     <MeasurementListItem {point} />
   {/each}
@@ -24,5 +27,16 @@
     display: grid;
     gap: var(--spacing-m);
     padding: var(--spacing-m);
+  }
+
+  .wrapper {
+    background: var(--background-secondary);
+    padding: var(--spacing-l);
+    display: grid;
+    gap: var(--spacing-m);
+    
+    @media (min-width: 375px) {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

@@ -1,22 +1,14 @@
-<script>
-  let { points } = $props();
-</script>
-
 <form action="" method="GET">
-  <!-- <input
-    type="text"
-    name="search"
-    placeholder="Search location..."
-    value={points.searchInput}
-  /> -->
-  <input
-    type="text"
-    name="search"
-    placeholder="Search location..."
-  />
+  <input type="text" name="search" placeholder="Search location..." />
 </form>
 
 <style>
+  form {
+    @media (min-width: 375px) {
+      grid-column: 1 / 3;
+    }
+  }
+
   input {
     width: 100%;
     border: 1px solid var(--border-color);

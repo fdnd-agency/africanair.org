@@ -28,5 +28,6 @@ export async function load({ params, url }) {
 
   return {
     points: pointsData.data,
+    searchInput: searchInput
   };
 }

@@ -57,6 +57,7 @@
     padding: var(--spacing-m);
     border-radius: var(--border-radius-m);
     background-color: var(--background-secondary);
+    margin: 0 var(--spacing-m);
     display: grid;
     align-items: center;
     grid-template-columns: 1fr auto;
