@@ -19,7 +19,7 @@
   const latestMeasurement = $derived(measurements[0]);
 
   // newest to oldest on the graph
-  const graphData = $derived([...measurements]);
+  const graphData = $derived([...measurements.reverse()]);
 
   // helper function for svg cooirdinats
   function getX(index) {
@@ -93,8 +93,13 @@
     <span>{data.sampling_point?.location || data.sampling_point?.code}</span>
   </nav>
 
+  <header>
+    <h1>{data.sampling_point?.location}</h1>
+    <p>{data.sampling_point?.description}</p>
+  </header>
+
   {#if latestMeasurement}
-    <header>
+    <section class="heading">
       <div>
         <p>Measured month</p>
         <p>{formatDate(latestMeasurement.date)}</p>
@@ -103,7 +108,7 @@
         <p>Frequency</p>
         <p>Monthly</p>
       </div>
-    </header>
+    </section>
 
     {#if graphData.length > 1}
       <figure>
@@ -170,22 +175,31 @@
     }
 
     header {
+      margin-block: 1rem;
+
+      h1 {
+        font-size: var(--font-size-l);
+      }
+      p {
+        color: var(--text-secondary);
+      }
+    }
+
+    section.heading {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--spacing-3xl);
       padding: var(--spacing-m) 0 var(--spacing-2xl) 0;
 
       div {
         p:nth-of-type(1) {
-          color: var(--text-secondary);
-          font-size: var(--font-size-s);
+          font-size: var(--font-size-m);
           font-weight: 600;
         }
 
         p:nth-of-type(2) {
           margin-top: var(--spacing-2xs);
-          font-size: var(--font-size-m);
+          font-size: var(--font-size-s);
         }
       }
     }

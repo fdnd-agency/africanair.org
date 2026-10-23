@@ -24,7 +24,7 @@ async function request(fetch, endpoint, params = {}) {
       } catch {}
     }
 
-    console.error(`❌ Directus Error [${res.status}] at ${url.pathname}:`, detailedMessage);
+    console.error(` Directus Error [${res.status}] at ${url.pathname}:`, detailedMessage);
     throw error(502, `Could not load data from Directus: ${detailedMessage}`);
   }
 
@@ -45,7 +45,6 @@ export async function fetchAvailableDates(fetch, citySlug) {
   const city = data[0];
   const periodMap = new Map();
 
-  // Loop through sampling points and their measurements
   if (Array.isArray(city.sampling_points)) {
     for (const point of city.sampling_points) {
       if (!Array.isArray(point.measurements)) continue;
@@ -90,7 +89,6 @@ export async function fetchCityMeasurements(fetch, citySlug, year, month) {
 
   if (Array.isArray(cityRecord.sampling_points)) {
     for (const sp of cityRecord.sampling_points) {
-      // Filter measurements by year and month if provided
       const filteredMeasurements = (sp.measurements || []).filter((m) => {
         if (!m.date) return false;
         if (year && month) {
@@ -105,6 +103,7 @@ export async function fetchCityMeasurements(fetch, citySlug, year, month) {
         id: sp.id,
         code: sp.code,
         location: sp.location || sp.code,
+        description: sp.description || null, 
         latitude: sp.latitude,
         longitude: sp.longitude,
         measurements: filteredMeasurements.map((m) => ({

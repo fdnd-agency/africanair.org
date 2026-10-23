@@ -5,10 +5,8 @@
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { slugify } from '$lib/slugify.js';
-  import DatePicker from '$lib/components/DatePicker.svelte';
-  import Legend from '$lib/components/Legend.svelte';
-  import Relatives from '$lib/components/Relatives.svelte';
-  import { selectedStandard, statusChecker } from '$lib/relatives.js';
+  import DatePicker from '$lib/components/molecules/DatePicker.svelte';
+  import Legend from '$lib/components/molecules/Legend.svelte';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -16,6 +14,7 @@
 
   let { data } = $props();
 
+  // Reactive derived states matching page data updates
   let samplingPoints = $derived(data.sampling_points || []);
   let selectedYear = $derived(data.selectedYear);
   let selectedMonth = $derived(data.selectedMonth);
@@ -26,6 +25,14 @@
 
   const lightStyle = '/positron.json';
   const darkStyle = '/dark_matter.json';
+
+  const markerStatus = (value) => {
+    if (!Number.isFinite(value)) return 'unknown';
+    if (value < 21) return 'good';
+    if (value < 42) return 'medium';
+    if (value < 65) return 'high';
+    return 'dangerous';
+  };
 
   const latestMeasurement = (measurements = []) => {
     const valid = measurements
@@ -45,6 +52,7 @@
   function syncMarkers(ModMaplibre) {
     if (!map) return;
 
+    // Clear existing markers
     activeMarkers.forEach((m) => m.remove());
     activeMarkers = [];
 
@@ -57,8 +65,7 @@
       const val = m ? Number(m.value) : null;
       const location = point.location || point.code || 'Sampling point';
       const slug = slugify(location);
-
-      const status = statusChecker(val);
+      const status = markerStatus(val);
       const title = `${location}${m ? `: ${val.toFixed(1)}` : ': no measurement data'}`;
 
       const el = document.createElement('a');
@@ -109,10 +116,7 @@
 
   $effect(() => {
     const current = points;
-
-    const currentStandard = $selectedStandard; 
-    
-    if (map && current && currentStandard) {
+    if (map && current) {
       syncMarkers(maplibregl);
     }
   });
@@ -138,10 +142,7 @@
   </header>
 
   <div bind:this={mapContainer} class="map"></div>
-  <div class="desktop-styles">
-    <Relatives/>
-    <Legend/>
-  </div>
+  <Legend/>
   <noscript>
     <ul>
       {#each points as point}
@@ -215,13 +216,5 @@
   :global(.map-point-marker[data-status='dangerous']) {
     background-color: var(--status-dangerous, #ef4444);
     box-shadow: 0 1px 5px var(--status-dangerous, #ef4444);
-  }
-
-  div.desktop-styles {
-    @media (min-width: 798px) {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
-    }
   }
 </style>
