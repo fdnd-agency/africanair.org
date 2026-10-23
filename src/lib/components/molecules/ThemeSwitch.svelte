@@ -20,7 +20,6 @@
 <style>
   label {
     cursor: pointer;
-    /* position: absolute; */
     background-color: var(--background-primary);
     border-radius: var(--border-radius-s);
     padding: var(--spacing-2xs);

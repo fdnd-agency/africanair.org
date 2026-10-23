@@ -1,7 +1,7 @@
 <script>
   import MeasurementListItem from "$lib/components/molecules/MeasurementListItem.svelte";
   import Viewtoggle from "$lib/components/molecules/Viewtoggle.svelte";
-  import DatePicker from '$lib/components/DatePicker.svelte';
+  import DatePicker from '$lib/components/molecules/DatePicker.svelte';
 
   let { data } = $props();
   const { points } = data;
