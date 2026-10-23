@@ -164,19 +164,7 @@
     </div>
     <!-- <Datepicker /> -->
   </header>
-  <div bind:this={mapContainer} class="map"></div>
-  <div class="markers-overlay">
-    {#each projectedPoints as p (p.id)}
-      <a
-        href="/{data.city.slug}/detail/{p.slug}"
-        title={p.title}
-        class="map-point-marker"
-        data-status={p.status}
-        style="transform: translate3d({p.x}px, {p.y}px, 0);"
-      ></a>
-    {/each}
-  </div>
-
+  
   <div bind:this={mapContainer} class="map"></div>
 </section>
 
@@ -189,7 +177,7 @@
 
     header.map-header {
       display: flex;
-      justify-content: såpace-between;
+      justify-content: space-between;
     }
   }
 
@@ -199,13 +187,6 @@
     border-radius: var(--border-radius-m, 8px);
     overflow: hidden;
   }
-
-  div.presenattie {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
   :global(.map-point-marker) {
     width: 1rem;
     height: 1rem;
