@@ -19,7 +19,7 @@
   const latestMeasurement = $derived(measurements[0]);
 
   // newest to oldest on the graph
-  const graphData = $derived([...measurements]);
+  const graphData = $derived([...measurements.reverse()]);
 
   // helper function for svg cooirdinats
   function getX(index) {
