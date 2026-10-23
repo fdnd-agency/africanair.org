@@ -1,5 +1,5 @@
 <script>
-  import { page } from "$app/state";
+  import { page } from "$app/state"
 
   const tabs = [
     {
@@ -10,7 +10,7 @@
       id: "table",
       label: "Table",
     },
-  ];
+  ]
 </script>
 
 <nav>
@@ -24,10 +24,6 @@
         </a>
       </li>
     </ul>
-
-    {#if tab.id === "table" && active}
-      <p>Dit moet alleen zichtbaar zijn in de table</p>
-    {/if}
   {/each}
 </nav>
 
