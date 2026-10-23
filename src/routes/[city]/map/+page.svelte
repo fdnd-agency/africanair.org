@@ -8,6 +8,7 @@
   import DatePicker from '$lib/components/DatePicker.svelte';
   import Legend from '$lib/components/Legend.svelte';
   import Relatives from '$lib/components/Relatives.svelte';
+  import HighMeasurements from '$lib/components/HighMeasurements.svelte';
   import { selectedStandard, statusChecker } from '$lib/relatives.js';
 
   if (browser) {
@@ -136,7 +137,7 @@
     />
     
   </header>
-
+  <HighMeasurements />
   <div bind:this={mapContainer} class="map"></div>
   <div class="desktop-styles">
     <Relatives/>

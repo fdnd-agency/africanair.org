@@ -74,8 +74,8 @@
   --status-dangerous-background: light-dark(hsl(0 70% 92%), hsl(215 50% 12%));
   --status-empty-background: light-dark(hsl(0 0% 92%), hsl(215 50% 12%));
 
-  --alert-text: hsl(0 100% 42%);
-  --alert-background: hsl(0 100% 10%);
+  --alert-text: hsl(358 100% 70%);
+  --alert-background: hsl(0 39% 17%);
 }
 
 body {
