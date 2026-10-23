@@ -1,3 +1,3 @@
 <script>
-  import ThemeSwitch from "$lib/components/ThemeSwitch.svelte";
+  import ThemeSwitch from "$lib/components/molecules/ThemeSwitch.svelte";
 </script>
