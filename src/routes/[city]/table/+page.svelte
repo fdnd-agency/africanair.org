@@ -1,4 +1,6 @@
 <script>
+  import DateDropdown from "$lib/components/atoms/DateDropdown.svelte";
+  import SearchBar from "$lib/components/atoms/SearchBar.svelte";
   import MeasurementListItem from "$lib/components/molecules/MeasurementListItem.svelte";
 
   let { data } = $props();
@@ -10,6 +12,8 @@
 </svelte:head>
 
 <main>
+  <!-- <DateDropdown /> -->
+  <SearchBar />
   {#each points as point}
     <MeasurementListItem {point} />
   {/each}
