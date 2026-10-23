@@ -50,6 +50,7 @@
         background-color: var(--primary);
         color: var(--text-light);
       }
+      
 
       /* to hide the radio buttons */
       input[type="radio"] {
