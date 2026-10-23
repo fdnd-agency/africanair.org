@@ -138,8 +138,10 @@
   </header>
 
   <div bind:this={mapContainer} class="map"></div>
-  <Relatives/>
-  <Legend/>
+  <div class="desktop-styles">
+    <Relatives/>
+    <Legend/>
+  </div>
   <noscript>
     <ul>
       {#each points as point}
@@ -213,5 +215,13 @@
   :global(.map-point-marker[data-status='dangerous']) {
     background-color: var(--status-dangerous, #ef4444);
     box-shadow: 0 1px 5px var(--status-dangerous, #ef4444);
+  }
+
+  div.desktop-styles {
+    @media (min-width: 798px) {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+    }
   }
 </style>
