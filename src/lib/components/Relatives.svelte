@@ -3,7 +3,7 @@
 </script>
 
 <section>
-  <p>Standard</p>
+  <h3>Standard</h3>
   <form>
     <label>
       <input type="radio" name="choice" value="EU" bind:group={$selectedStandard}> 
@@ -25,7 +25,7 @@
     gap: 1rem;
     margin-block: 1rem;
 
-    p {
+    h3 {
       color: var(--text-secondary);
     }
   }
@@ -39,7 +39,7 @@
 
     label {
       flex: 1;
-      padding: 0.5rem 1.25rem;
+      padding: var(--spacing-s) var(--spacing-m);
       text-align: center;
       color: var(--text-primary);
       border-radius: var(--border-radius-l);
