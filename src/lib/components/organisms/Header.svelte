@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
-  import Picture from "$lib/components/Picture.svelte";
-  import ThemeSwitch from "./ThemeSwitch.svelte";
+  import Picture from "$lib/components/atoms/Picture.svelte";
+  import ThemeSwitch from "../atoms/ThemeSwitch.svelte";
 
   import logoAvif from '$lib/assets/logo.avif';
   import logoWebp from '$lib/assets/logo.webp';
