@@ -38,7 +38,7 @@
     max-width: 61ch;
     margin: 0 auto;
     ul {
-      padding: 0.2rem;
+      padding: var(--spacing-2xs);
       list-style: none;
 
       &:first-child {
