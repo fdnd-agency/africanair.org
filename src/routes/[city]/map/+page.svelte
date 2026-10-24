@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import 'maplibre-gl/dist/maplibre-gl.css';
+  import Viewtoggle from '$lib/components/molecules/Viewtoggle.svelte';
   import * as maplibregl from 'maplibre-gl';
   import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { slugify } from '$lib/slugify.js';
@@ -126,6 +127,7 @@
   <title>{data.city?.name || 'City'} Air Quality Map</title>
 </svelte:head>
 
+<Viewtoggle />
 <main>
   <header class="map-header">
     <div>
