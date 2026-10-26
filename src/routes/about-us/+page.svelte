@@ -1,8 +1,8 @@
 <script>
-  import info from "$lib/assets/images/Info.svg"
-  import globe from "$lib/assets/images/Globe.svg"
-  import handshake from "$lib/assets/images/Handshake.svg"
-  import location from "$lib/assets/images/Location.svg"
+  import info from "$lib/assets/images/Info.svg";
+  import globe from "$lib/assets/images/Globe.svg";
+  import handshake from "$lib/assets/images/Handshake.svg";
+  import location from "$lib/assets/images/Location.svg";
 
   const aboutUs = [
     {
@@ -29,7 +29,7 @@
       title: "Collaboration and local capacity",
       text: `The platform is developed through a collaboration between Kwame Nkrumah University of Science and Technology (KNUST) and the Royal Netherlands Meteorological Institute (KNMI). KNUST plays a leading role in organising measurements, operating the local laboratory, and analysing the data within Ghana. KNMI supports the project with expertise in atmospheric science, satellite data, and interpretation of the results. This collaboration strengthens local capacity while ensuring scientific robustness.`,
     },
-  ]
+  ];
 </script>
 
 <main>
@@ -48,63 +48,69 @@
 </main>
 
 <style>
-  h1 {
-    width: min(90%, 40.625rem);
-    margin: 0 auto;
-    padding: var(--spacing-m) var(--spacing-l);
+  main {
+    h1 {
+      width: min(90%, 40.625rem);
+      margin: 0 auto;
+      padding: var(--spacing-m) var(--spacing-l);
 
-    @media (min-width: 1000px) {
-      margin: 0;
+      @media (min-width: 1000px) {
+        margin: 0;
+      }
     }
-  }
 
-  section {
-    display: grid;
-    gap: var(--spacing-m);
-    width: min(90%, 40.625rem);
-    margin: 0 auto;
-    background-color: var(--background-primary);
-
-    article {
+    section {
       display: grid;
-      row-gap: var(--spacing-xs);
-      grid-template-columns: 60px minmax(0, 1fr);
-      grid-template-rows: auto 1fr;
-      padding: var(--spacing-2xs);
-      border-radius: var(--border-radius-m);
+      gap: var(--spacing-m);
+      width: min(90%, 40.625rem);
+      margin: 0 auto;
       background-color: var(--background-primary);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 2px solid var(--border-color);
 
-      @media (min-width: 400px) {
-        padding: var(--spacing-l);
+      article {
+        display: grid;
+        row-gap: var(--spacing-xs);
+        grid-template-columns: 60px minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        padding: var(--spacing-2xs);
+        border-radius: var(--border-radius-m);
+        background-color: var(--background-primary);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border: 2px solid var(--border-color);
+
+        @media (min-width: 400px) {
+          padding: var(--spacing-l);
+        }
+
+        img {
+          grid-column: 1;
+          grid-row: 1/-1;
+          justify-self: center;
+          width: 3rem;
+          aspect-ratio: 1;
+          object-fit: contain;
+        }
+
+        h2 {
+          grid-column: 2;
+          grid-row: 1;
+          text-wrap: balance;
+        }
+
+        p {
+          grid-column: 2;
+          grid-row: 2;
+          text-wrap: balance;
+        }
       }
-
-      img {
-        grid-column: 1;
-        grid-row: 1/-1;
-        justify-self: center;
-        width: 3rem;
-        aspect-ratio: 1;
-        object-fit: contain;
-      }
-
-      h2 {
-        grid-column: 2;
-        grid-row: 1;
-        text-wrap: balance;
-      }
-
-      p {
-        grid-column: 2;
-        grid-row: 2;
-        text-wrap: balance;
+      @media (min-width: 1000px) {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-2xl);
+        width: 100%;
       }
     }
-    @media (min-width: 1000px) {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-2xl);
-      width: 100%;
+
+    @media (min-width: 100px) {
+      max-width: 100%;
     }
   }
 </style>
