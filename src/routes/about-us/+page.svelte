@@ -1,8 +1,8 @@
 <script>
-  import info from "$lib/assets/images/Info.svg";
-  import globe from "$lib/assets/images/Globe.svg";
-  import handshake from "$lib/assets/images/Handshake.svg";
-  import location from "$lib/assets/images/Location.svg";
+  import info from "$lib/assets/images/Info.svg"
+  import globe from "$lib/assets/images/Globe.svg"
+  import handshake from "$lib/assets/images/Handshake.svg"
+  import location from "$lib/assets/images/Location.svg"
 
   const aboutUs = [
     {
@@ -29,7 +29,7 @@
       title: "Collaboration and local capacity",
       text: `The platform is developed through a collaboration between Kwame Nkrumah University of Science and Technology (KNUST) and the Royal Netherlands Meteorological Institute (KNMI). KNUST plays a leading role in organising measurements, operating the local laboratory, and analysing the data within Ghana. KNMI supports the project with expertise in atmospheric science, satellite data, and interpretation of the results. This collaboration strengthens local capacity while ensuring scientific robustness.`,
     },
-  ];
+  ]
 </script>
 
 <main>
