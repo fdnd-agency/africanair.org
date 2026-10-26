@@ -11,27 +11,17 @@
   <title>Air Quality Measurements - Table View</title>
 </svelte:head>
 
+<Viewtoggle />
 <main>
-  <Viewtoggle />
-  <section>
-    {#each points as point}
-      <MeasurementListItem {point} />
-    {/each}
-  </section>
+  {#each points as point}
+    <MeasurementListItem {point} />
+  {/each}
 </main>
 
 <style>
   main {
-    /* display: grid; */
-    /* gap: var(--spacing-m); */
-    /* padding: var(--spacing-m); */
-
-    section {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-m);
-      padding-inline: var(--spacing-m);
-      padding-top: var(--spacing-m);
-    }
+    display: grid;
+    gap: var(--spacing-m);
+    padding: var(--spacing-m);
   }
 </style>
