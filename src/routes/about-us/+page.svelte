@@ -50,6 +50,10 @@
     width: min(90%, 40.625rem);
     margin: 0 auto;
     padding: var(--spacing-m) var(--spacing-l);
+
+    @media (min-width: 1000px) {
+      margin: 0;
+    }
   }
 
   section {
@@ -68,7 +72,7 @@
       border-radius: var(--border-radius-m);
       background-color: var(--background-primary);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 1.5px solid var(--border-color);
+      border: 2px solid var(--border-color);
 
       @media (min-width: 400px) {
         padding: var(--spacing-l);
@@ -94,6 +98,11 @@
         grid-row: 2;
         text-wrap: balance;
       }
+    }
+    @media (min-width: 1000px) {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-2xl);
+      width: 100%;
     }
   }
 </style>
