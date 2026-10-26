@@ -18,14 +18,10 @@ export async function load({ params, url }) {
   URLParams.append("deep[measurements][_sort]", "-date");
   URLParams.append("deep[measurements][_limit]", "1");
 
-  // Doens't work yet because values are a string.
-  // URLParams.append("sort", "-measurements.value")
-
   const pointsResponse = await fetch(`${baseURL}?${URLParams}`);
   const pointsData = await pointsResponse.json();
-  // console.log(pointsData.data[1].measurements[0].value);
-  // console.log(pointsData.data)
 
+  // Sorts the list from high to low
   pointsData.data.sort((a, b) => {
     const valueA = parseFloat(a.measurements[0]?.value || 0);
     const valueB = parseFloat(b.measurements[0]?.value || 0);
