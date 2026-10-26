@@ -7,6 +7,7 @@
   import { slugify } from '$lib/slugify.js';
   import DatePicker from '$lib/components/molecules/DatePicker.svelte';
   import Legend from '$lib/components/molecules/Legend.svelte';
+  import Relatives from '$lib/components/molecules/Relatives.svelte';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -143,6 +144,7 @@
 
   <div bind:this={mapContainer} class="map"></div>
   <Legend/>
+  <Relatives />
   <noscript>
     <ul>
       {#each points as point}
