@@ -6,7 +6,7 @@
 
   const base = "https://africanair.org/kumasi/api/public";
 
-  const docs = [
+  const documentation = [
     {
       title: "Base endpoints",
       text: "Root url for all API requests",
