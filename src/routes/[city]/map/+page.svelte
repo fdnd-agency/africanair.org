@@ -193,6 +193,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-inline: var(--spacing-m);
 
       p {
         color: var(--text-secondary);
