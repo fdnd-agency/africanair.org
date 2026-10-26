@@ -8,6 +8,7 @@
   import DatePicker from '$lib/components/molecules/DatePicker.svelte';
   import Legend from '$lib/components/molecules/Legend.svelte';
   import Relatives from '$lib/components/molecules/Relatives.svelte';
+  import { selectedStandard, statusChecker } from '$lib/relatives.js';
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -15,7 +16,6 @@
 
   let { data } = $props();
 
-  // Reactive derived states matching page data updates
   let samplingPoints = $derived(data.sampling_points || []);
   let selectedYear = $derived(data.selectedYear);
   let selectedMonth = $derived(data.selectedMonth);
@@ -26,14 +26,6 @@
 
   const lightStyle = '/positron.json';
   const darkStyle = '/dark_matter.json';
-
-  const markerStatus = (value) => {
-    if (!Number.isFinite(value)) return 'unknown';
-    if (value < 21) return 'good';
-    if (value < 42) return 'medium';
-    if (value < 65) return 'high';
-    return 'dangerous';
-  };
 
   const latestMeasurement = (measurements = []) => {
     const valid = measurements
@@ -53,7 +45,6 @@
   function syncMarkers(ModMaplibre) {
     if (!map) return;
 
-    // Clear existing markers
     activeMarkers.forEach((m) => m.remove());
     activeMarkers = [];
 
@@ -66,7 +57,8 @@
       const val = m ? Number(m.value) : null;
       const location = point.location || point.code || 'Sampling point';
       const slug = slugify(location);
-      const status = markerStatus(val);
+
+      const status = statusChecker(val);
       const title = `${location}${m ? `: ${val.toFixed(1)}` : ': no measurement data'}`;
 
       const el = document.createElement('a');
@@ -117,7 +109,10 @@
 
   $effect(() => {
     const current = points;
-    if (map && current) {
+
+    const currentStandard = $selectedStandard; 
+    
+    if (map && current && currentStandard) {
       syncMarkers(maplibregl);
     }
   });
@@ -144,7 +139,7 @@
 
   <div bind:this={mapContainer} class="map"></div>
   <div class="desktop-styles">
-    <Relatives />
+    <Relatives/>
     <Legend/>
   </div>
   <noscript>
