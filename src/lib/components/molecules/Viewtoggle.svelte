@@ -51,6 +51,7 @@
           width: 50%;
           margin-inline: auto;
           color: var(--text-primary);
+          font-weight: bold;
 
           &.active {
             border-bottom: 4px solid var(--primary);

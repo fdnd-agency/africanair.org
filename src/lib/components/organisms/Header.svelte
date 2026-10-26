@@ -14,7 +14,7 @@
   const navLinks = [
     { href: '/about-us', label: 'About us' },
     { href: '/login', label: 'Login' },
-    { href: '/share-data', label: 'Share data' }
+    { href: '/[city]/share-data', label: 'Share data' }
   ];
 
   let mobileNav;
