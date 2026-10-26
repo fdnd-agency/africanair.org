@@ -8,6 +8,7 @@
   import DatePicker from '$lib/components/molecules/DatePicker.svelte';
   import Legend from '$lib/components/molecules/Legend.svelte';
   import Relatives from '$lib/components/molecules/Relatives.svelte';
+  import HighMeasurements from '$lib/components/molecules/HighMeasurements.svelte';
   import { selectedStandard, statusChecker } from '$lib/relatives.js';
 
   if (browser) {

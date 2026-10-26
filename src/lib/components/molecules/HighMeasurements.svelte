@@ -21,7 +21,7 @@
 
 <section>
   <p>
-    <em>{hazardousCount}</em> stations are currently measuring hazardous air quality, with <em>{elevatedCount} elevated</em>
+    <em>{hazardousCount}</em> station(s) are currently measuring dangerous air quality, with <em>{elevatedCount} elevated</em>
   </p>
 </section>
 
