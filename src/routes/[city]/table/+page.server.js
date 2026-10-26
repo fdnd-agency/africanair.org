@@ -8,7 +8,7 @@ export async function load({ params, url }) {
     "location,city_id.name,measurements.value,measurements.date",
   );
 
-  let searchInput = url.searchParams.get('search');
+  let searchInput = url.searchParams.get("search");
 
   if (searchInput) {
     URLParams.append("filter[location][_icontains]", searchInput);
@@ -23,11 +23,18 @@ export async function load({ params, url }) {
 
   const pointsResponse = await fetch(`${baseURL}?${URLParams}`);
   const pointsData = await pointsResponse.json();
+  // console.log(pointsData.data[1].measurements[0].value);
+  // console.log(pointsData.data)
 
-  // console.log(pointsResponse);
+  pointsData.data.sort((a, b) => {
+    const valueA = parseFloat(a.measurements[0]?.value || 0);
+    const valueB = parseFloat(b.measurements[0]?.value || 0);
+
+    return valueB - valueA;
+  });
 
   return {
     points: pointsData.data,
-    searchInput: searchInput
+    searchInput: searchInput,
   };
 }
