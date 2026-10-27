@@ -107,7 +107,7 @@ export async function GET({ url, request, params: routeParams }) {
 	query.set('offset', String(skip))
 	query.set('sort', 'point_number')
 	query.set('meta', 'filter_count')
-	query.set('filter[city][_eq]', String(city.id))
+	query.set('filter[city_id][_eq]', String(city.id))
 
 	if (activeParam === 'true') query.set('filter[active][_eq]', 'true')
 	if (activeParam === 'false') query.set('filter[active][_eq]', 'false')

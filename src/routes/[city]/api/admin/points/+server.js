@@ -29,7 +29,7 @@ export async function POST({ request, locals, params }) {
 	}
 
 	// Point numbers are per-city, so only consider this city's existing points.
-	const last = await DirectusService.getContent('apa_sampling_points', `filter[city][_eq]=${city.id}&sort=-point_number&limit=1`, { token })
+	const last = await DirectusService.getContent('apa_sampling_points', `filter[city_id][_eq]=${city.id}&sort=-point_number&limit=1`, { token })
 	const lastNumber = last?.[0]?.point_number
 	const nextPointNumber = Number.isFinite(Number(lastNumber)) ? Number(lastNumber) + 1 : 1
 
@@ -43,7 +43,7 @@ export async function POST({ request, locals, params }) {
 			description: String(description).trim(),
 			start_date: start.toISOString(),
 			active: active !== false,
-			city: city.id
+			city_id: city.id
 		},
 		{ token }
 	)

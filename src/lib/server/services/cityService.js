@@ -36,7 +36,7 @@ export async function listCities(options = {}) {
  */
 export async function getCityData(cityId, { token, includeMeasurements = true, pointsQuery = '', measurementsQuery = '' } = {}) {
 	const pq = new URLSearchParams(pointsQuery)
-	pq.set('filter[city][_eq]', String(cityId))
+	pq.set('filter[city_id][_eq]', String(cityId))
 	if (!pq.has('limit')) pq.set('limit', '-1')
 
 	const points = await DirectusService.getContent('apa_sampling_points', pq.toString(), { token })
@@ -68,29 +68,17 @@ export async function getCityTubes(cityId, { token, query = '' } = {}) {
 }
 
 export async function getCityPoint(pointId, cityId, { token } = {}) {
-	const items = await DirectusService.getContent(
-		'apa_sampling_points',
-		`filter[id][_eq]=${encodeURIComponent(pointId)}&filter[city][_eq]=${encodeURIComponent(cityId)}&limit=1`,
-		{ token }
-	)
+	const items = await DirectusService.getContent('apa_sampling_points', `filter[id][_eq]=${encodeURIComponent(pointId)}&filter[city_id][_eq]=${encodeURIComponent(cityId)}&limit=1`, { token })
 	return items[0] || null
 }
 
 export async function getCityTube(tubeId, cityId, { token } = {}) {
-	const items = await DirectusService.getContent(
-		'apa_tubes',
-		`filter[id][_eq]=${encodeURIComponent(tubeId)}&filter[city][_eq]=${encodeURIComponent(cityId)}&limit=1`,
-		{ token }
-	)
+	const items = await DirectusService.getContent('apa_tubes', `filter[id][_eq]=${encodeURIComponent(tubeId)}&filter[city][_eq]=${encodeURIComponent(cityId)}&limit=1`, { token })
 	return items[0] || null
 }
 
 export async function getCityMeasurement(measurementId, cityId, { token } = {}) {
-	const items = await DirectusService.getContent(
-		'apa_measurements',
-		`filter[id][_eq]=${encodeURIComponent(measurementId)}&fields=id,sampling_point,tube&limit=1`,
-		{ token }
-	)
+	const items = await DirectusService.getContent('apa_measurements', `filter[id][_eq]=${encodeURIComponent(measurementId)}&fields=id,sampling_point,tube&limit=1`, { token })
 	const measurement = items[0]
 	if (!measurement) return null
 
