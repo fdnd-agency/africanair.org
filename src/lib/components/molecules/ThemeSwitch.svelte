@@ -29,13 +29,13 @@
     align-items: center;
 
     &:hover {
-      background-color: var(--button-primary-inverse);
+      background-color: var(--text-primary);
 
       .sun-icon,
       .moon-icon,
       span {
-        stroke: var(--text-primary-inverse);
-        color: var(--text-primary-inverse);
+        stroke: var(--text-inverse);
+        color: var(--text-inverse);
       }
     }
 

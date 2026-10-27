@@ -1,22 +1,24 @@
-@font-face {
-  font-family: "Inter";
-  src: url("/inter.regular.ttf") format("truetype"); /* format tells the browser it's a .ttf-file before opening it */
-  font-weight: 400;
-  font-display: swap; /* Renders downloaded font on user's device before loading website font */
-}
+@media (prefers-reduced-data: no-preference) {
+  @font-face {
+    font-family: "Inter";
+    src: url("/inter.regular.ttf") format("truetype"); /* format tells the browser it's a .ttf-file before opening it */
+    font-weight: 400;
+    font-display: swap; /* Renders downloaded font on user's device before loading website font */
+  }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/inter.18pt-medium.ttf") format("truetype");
-  font-weight: 500;
-  font-display: swap;
-}
+  @font-face {
+    font-family: "Inter";
+    src: url("/inter.18pt-medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
+  }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/inter.18pt-semibold.ttf") format("truetype");
-  font-weight: 600;
-  font-display: swap;
+  @font-face {
+    font-family: "Inter";
+    src: url("/inter.18pt-semibold.ttf") format("truetype");
+    font-weight: 600;
+    font-display: swap;
+  }
 }
 
 * {
@@ -52,7 +54,8 @@
   --primary: hsl(205 100% 40%);
 
   --background-primary: light-dark(hsl(0 0% 100%), hsl(220 70% 12%));
-  --background-secondary: light-dark(hsl(215 50% 12%),hsl(0 0% 100%));
+  --background-secondary: light-dark(hsl(0 0% 100%), hsl(215 50% 12%));
+  --background-primary-invertse: light-dark(hsl(220 70% 12%), hsl(0 0% 100%));
 
   --text-primary: light-dark(hsl(0 0% 5%), hsl(0 0% 95%));
   --text-secondary: light-dark(hsl(0 0% 30%), hsl(0 0% 70%));
@@ -74,8 +77,8 @@
   --status-dangerous-background: light-dark(hsl(0 70% 92%), hsl(215 50% 12%));
   --status-empty-background: light-dark(hsl(0 0% 92%), hsl(215 50% 12%));
 
-  --alert-text: hsl(358 100% 70%);
-  --alert-background: hsl(0 39% 17%);
+  --alert-text: hsl(0 100% 42%);
+  --alert-background: hsl(0 100% 10%);
 }
 
 body {
@@ -93,15 +96,18 @@ body {
 main {
   margin: 0 auto;
   width: 100%;
-  padding-inline: 1rem;
-  max-width: 1600px;
 }
 
 a {
   text-decoration: none;
 }
 
+h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
 /* hide links to the map website */
-.maplibregl-ctrl-bottom-right  {
+.maplibregl-ctrl-bottom-right {
   display: none;
 }

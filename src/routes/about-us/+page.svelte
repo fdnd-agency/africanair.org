@@ -32,77 +32,85 @@
   ]
 </script>
 
-<h1>About us</h1>
-<section>
-  {#each aboutUs as card}
-    <article>
-      <img src={card.icon} alt={card.alt} />
+<main>
+  <h1>About us</h1>
+  <section>
+    {#each aboutUs as card}
+      <article>
+        <img src={card.icon} alt={card.alt} />
 
-      <h2>{card.title}</h2>
+        <h2>{card.title}</h2>
 
-      <p>{card.text}</p>
-    </article>
-  {/each}
-</section>
+        <p>{card.text}</p>
+      </article>
+    {/each}
+  </section>
+</main>
 
 <style>
-  h1 {
-    width: min(90%, 40.625rem);
-    margin: 0 auto;
-    padding: var(--spacing-m) var(--spacing-l);
+  main {
+    h1 {
+      width: min(90%, 40.625rem);
+      margin: 0 auto;
+      padding: var(--spacing-m) var(--spacing-l);
 
-    @media (min-width: 1000px) {
-      margin: 0;
+      @media (min-width: 1000px) {
+        margin: 0;
+      }
     }
-  }
 
-  section {
-    display: grid;
-    gap: var(--spacing-m);
-    width: min(90%, 40.625rem);
-    margin: 0 auto;
-    background-color: var(--background-primary);
-
-    article {
+    section {
       display: grid;
-      row-gap: var(--spacing-xs);
-      grid-template-columns: 60px minmax(0, 1fr);
-      grid-template-rows: auto 1fr;
-      padding: var(--spacing-2xs);
-      border-radius: var(--border-radius-m);
+      gap: var(--spacing-m);
+      width: min(90%, 40.625rem);
+      margin: 0 auto;
       background-color: var(--background-primary);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 2px solid var(--border-color);
 
-      @media (min-width: 400px) {
-        padding: var(--spacing-l);
+      article {
+        display: grid;
+        row-gap: var(--spacing-xs);
+        grid-template-columns: 60px minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        padding: var(--spacing-2xs);
+        border-radius: var(--border-radius-m);
+        background-color: var(--background-primary);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border: 2px solid var(--border-color);
+
+        @media (min-width: 400px) {
+          padding: var(--spacing-l);
+        }
+
+        img {
+          grid-column: 1;
+          grid-row: 1/-1;
+          justify-self: center;
+          width: 3rem;
+          aspect-ratio: 1;
+          object-fit: contain;
+        }
+
+        h2 {
+          grid-column: 2;
+          grid-row: 1;
+          text-wrap: balance;
+        }
+
+        p {
+          grid-column: 2;
+          grid-row: 2;
+          text-wrap: balance;
+        }
       }
-
-      img {
-        grid-column: 1;
-        grid-row: 1/-1;
-        justify-self: center;
-        width: 3rem;
-        aspect-ratio: 1;
-        object-fit: contain;
-      }
-
-      h2 {
-        grid-column: 2;
-        grid-row: 1;
-        text-wrap: balance;
-      }
-
-      p {
-        grid-column: 2;
-        grid-row: 2;
-        text-wrap: balance;
+      @media (min-width: 1000px) {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-2xl);
+        width: 100%;
       }
     }
-    @media (min-width: 1000px) {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-2xl);
-      width: 100%;
+
+    @media (min-width: 100px) {
+      max-width: 100%;
     }
   }
 </style>

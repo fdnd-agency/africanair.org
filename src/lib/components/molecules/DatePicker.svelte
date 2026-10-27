@@ -102,7 +102,7 @@
     gap: 0.5rem;
     padding: 0.4rem 1rem;
     color: var(--text-primary);
-    border: 2px solid var(--background-secondary);
+    border: 2px solid var(--background-primary-invertse);
     cursor: pointer;
     border-radius: var(--border-radius-l);
     transition: all 0.15s ease;
@@ -110,7 +110,7 @@
 
   details[open] summary {
     border-radius: var(--border-radius-m) var(--border-radius-m) 0 0;
-    background-color: var(--background-secondary);
+    background-color: var(--background-primary-invertse);
     color: var(--text-inverse);
   }
 
@@ -127,7 +127,7 @@
     right: 0;
     width: 80vw;
     max-width: 30rem;
-    background-color: var(--background-secondary);
+    background-color: var(--background-primary-invertse);
     padding: 1.25rem;
     border-radius: 1.5rem 0 1.5rem 1.5rem;
     display: flex;
