@@ -39,6 +39,7 @@
     border-radius: var(--border-radius-m);
     margin-block: 1rem;
     border-left: 2px solid red;
+    color: var(--text-light);
 
     em {
       font-style: normal;
