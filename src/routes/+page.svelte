@@ -2,6 +2,8 @@
   import Scale from "$lib/assets/icons/Scale.svelte"
   import Map from "$lib/assets/icons/Map.svelte"
   import Graph from "$lib/assets/icons/Graph.svelte"
+
+  let city = $props();
 </script>
 
 <main>
@@ -36,11 +38,27 @@
       </div>
     </article>
   </section>
+
+  <h2>Select the city you want info from</h2>
+
+  <section>
+    <ul>
+      {#each city as city}
+        <li>
+          <h3>{city.name}</h3>
+          <h4>{city.country}</h4>
+          <time datetime="2026-06-22">2026-06-22</time>
+          <a href="/{city.name}/map">></a>  
+        </li>
+      {/each}
+    </ul>
+  </section>
+
 </main>
 
 <style>
 
-  section {
+  main {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-l);
@@ -57,6 +75,7 @@
 
     &:nth-of-type(2) {
       gap: var(--spacing-2xl);
+      margin-top: var(--spacing-2xl);
       div {
         display: flex;
         gap: var(--spacing-l)
@@ -70,6 +89,9 @@
       }
       
       ul.icons {
+        /* easy way to create a vertical line without extra div */
+        background: linear-gradient(var(--primary), var(--primary)) center / 3px 100% no-repeat;
+
 
         li {
           display: flex;
