@@ -154,11 +154,11 @@
   </header>
 
   <Viewtoggle />
-  <HighMeasurements 
-    sampling_points={data.sampling_points} 
-    previous_sampling_points={data.previous_sampling_points} 
-  />
   <section>
+    <HighMeasurements 
+      sampling_points={data.sampling_points} 
+      previous_sampling_points={data.previous_sampling_points} 
+    />
     <div bind:this={mapContainer} class="map"></div>
     <div class="desktop-styles">
       <Relatives />

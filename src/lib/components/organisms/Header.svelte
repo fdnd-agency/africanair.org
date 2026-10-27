@@ -20,8 +20,7 @@
   let mobileNav;
   let menuButton;
   let closeButton;
-
-  // Fallback for browsers without native Popover API support
+  
   onMount(() => {
     if ("popover" in HTMLElement.prototype) return;
 
