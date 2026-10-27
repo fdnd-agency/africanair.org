@@ -3,7 +3,6 @@
   import Cloud from "$lib/assets/images/Cloud.svg";
   import Disclaimer from "$lib/assets/images/Disclaimer.svg";
   import Document from "$lib/assets/images/Document.svg";
-  import { text } from "@sveltejs/kit";
 
   const base = "https://africanair.org/kumasi/api/public";
 
