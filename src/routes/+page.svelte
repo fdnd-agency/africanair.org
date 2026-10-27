@@ -1,16 +1,17 @@
 <script>
-  import Scale from "$lib/assets/icons/Scale.svelte"
-  import Map from "$lib/assets/icons/Map.svelte"
-  import Graph from "$lib/assets/icons/Graph.svelte"
+  import Scale from "$lib/assets/icons/Scale.svelte";
+  import Map from "$lib/assets/icons/Map.svelte";
+  import Graph from "$lib/assets/icons/Graph.svelte";
 
-  let city = $props();
+  let { data } = $props();
+  let cities = data.cities;
 </script>
 
 <main>
   <section>
     <article>
       <h2>What does this site show?</h2>
-      <p>This platform helps residents, researchers, and policymakers understand air quality in Kumasi through reliable street-level measurements and clear insights.</p>
+      <p>This platform helps residents, researchers, and policymakers understand air quality through reliable street-level measurements and clear insights.</p>
     </article>
 
     <article>
@@ -24,7 +25,7 @@
         <ul class="texts">
           <li>
             <h3>Explore the map</h3>
-            <p>See air quality across Kumasi.</p>
+            <p>See air quality across the cities.</p>
           </li>
           <li>
             <h3>Compare locations</h3>
@@ -41,77 +42,74 @@
 
   <h2>Select the city you want info from</h2>
 
-  <section>
-    <ul>
-      {#each city as city}
+  <section class="city-section">
+    <ul class="city-list">
+      {#each cities as city}
         <li>
-          <h3>{city.name}</h3>
-          <h4>{city.country}</h4>
-          <time datetime="2026-06-22">2026-06-22</time>
-          <a href="/{city.name}/map">></a>  
+          <div class="city-info">
+            <h3>{city.name}</h3>
+            <!-- Fallback or dynamic formatting for date -->
+            <time datetime={city.date_created}>
+              {city.date_created ? city.date_created.substring(0, 10) : ''}
+            </time>
+          </div>
+          <a href="/{city.slug}/map" class="city-link">></a>  
         </li>
       {/each}
     </ul>
   </section>
-
 </main>
 
 <style>
-
   main {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-l);
+    gap: var(--spacing-l, 2rem);
     margin: 0 auto;
-    padding: var(--spacing-xl)
+    padding: var(--spacing-xl, 3rem);
+    max-width: 800px;
   }
+
+  ul {
+    list-style: none;
+  }
+
   article {
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-l);
-    background-color: var(--background-secondary);
-    border-radius: var(--border-radius-m);
-    border: 2px solid var(--border-color);
+    padding: var(--spacing-l, 1.5rem);
+    background-color: var(--background-secondary, #f9f9f9);
+    border-radius: var(--border-radius-m, 8px);
+    border: 2px solid var(--border-color, #e0e0e0);
 
     &:nth-of-type(2) {
-      gap: var(--spacing-2xl);
-      margin-top: var(--spacing-2xl);
+      gap: var(--spacing-2xl, 3rem);
+      margin-top: var(--spacing-2xl, 3rem);
       div {
         display: flex;
-        gap: var(--spacing-l)
+        gap: var(--spacing-l, 1.5rem);
       }
 
       ul {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: var(--spacing-l);
+        gap: var(--spacing-l, 1.5rem);
       }
       
       ul.icons {
-        /* easy way to create a vertical line without extra div */
-        background: linear-gradient(var(--primary), var(--primary)) center / 3px 100% no-repeat;
-
+        background: linear-gradient(var(--primary, #0070f3), var(--primary, #0070f3)) center / 3px 100% no-repeat;
 
         li {
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: var(--primary);
+          background-color: var(--primary, #0070f3);
           width: 3rem;
           height: 3rem;
-          border-radius: var(--border-radius-l);
-          
-
+          border-radius: var(--border-radius-l, 12px);
         }
       }
-
-      ul.texts {
-      }
     }
-  }
-
-  ul {
-    list-style: none;
   }
 </style>
