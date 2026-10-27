@@ -3,6 +3,7 @@
   import Cloud from "$lib/assets/images/Cloud.svg";
   import Disclaimer from "$lib/assets/images/Disclaimer.svg";
   import Document from "$lib/assets/images/Document.svg";
+  import { text } from "@sveltejs/kit";
 
   const base = "https://africanair.org/kumasi/api/public";
 
@@ -54,7 +55,91 @@
         },
       ],
     },
-    // TODO ADDING THE REST OF THE DATA. (filtering by point number)
+    {
+      title: "Filtering by point numbers",
+      text: "Retrieve specific measurement points",
+      description: "Retrieve one or more specific measurement points.",
+      code: ["&point=14", "&pointMin=5&pointMax=10"],
+      params: [
+        {
+          name: "&point=X",
+          text: "For an exact point number.",
+          name: "&pointMin=X",
+          text: "Minimum point number.",
+          name: "&pointMax=X",
+          text: "Maximum point number.",
+        },
+      ],
+      examples: [
+        {
+          label: "For point 14",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&point=14`,
+        },
+        {
+          label: "For the points 5, 6, 7, 8, 9 and 10",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&pointMin=5&pointMax=10`,
+        },
+      ],
+    },
+    {
+      title: "Including measurements",
+      text: "Add measurement data to the response",
+      description:
+        "by default, measurement data is not included to save data traffic.",
+      code: "&includeMeasurements=true",
+      examples: [
+        {
+          label: "To include measurements",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&includeMeasurements=true`,
+        },
+      ],
+    },
+    {
+      title: "Filtering measurements by month",
+      text: "Filter measurements with a month range",
+      description: "Filter measurements using a month range (YYYY-MM).",
+      code: ["&mFrom=2025-9&mTo=2025-11"],
+      params: [
+        { name: "&mFrom=YYYY-MM", text: "first month" },
+        { name: "&mTo=YYYY-MM", text: "Last month" },
+      ],
+      examples: [
+        {
+          label: "For the measurements from 9-2025 till 11-2025",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&includeMeasurements=true&mFrom=2025-9&mTo=2025-11`,
+        },
+        {
+          label: "For the measurements from 11-2025",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&includeMeasurements=true&mFrom=2025-11&mTo=2025-11`,
+        },
+      ],
+    },
+    {
+      title: "Latest measurement only",
+      text: "Only the most recent measurement per point.",
+      description: "Return only the most recent measurement per point.",
+      code: ["&latestOnly=true"],
+      examples: [
+        {
+          label: "To only return the latest measurements",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&includeMeasurements=true&latestOnly=true`,
+        },
+      ],
+    },
+    {
+      title: "Limit measurements per point",
+      text: "Restrict the number of measurements",
+      description:
+        "Restrict the number of measurements returned per point. It always picks the latest X measurements.",
+      code: ["&mLimit=6"],
+      params: [{ name: "&mLimit=X", text: "Number of measurements per point" }],
+      examples: [
+        {
+          label: "To only get 6 measurements per point",
+          request: `GET ${base}/data?apiKey=YOUR_KEY&includeMeasurements=true&mLimit=6`,
+        },
+      ],
+    },
   ];
 </script>
 
