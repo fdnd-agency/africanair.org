@@ -9,6 +9,7 @@
   import DatePicker from "$lib/components/molecules/DatePicker.svelte";
   import Legend from "$lib/components/molecules/Legend.svelte";
   import Relatives from "$lib/components/molecules/Relatives.svelte";
+  import HighMeasurements from "$lib/components/molecules/HighMeasurements.svelte";
   import { selectedStandard, statusChecker } from "$lib/relatives.js";
 
   if (browser) {
@@ -153,6 +154,10 @@
   </header>
 
   <Viewtoggle />
+  <HighMeasurements 
+    sampling_points={data.sampling_points} 
+    previous_sampling_points={data.previous_sampling_points} 
+  />
   <section>
     <div bind:this={mapContainer} class="map"></div>
     <div class="desktop-styles">

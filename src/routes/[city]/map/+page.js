@@ -3,8 +3,6 @@ import { fetchCityMeasurements, fetchAvailableDates } from '$lib/directus.js';
 export async function load({ fetch, params, url }) {
   const citySlug = params.city;
 
-  const _searchQuery = url.search; 
-
   const requestedYear = url.searchParams.get('year');
   const requestedMonth = url.searchParams.get('month');
 
@@ -16,16 +14,26 @@ export async function load({ fetch, params, url }) {
   const year = requestedYear || latestYear;
   const month = requestedMonth || monthsByYear[year]?.[0] || latestMonth;
   
-  const { city, sampling_points } = await fetchCityMeasurements(
-    fetch,
-    citySlug,
-    year,
-    month
-  );
+  const yearNum = parseInt(year, 10);
+  const monthNum = parseInt(month, 10);
+  let prevYear = yearNum;
+  let prevMonthNum = monthNum - 1;
+  if (prevMonthNum < 1) {
+    prevMonthNum = 12;
+    prevYear -= 1;
+  }
+  const prevYearStr = String(prevYear);
+  const prevMonthStr = String(prevMonthNum).padStart(2, '0');
+
+  const [currentData, previousData] = await Promise.all([
+    fetchCityMeasurements(fetch, citySlug, year, month),
+    fetchCityMeasurements(fetch, citySlug, prevYearStr, prevMonthStr)
+  ]);
 
   return {
-    city,
-    sampling_points,
+    city: currentData.city,
+    sampling_points: currentData.sampling_points,
+    previous_sampling_points: previousData.sampling_points,
     selectedYear: year,
     selectedMonth: month,
     availableYears: years,

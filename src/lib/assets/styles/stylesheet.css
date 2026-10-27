@@ -55,7 +55,7 @@
 
   --background-primary: light-dark(hsl(0 0% 100%), hsl(220 70% 12%));
   --background-secondary: light-dark(hsl(0 0% 100%), hsl(215 50% 12%));
-  --background-primary-invertse: light-dark(hsl(220 70% 12%), hsl(0 0% 100%));
+  --background-primary-inverse: light-dark(hsl(220 70% 12%), hsl(0 0% 100%));
 
   --text-primary: light-dark(hsl(0 0% 5%), hsl(0 0% 95%));
   --text-secondary: light-dark(hsl(0 0% 30%), hsl(0 0% 70%));
