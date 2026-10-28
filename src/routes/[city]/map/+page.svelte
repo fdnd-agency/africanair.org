@@ -9,6 +9,7 @@
   import DatePicker from "$lib/components/molecules/DatePicker.svelte";
   import Legend from "$lib/components/molecules/Legend.svelte";
   import Relatives from "$lib/components/molecules/Relatives.svelte";
+  import HighMeasurements from "$lib/components/molecules/HighMeasurements.svelte";
   import { selectedStandard, statusChecker } from "$lib/relatives.js";
 
   if (browser) {
@@ -46,6 +47,14 @@
       const lat = Number(point.latitude);
       return Number.isFinite(lng) && Number.isFinite(lat);
     }),
+  );
+
+  // Derived list pairing each valid point with its latest measurement
+  let pointsWithLatest = $derived(
+    points.map((point) => ({
+      ...point,
+      latestMeasurement: latestMeasurement(point.measurements)
+    }))
   );
 
   function syncMarkers(ModMaplibre) {
@@ -146,6 +155,10 @@
 
   <Viewtoggle />
   <section>
+    <HighMeasurements 
+      sampling_points={data.sampling_points} 
+      previous_sampling_points={data.previous_sampling_points} 
+    />
     <div bind:this={mapContainer} class="map"></div>
     <div class="desktop-styles">
       <Relatives />
@@ -202,7 +215,6 @@
     }
   }
 
-  /* Global/unscoped rule needed because MapLibre attaches elements directly to DOM */
   :global(.map-point-marker) {
     width: 1rem;
     height: 1rem;

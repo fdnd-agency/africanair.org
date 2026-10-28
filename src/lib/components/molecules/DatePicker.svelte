@@ -56,7 +56,6 @@
           <a
             class="pill-btn"
             class:active={selectedYear === y}
-            aria-current={selectedYear === y ? 'true' : undefined}
             href={hrefFor(y, selectedMonth)}
             onclick={() => (isOpen = false)}
           >
@@ -75,7 +74,6 @@
           <a
             class="pill-btn"
             class:active={selectedMonth === m.value}
-            aria-current={selectedMonth === m.value ? 'true' : undefined}
             href={hrefFor(selectedYear, m.value)}
             onclick={() => (isOpen = false)}
           >
@@ -102,7 +100,7 @@
     gap: 0.5rem;
     padding: 0.4rem 1rem;
     color: var(--text-primary);
-    border: 2px solid var(--background-primary-invertse);
+    border: 2px solid var(--background-primary-inverse);
     cursor: pointer;
     border-radius: var(--border-radius-l);
     transition: all 0.15s ease;
@@ -110,7 +108,7 @@
 
   details[open] summary {
     border-radius: var(--border-radius-m) var(--border-radius-m) 0 0;
-    background-color: var(--background-primary-invertse);
+    background-color: var(--background-primary-inverse);
     color: var(--text-inverse);
   }
 
@@ -127,7 +125,7 @@
     right: 0;
     width: 80vw;
     max-width: 30rem;
-    background-color: var(--background-primary-invertse);
+    background-color: var(--background-primary-inverse);
     padding: 1.25rem;
     border-radius: 1.5rem 0 1.5rem 1.5rem;
     display: flex;

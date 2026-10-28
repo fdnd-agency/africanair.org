@@ -53,7 +53,7 @@
       height: 1.2rem;
       width: 100%;
       border-radius: var(--border-radius-m, 4px);
-      border: 2px solid var(--background-secondary);
+      border: 2px solid var(--background-primary-inverse);
       background: linear-gradient(90deg, var(--status-good) 0%, var(--status-medium) 21%, var(--status-high) 42%, var(--status-dangerous) 65%, rgba(73, 0, 122, 1) 100%);
     }
 

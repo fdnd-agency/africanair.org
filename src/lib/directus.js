@@ -2,10 +2,11 @@ import { error } from '@sveltejs/kit';
 
 const API_URL = 'https://fdnd-agency.directus.app';
 
-const slugify = (str) =>
+export const slugify = (str) =>
   str ? str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '';
 
-async function request(fetch, endpoint, params = {}) {
+
+export async function request(fetch, endpoint, params = {}) {
   const url = new URL(endpoint, API_URL);
   Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
 
@@ -24,7 +25,7 @@ async function request(fetch, endpoint, params = {}) {
       } catch {}
     }
 
-    console.error(` Directus Error [${res.status}] at ${url.pathname}:`, detailedMessage);
+    console.error(`Directus Error [${res.status}] at ${url.pathname}:`, detailedMessage);
     throw error(502, `Could not load data from Directus: ${detailedMessage}`);
   }
 
@@ -32,9 +33,7 @@ async function request(fetch, endpoint, params = {}) {
   return json.data;
 }
 
-// 1. Fetch available dates directly for the city using the new relation path
 export async function fetchAvailableDates(fetch, citySlug) {
-  // Query cities -> sampling_points -> measurements
   const data = await request(fetch, '/items/apa_cities', {
     'filter[slug][_eq]': citySlug,
     fields: 'sampling_points.measurements.date'
@@ -65,7 +64,6 @@ export async function fetchAvailableDates(fetch, citySlug) {
   return { years, monthsByYear };
 }
 
-// 2. Fetch city measurements cleanly starting from cities
 export async function fetchCityMeasurements(fetch, citySlug, year, month) {
   const data = await request(fetch, '/items/apa_cities', {
     'filter[slug][_eq]': citySlug,
@@ -118,7 +116,6 @@ export async function fetchCityMeasurements(fetch, citySlug, year, month) {
   return { city, sampling_points };
 }
 
-// 3. Fetch specific sampling point details
 export async function fetchSamplingPointDetail(fetch, citySlug, pointSlug) {
   const { city, sampling_points } = await fetchCityMeasurements(fetch, citySlug);
 
