@@ -2,6 +2,7 @@
   import Scale from "$lib/assets/icons/Scale.svelte";
   import Map from "$lib/assets/icons/Map.svelte";
   import Graph from "$lib/assets/icons/Graph.svelte";
+  import ChevronRight from "$lib/assets/icons/ChevronRight.svelte"; 
 
   let { data } = $props();
   let cities = data.cities;
@@ -42,18 +43,17 @@
 
   <h2>Select the city you want info from</h2>
 
-  <section class="city-section">
-    <ul class="city-list">
+  <section>
+    <ul>
       {#each cities as city}
         <li>
-          <div class="city-info">
-            <h3>{city.name}</h3>
-            <!-- Fallback or dynamic formatting for date -->
-            <time datetime={city.date_created}>
-              {city.date_created ? city.date_created.substring(0, 10) : ''}
-            </time>
-          </div>
-          <a href="/{city.slug}/map" class="city-link">></a>  
+          <a href="/{city.slug}/map" class="city-link">
+            <div>
+              <h3>{city.name}</h3>
+              <p>Africa</p>
+            </div>
+            <ChevronRight color="#ffffff" size="2rem" />
+          </a>
         </li>
       {/each}
     </ul>
@@ -68,6 +68,24 @@
     margin: 0 auto;
     padding: var(--spacing-xl, 3rem);
     max-width: 800px;
+
+    section:nth-of-type(2) {
+      ul {  
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xl);
+        a {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--spacing-s);
+          background-color: var(--background-secondary);
+          border: 2px solid var(--border-color);
+          border-radius: var(--border-radius-m);
+          color: var(--text-primary);
+        }
+      }
+    }
   }
 
   ul {
