@@ -69,6 +69,10 @@
     padding: var(--spacing-xl, 3rem);
     max-width: 800px;
 
+    h2, h3 {
+      font-weight: 500;
+    }
+
     section:nth-of-type(2) {
       ul {  
         display: flex;
