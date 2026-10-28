@@ -78,6 +78,7 @@
         display: flex;
         flex-direction: column;
         gap: var(--spacing-xl);
+
         a {
           display: flex;
           justify-content: space-between;
@@ -87,6 +88,12 @@
           border: 2px solid var(--border-color);
           border-radius: var(--border-radius-m);
           color: var(--text-primary);
+          transition: all 0.3s ease;
+
+          &:hover {
+            background-color: var(--primary);
+            border: 2px solid var(--text-light);
+          }
         }
       }
     }

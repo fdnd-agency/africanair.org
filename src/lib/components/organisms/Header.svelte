@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
   import Picture from "$lib/components/atoms/Picture.svelte";
   import ThemeSwitch from "$lib/components/molecules/ThemeSwitch.svelte";
 
@@ -108,7 +109,7 @@
 
   <nav class="desktop">
     {#each navLinks as link}
-      <a href={link.href}>{link.label}</a>
+      <a href={link.href} class:active={$page.url.pathname === link.href}>{link.label}</a>
     {/each}
   </nav>
 </header>
@@ -206,15 +207,12 @@
         color 0.15s ease,
         background-color 0.15s ease,
         text-decoration 0.15s ease;
-
       &:hover {
-        text-decoration: underline;
-
-        @media (prefers-reduced-motion: no-preference) {
-          text-decoration: none;
-          background-color: var(--button-primary-inverse);
-          color: var(--text-primary-inverse);
-        }
+        background-color: var(--primary);
+      }
+      
+      &.active {
+        background-color: var(--primary);
       }
     }
   }
