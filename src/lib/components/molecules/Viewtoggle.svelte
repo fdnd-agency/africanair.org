@@ -35,7 +35,7 @@
     border-top: 2px solid var(--border-color);
     background-color: var(--background-secondary);
     width: 100%;
-    max-width: 61ch;
+    max-width: 64ch;
     margin: 0 auto;
     ul {
       padding: var(--spacing-2xs);

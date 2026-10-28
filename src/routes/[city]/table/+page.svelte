@@ -1,12 +1,10 @@
 <script>
-  import DateDropdown from "$lib/components/atoms/DateDropdown.svelte";
   import SearchBar from "$lib/components/atoms/SearchBar.svelte";
   import MeasurementListItem from "$lib/components/molecules/MeasurementListItem.svelte";
   import Viewtoggle from "$lib/components/molecules/Viewtoggle.svelte";
   import DatePicker from "$lib/components/molecules/DatePicker.svelte";
 
   let { data } = $props();
-  const { points } = data;
 </script>
 
 <svelte:head>
@@ -16,12 +14,10 @@
 <main>
   <Viewtoggle />
   <div class="wrapper">
-    <DateDropdown />
-    <DateDropdown />
-    <SearchBar />
+    <SearchBar value={data.searchInput}/>
   </div>
   <section>
-    {#each points as point}
+    {#each data.points as point}
       <MeasurementListItem {point} />
     {/each}
   </section>

@@ -1,5 +1,9 @@
+<script>
+  let { value = "" } = $props();
+</script>
+
 <form action="" method="GET">
-  <input type="text" name="search" placeholder="Search location..." />
+  <input type="text" name="search" {value} placeholder="Search location..." />
 </form>
 
 <style>
