@@ -31,7 +31,6 @@ const documentation = [
     title: "Filtering by activity status",
     text: "Filters by activity, point, mont, etc.",
     description: "Filter points by whether they are active.",
-    code: "&active=true",
     params: [
       { name: "&active=true", text: "Only active points" },
       { name: "&active=false", text: "Only inactive points" },
@@ -70,7 +69,7 @@ const documentation = [
     text: "Add measurement data to the response",
     description:
       "by default, measurement data is not included to save data traffic.",
-    code: "&includeMeasurements=true",
+    code: ["&includeMeasurements=true"],
     examples: [
       {
         label: "To include measurements",
@@ -126,6 +125,12 @@ const documentation = [
   },
 ];
 
-export function load() {
-  return { documentation };
+export function load({ params }) {
+  const downloads = [
+    { format: "JSON", href: `/${params.city}/downloads/data.json` },
+    { format: "CSV", href: `/${params.city}/downloads/data.csv` },
+    { format: "XLSX", href: `/${params.city}/downloads/data.xlsx` },
+  ];
+
+  return { documentation, downloads };
 }
