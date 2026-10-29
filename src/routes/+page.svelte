@@ -94,6 +94,11 @@
             background-color: var(--primary);
             border: 2px solid var(--text-light);
           }
+
+          &:focus-visible {
+            background-color: var(--primary);
+            border: 2px solid var(--text-light);
+          }
         }
       }
     }
