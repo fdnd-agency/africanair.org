@@ -214,6 +214,9 @@
       &.active {
         background-color: var(--primary);
       }
+      &:focus-visible {
+        background-color: var(--primary);
+      }
     }
   }
 
