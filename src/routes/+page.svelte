@@ -52,7 +52,7 @@
               <h3>{city.name}</h3>
               <p>Africa</p>
             </div>
-            <ChevronRight color="#ffffff" size="2rem" />
+            <ChevronRight color="var(--text-primary)" size="2rem" />
           </a>
         </li>
       {/each}
@@ -70,7 +70,7 @@
     max-width: 800px;
 
     h2, h3 {
-      font-weight: 500;
+      font-weight: 600;
     }
 
     section:nth-of-type(2) {
@@ -87,6 +87,7 @@
           border: 2px solid var(--border-color);
           border-radius: var(--border-radius-m);
           color: var(--text-primary);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
       }
     }
@@ -103,6 +104,7 @@
     background-color: var(--background-secondary, #f9f9f9);
     border-radius: var(--border-radius-m, 8px);
     border: 2px solid var(--border-color, #e0e0e0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
     &:nth-of-type(2) {
       gap: var(--spacing-2xl, 3rem);
