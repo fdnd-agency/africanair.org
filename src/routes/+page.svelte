@@ -90,14 +90,10 @@
           color: var(--text-primary);
           transition: all 0.3s ease;
 
-          &:hover {
+          &:hover, &:focus-visible {
             background-color: var(--primary);
             border: 2px solid var(--text-light);
-          }
-
-          &:focus-visible {
-            background-color: var(--primary);
-            border: 2px solid var(--text-light);
+            color: var(--text-light);
           }
         }
       }
