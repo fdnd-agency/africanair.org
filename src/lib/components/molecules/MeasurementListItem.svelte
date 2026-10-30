@@ -32,7 +32,7 @@
     } else if (value < standardEU[2]) {
       return "high";
     } else if (value >= standardEU[2]) {
-      return "dangerous";
+      return "hazardous";
     }
     return "empty";
   };
@@ -79,8 +79,8 @@
       background-color: var(--status-high-background);
     }
 
-    &.dangerous {
-      background-color: var(--status-dangerous-background);
+    &.hazardous {
+      background-color: var(--status-hazardous-background);
     }
 
     &.empty {
@@ -121,9 +121,9 @@
         box-shadow: 0 0 var(--spacing-xl) var(--status-high);
       }
 
-      &.dangerous {
-        background-color: var(--status-dangerous);
-        box-shadow: 0 0 var(--spacing-xl) var(--status-dangerous);
+      &.hazardous {
+        background-color: var(--status-hazardous);
+        box-shadow: 0 0 var(--spacing-xl) var(--status-hazardous);
       }
 
       &.empty {
@@ -203,9 +203,9 @@
         border: 1px solid var(--status-high);
       }
 
-      &.dangerous {
-        background-color: var(--status-dangerous);
-        border: 1px solid var(--status-dangerous);
+      &.hazardous {
+        background-color: var(--status-hazardous);
+        border: 1px solid var(--status-hazardous);
       }
 
       &.empty {

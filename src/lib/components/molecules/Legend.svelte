@@ -26,7 +26,7 @@
     <li>
       <span></span>
       <div>
-        <p>Dangerous</p>
+        <p>hazardous</p>
         <p>65+</p>
       </div>
     </li>
@@ -54,7 +54,7 @@
       width: 100%;
       border-radius: var(--border-radius-m, 4px);
       border: 2px solid var(--background-primary-inverse);
-      background: linear-gradient(90deg, var(--status-good) 0%, var(--status-medium) 21%, var(--status-high) 42%, var(--status-dangerous) 65%, rgba(73, 0, 122, 1) 100%);
+      background: linear-gradient(90deg, var(--status-good) 0%, var(--status-medium) 21%, var(--status-high) 42%, var(--status-hazardous) 65%, rgba(73, 0, 122, 1) 100%);
     }
 
     ul {
@@ -96,7 +96,7 @@
       li:nth-child(1) span { background-color: var(--status-good); }
       li:nth-child(2) span { background-color: var(--status-medium); }
       li:nth-child(3) span { background-color: var(--status-high) }
-      li:nth-child(4) span { background-color: var(--status-dangerous); }
+      li:nth-child(4) span { background-color: var(--status-hazardous); }
     }
   }
 </style>

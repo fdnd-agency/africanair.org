@@ -250,9 +250,9 @@
     box-shadow: 0 1px 5px var(--status-high, #f97316);
   }
 
-  :global(.map-point-marker[data-status="dangerous"]) {
-    background-color: var(--status-dangerous, #ef4444);
-    box-shadow: 0 1px 5px var(--status-dangerous, #ef4444);
+  :global(.map-point-marker[data-status="hazardous"]) {
+    background-color: var(--status-hazardous, #ef4444);
+    box-shadow: 0 1px 5px var(--status-hazardous, #ef4444);
   }
 
   div.desktop-styles {

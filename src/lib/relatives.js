@@ -18,7 +18,7 @@ export const statusChecker = (value) => {
   if (value < activeStandard[0]) return "low";
   if (value < activeStandard[1]) return "medium";
   if (value < activeStandard[2]) return "high";
-  if (value >= activeStandard[2]) return "dangerous";
+  if (value >= activeStandard[2]) return "hazardous";
   
   return "empty";
 };

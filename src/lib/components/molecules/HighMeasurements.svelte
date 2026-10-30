@@ -11,7 +11,7 @@
 
   let hazardousCount = $derived(
     ($selectedStandard, sampling_points.filter((p) => {
-      return statusChecker(getLatestValue(p)) === 'dangerous';
+      return statusChecker(getLatestValue(p)) === 'hazardous';
     }).length)
   );
 
@@ -26,7 +26,7 @@
 
 <section>
   <p>
-    <em>{hazardousCount}</em> station(s) are currently measuring dangerous air quality, with <em>{elevatedCount} elevated</em>.
+    <em>{hazardousCount}</em> station(s) are currently measuring hazardous air quality, with <em>{elevatedCount} elevated</em>.
   </p>
 </section>
 

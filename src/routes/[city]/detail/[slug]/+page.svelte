@@ -78,7 +78,7 @@
     if (num < 21) return 'Good';
     if (num < 42) return 'Medium';
     if (num < 65) return 'High';
-    return 'Dangerous';
+    return 'hazardous';
   }
 </script>
 
