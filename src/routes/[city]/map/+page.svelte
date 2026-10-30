@@ -159,9 +159,10 @@
       sampling_points={data.sampling_points} 
       previous_sampling_points={data.previous_sampling_points} 
     />
-    <div bind:this={mapContainer} class="map"></div>
-    <div class="desktop-styles">
+    <div bind:this={mapContainer} class="map">
       <Relatives />
+    </div>
+    <div class="desktop-styles">
       <Legend />
     </div>
     <noscript>
@@ -207,6 +208,9 @@
       padding-top: var(--spacing-m);
 
       div.map {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
         width: 100%;
         height: 57dvh;
         border-radius: var(--border-radius-m, 8px);
