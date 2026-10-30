@@ -9,12 +9,15 @@
     return latest && latest.value !== null ? Number(latest.value) : null;
   }
 
-  let hazardousCount = $derived(
-    ($selectedStandard, sampling_points.filter((p) => {
-      return statusChecker(getLatestValue(p)) === 'hazardous';
-    }).length)
-  );
-  
+  let hazardousCount = $derived.by(() => {
+    const _currentStandard = $selectedStandard; 
+
+    return sampling_points.filter((p) => {
+      const value = getLatestValue(p);
+      const status = statusChecker(value);
+      return status === 'dangerous' || status === 'hazardous';
+    }).length;
+  });
 </script>
 
 <section>

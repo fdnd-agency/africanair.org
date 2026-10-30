@@ -1,34 +1,31 @@
+<script>
+  import { selectedStandard, standards } from '$lib/relatives.js';
+
+  let activeThresholds = $derived(standards[$selectedStandard] || standards.EU);
+</script>
+
 <section>
   <h2>Air quality index</h2>
-  <div class="legend-gradient"></div>
   <ul>
     <li>
       <span></span>
-      <div>
-        <p>Low</p>
-        <p>0 - 21</p>
-      </div>
+      <p>Low</p>
+      <p>0 - {activeThresholds[0]}</p>
     </li>
     <li>
       <span></span>
-      <div>
-        <p>Medium</p>
-        <p>21 - 42</p>
-      </div>
+      <p>Medium</p>
+      <p>{activeThresholds[0]} - {activeThresholds[1]}</p>
     </li>
     <li>
       <span></span>
-      <div>
-        <p>High</p>
-        <p>42 - 65</p>
-      </div>
+      <p>High</p>
+      <p>{activeThresholds[1]} - {activeThresholds[2]}</p>
     </li>
     <li>
       <span></span>
-      <div>
-        <p>hazardous</p>
-        <p>65+</p>
-      </div>
+      <p>Hazardous</p>
+      <p>{activeThresholds[2]}+</p>
     </li>
   </ul>
 </section>
@@ -48,55 +45,57 @@
       color: var(--text-secondary);
     }
 
-    div.legend-gradient {
-      display: block;
-      height: 1.2rem;
-      width: 100%;
-      border-radius: var(--border-radius-m, 4px);
-      border: 2px solid var(--background-primary-inverse);
-      background: linear-gradient(90deg, var(--status-good) 0%, var(--status-medium) 21%, var(--status-high) 42%, var(--status-hazardous) 65%, rgba(73, 0, 122, 1) 100%);
-    }
-
     ul {
       display: flex;
       justify-content: space-between;
       list-style: none;
       padding-bottom: 1rem;
+      gap: var(--spacing-s);
+      width: 100%;
 
       li {
         display: flex;
+        flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
+        flex: 1; 
+        gap: var(--spacing-2xs);
 
         span {
-          display: inline-block;
-          width: 0.7rem;
-          height: 0.7rem;
-          border-radius: 50%;
-          border: 1px solid var(--border-lightmode-only);
-          margin-top: var(--spacing-m);
+          display: block;
+          height: var(--spacing-l);
+          width: 100%;
+          border: 2px solid var(--background-primary-inverse);
+          box-sizing: border-box;
         }
 
-        div {
-          display: flex;
-          flex-direction: column;
-          p {
-            font-size: 0.8rem;
-            margin: 0;
-            line-height: 1.5;
+        &:first-child span {
+          border-radius: var(--border-radius-m) 0 0 var(--border-radius-m);
+        }
+        &:last-child span {
+          border-radius: 0 var(--border-radius-m) var(--border-radius-m) 0;
+        }
 
-
-            &:nth-child(2) {
-              color: var(--text-secondary);
-            }
+        p {
+          font-size: var(--font-size-s);
+          
+          &:nth-child(3) {
+            color: var(--text-secondary);
           }
         }
       }
-      /* compacted css to give each span dot the correct color with vars */
-      li:nth-child(1) span { background-color: var(--status-good); }
-      li:nth-child(2) span { background-color: var(--status-medium); }
-      li:nth-child(3) span { background-color: var(--status-high) }
-      li:nth-child(4) span { background-color: var(--status-hazardous); }
+
+      li:nth-child(1) span {
+        background: linear-gradient(90deg, var(--status-good), var(--status-medium));
+      }
+      li:nth-child(2) span {
+        background: linear-gradient(90deg, var(--status-medium), var(--status-high));
+      }
+      li:nth-child(3) span {
+        background: linear-gradient(90deg, var(--status-high), var(--status-hazardous));
+      }
+      li:nth-child(4) span {
+        background: linear-gradient(90deg, var(--status-hazardous), rgba(73, 0, 122, 1));
+      }
     }
   }
 </style>
