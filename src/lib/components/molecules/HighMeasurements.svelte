@@ -1,7 +1,7 @@
 <script>
   import { statusChecker, selectedStandard } from '$lib/relatives.js';
 
-  let { sampling_points = [], previous_sampling_points = [] } = $props();
+  let { sampling_points = [] } = $props();
   
   function getLatestValue(point) {
     const measurements = point.measurements || [];
@@ -14,19 +14,12 @@
       return statusChecker(getLatestValue(p)) === 'hazardous';
     }).length)
   );
-
-  let elevatedCount = $derived(
-    ($selectedStandard, sampling_points.filter((p) => {
-      const status = statusChecker(getLatestValue(p));
-      return status === 'high' || status === 'medium';
-    }).length)
-  );
   
 </script>
 
 <section>
   <p>
-    <em>{hazardousCount}</em> station(s) are currently measuring hazardous air quality, with <em>{elevatedCount} elevated</em>.
+    <em>{hazardousCount}</em> station(s) are measuring hazardous air quality this month.
   </p>
 </section>
 
