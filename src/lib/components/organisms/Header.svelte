@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
   import Picture from "$lib/components/atoms/Picture.svelte";
   import ThemeSwitch from "$lib/components/molecules/ThemeSwitch.svelte";
 
@@ -20,8 +21,7 @@
   let mobileNav;
   let menuButton;
   let closeButton;
-
-  // Fallback for browsers without native Popover API support
+  
   onMount(() => {
     if ("popover" in HTMLElement.prototype) return;
 
@@ -50,7 +50,6 @@
   <button
     bind:this={menuButton}
     popovertarget="mobilenav"
-    aria-label="Open menu"
   >
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -86,7 +85,6 @@
       <button
         bind:this={closeButton}
         popovertarget="mobilenav"
-        aria-label="Close menu"
       >
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -111,7 +109,7 @@
 
   <nav class="desktop">
     {#each navLinks as link}
-      <a href={link.href}>{link.label}</a>
+      <a href={link.href} class:active={$page.url.pathname === link.href}>{link.label}</a>
     {/each}
   </nav>
 </header>
@@ -209,15 +207,15 @@
         color 0.15s ease,
         background-color 0.15s ease,
         text-decoration 0.15s ease;
-
       &:hover {
-        text-decoration: underline;
-
-        @media (prefers-reduced-motion: no-preference) {
-          text-decoration: none;
-          background-color: var(--button-primary-inverse);
-          color: var(--text-primary-inverse);
-        }
+        background-color: var(--primary);
+      }
+      
+      &.active {
+        background-color: var(--primary);
+      }
+      &:focus-visible {
+        background-color: var(--primary);
       }
     }
   }
