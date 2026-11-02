@@ -63,6 +63,13 @@ We follow the code conventions of FDND agency. Below the most important conventi
 [See FDND website](https://docs.fdnd.nl/conventies.html)  
 For conventions that developers work with more frequently, we provided clearer explanations along with code examples, ensuring that everyone on the team follows the same approach and coding style.
 
+## Retrospective
+
+<img width="2000" height="1500" alt="IMG_0029f9RS8c" src="https://github.com/user-attachments/assets/1113bd65-9a25-40db-81e4-8ddab5e9faa8" />
+<img width="1247" height="1663" alt="IMG_00287YpVBf" src="https://github.com/user-attachments/assets/fe0a116c-6f92-4a65-b495-57de6c66e84b" />
+<img width="1767" height="1330" alt="IMG_0027j2Dnnt" src="https://github.com/user-attachments/assets/a97181b6-21e9-4591-81d0-5e4ff1460363" />
+
+
 ### Code conventions with examples
 - [Atomic design conventions](https://github.com/fdnd-agency/air-pollution-africa/blob/dev/docs/conventions/atomic-design-conventions.md)
 - [Conventional commits](https://github.com/fdnd-agency/air-pollution-africa/blob/dev/docs/conventions/coventional-commits.md)
