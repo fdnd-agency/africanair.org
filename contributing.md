@@ -23,8 +23,8 @@ A Definition of Ready (DoR) is a set of criteria that a user story must meet bef
 
 Definitions of Ready - checklist
 
-User story written clearly with format "As a.... I want to.... So that...." and approved by Product Owner.
-Know the scope. Know what you will be working on in this user-story so you'l lalso know what NOT to work on.
+User story written clearly with format "As a.... I want to.... So that....".
+Know the scope. Know what you will be working on in this user-story so you'll also know what NOT to work on.
 Acceptance criteria defined (what “done” looks like).
 Sources or research material available.
 Give a weight/value to the user story. Use poker planning with the Modified Fibonacchi set of values.
@@ -62,20 +62,7 @@ Voor ieder component wordt een aparte branch aangemaakt.
 Gebruik één branch per component.
 De branch naam is het issue nummer de naam van het component en eventueel versienummer.
 
-## Commit messages
-
-Commit messages worden opgebouwd volgens:
-[type]: [change] [issue number]
-
-Commit types
-- docs: — Changes to documentation, e.g. README.md, Handover.md, Figma files or design rationale in the Wiki.
-- feat: — Implementing a new feature.
-- fix: — Fixing a bug, style or layout issue.
-- perf: — A code change that improves performance.
-- refactor: — A code change that neither fixes a bug nor adds a feature, but improves structure or readability.
-- style: — Changes that affect readability but not the functionality of the code, such as source formatting, tabs or newlines.
-- test: — Adding missing or correcting existing tests.
-- Pull Requests
+## Pull Request
 
 Een Pull Request (PR) wordt aangemaakt wanneer een volledig component klaar en getest is.
 
@@ -91,9 +78,9 @@ README
 Issues
 Code comments
 Commit messages
-Gebruik 4 spaties / 1 tab voor indentation.
+Gebruik 2 spaties / 1 tab voor indentation.
 Gebruik waar mogelijk semantische HTML. Vermijd het onnodig gebruiken van `<div>`'jes
 
-alle mappen en files svelte met hoofdletter !
+Alle mappen en files svelte met hoofdletter !
 
 GEEN AI-GENERATED CODE PUSHEN.
