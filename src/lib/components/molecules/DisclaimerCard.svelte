@@ -45,7 +45,7 @@
         cursor: pointer;
         list-style: none;
         font-weight: bold;
-        font-size: 1.25rem;
+        font-size: var(--font-size-m);
 
         &::after {
           content: "";

@@ -46,7 +46,7 @@
     /* Because the button is a component */
     > :global(:last-child) {
       grid-column: 1 / -1;
-      padding-top: 0.75rem;
+      /* padding-top: var(--spacing-s); */
     }
   }
 </style>

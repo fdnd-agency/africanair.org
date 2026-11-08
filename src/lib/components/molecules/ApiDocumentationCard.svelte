@@ -46,11 +46,11 @@
               </dl>
             {/if}
 
-            {#each d.examples as example}
-              {#if example.label}
-                <p>{example.label}</p>
+            {#each d.examples as e}
+              {#if e.label}
+                <p>{e.label}</p>
               {/if}
-              <pre><code>{example.request}</code></pre>
+              <pre><code>{e.request}</code></pre>
             {/each}
           </div>
         </details>

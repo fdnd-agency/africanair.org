@@ -1,8 +1,8 @@
 <script>
-  import Cloud from "$lib/assets/images/Cloud.svg";
-  import Button from "$lib/components/atoms/Button.svelte";
+  import Cloud from "$lib/assets/images/Cloud.svg"
+  import Button from "$lib/components/atoms/Button.svelte"
 
-  let { downloads } = $props();
+  let { downloads } = $props()
 </script>
 
 <section>
@@ -31,6 +31,7 @@
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius-m);
     max-width: 27rem;
+    width: 100%;
 
     img {
       width: 2rem;

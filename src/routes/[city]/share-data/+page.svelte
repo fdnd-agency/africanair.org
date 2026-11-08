@@ -1,10 +1,10 @@
 <script>
-  import ApiDocumentationCard from "$lib/components/molecules/ApiDocumentationCard.svelte";
-  import DisclaimerCard from "$lib/components/molecules/DisclaimerCard.svelte";
-  import DataCard from "$lib/components/molecules/DataCard.svelte";
-  import DownloadCard from "$lib/components/molecules/DownloadCard.svelte";
+  import ApiDocumentationCard from "$lib/components/molecules/ApiDocumentationCard.svelte"
+  import DisclaimerCard from "$lib/components/molecules/DisclaimerCard.svelte"
+  import DataCard from "$lib/components/molecules/DataCard.svelte"
+  import DownloadCard from "$lib/components/molecules/DownloadCard.svelte"
 
-  let { data } = $props();
+  let { data } = $props()
 </script>
 
 <main>
@@ -41,8 +41,9 @@
       flex-direction: column;
       gap: var(--spacing-m);
       @media (width > 768px) {
-        gap: 2.5rem;
-        place-content: center;
+        /* gap: 2.5rem; */
+        /* place-content: center; */
+        flex-direction: row;
       }
     }
   }

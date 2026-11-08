@@ -15,5 +15,6 @@
     max-width: 15rem;
     margin: 0 auto;
     font-weight: bold;
+    cursor: pointer;
   }
 </style>
