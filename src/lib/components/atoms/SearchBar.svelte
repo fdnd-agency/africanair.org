@@ -8,7 +8,7 @@
 
 <style>
   form {
-    @media (min-width: 375px) {
+    @container (min-width: 300px) {
       grid-column: 1 / 3;
     }
   }

@@ -39,6 +39,7 @@
     padding: var(--spacing-l);
     display: grid;
     gap: var(--spacing-m);
+    container-type: inline-size;
 
     @media (min-width: 375px) {
       grid-template-columns: 1fr 1fr;
