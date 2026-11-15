@@ -68,7 +68,7 @@
     background-color: var(--background-secondary);
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius-m);
-    max-width: 80rem;
+    /* max-width: 85rem; */
 
     header {
       display: grid;
@@ -126,7 +126,7 @@
 
             img {
               width: 1.5rem;
-              height: 1.5rem;
+              height: auto;
             }
 
             span {
@@ -149,15 +149,38 @@
             padding: var(--spacing-s);
             border-top: 2px solid var(--border-color);
 
+            ul {
+              li {
+                code {
+                  display: inline-block;
+                  padding: 0.2rem var(--spacing-xs);
+                  background-color: hsl(0, 0%, 0%, 0.25);
+                  font-size: .85rem;
+                  font-weight: bold;
+                  border-radius: var(--border-radius-s);
+                }
+              }
+            }
+
             p {
-                font-weight: bold;
-                text-wrap: balance;
+              font-weight: bold;
+              text-wrap: balance;
             }
 
             dl {
               display: grid;
               gap: var(--spacing-2xs) var(--spacing-m);
               text-wrap: balance;
+              align-items: center;
+
+              dt {
+                background-color: hsl(0, 0%, 0%, 0.25);
+                border-radius: var(--border-radius-s);
+                text-align: center;
+                font-weight: bold;
+                padding: 0.2rem;
+                font-size: .85rem;
+              }
 
               @media (width > 768px) {
                 grid-template-columns: auto 1fr;
@@ -167,8 +190,8 @@
             pre {
               padding: var(--spacing-s);
               overflow-x: auto;
-              font-size: 0.8rem;
-              background-color: rgb(0 0 0 / 0.25);
+              font-size: var(--spacing-s);
+              background-color: hsl(0, 0%, 0%, 0.25);
               border-radius: var(--border-radius-s) var(--border-radius-m);
             }
 

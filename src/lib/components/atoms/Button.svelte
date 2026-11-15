@@ -16,5 +16,13 @@
     margin: 0 auto;
     font-weight: bold;
     cursor: pointer;
+
+    &:first-of-type {
+      background-color: var(--primary);
+
+      &:hover {
+        background-color: hsl(205 100% 20%);
+      }
+    }
   }
 </style>

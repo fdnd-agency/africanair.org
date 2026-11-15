@@ -1,4 +1,4 @@
-const base = "https://africanair.org/kumasi/api/public";
+const base = "https://africanair.org/kumasi/api/public"
 
 const documentation = [
   {
@@ -29,7 +29,7 @@ const documentation = [
   },
   {
     title: "Filtering by activity status",
-    text: "Filters by activity, point, mont, etc.",
+    text: "Filters by activity, point, month, etc.",
     description: "Filter points by whether they are active.",
     params: [
       { name: "&active=true", text: "Only active points" },
@@ -123,7 +123,7 @@ const documentation = [
       },
     ],
   },
-];
+]
 
 export function load({ params }) {
   const downloads = [

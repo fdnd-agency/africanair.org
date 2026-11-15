@@ -27,7 +27,7 @@
     background-color: var(--background-secondary);
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius-m);
-    max-width: 30rem;
+    /* max-width: 30rem; */
 
     img {
       width: 2rem;

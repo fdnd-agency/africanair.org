@@ -10,19 +10,19 @@
 <main>
   <h1>Share data</h1>
 
-  <section>
+  <div>
     <!-- Requesting the API -->
     <DataCard />
 
     <!-- Dataset download -->
     <DownloadCard downloads={data.downloads} />
-  </section>
+
+    <!-- Disclaimer -->
+    <DisclaimerCard />
+  </div>
 
   <!-- API documentation -->
   <ApiDocumentationCard documentation={data.documentation} />
-
-  <!-- Disclaimer -->
-  <DisclaimerCard />
 </main>
 
 <style>
@@ -36,14 +36,11 @@
       border-radius: var(--border-radius-m);
     }
 
-    section {
-      display: flex;
-      flex-direction: column;
+    div {
+      display: grid;
       gap: var(--spacing-m);
       @media (width > 768px) {
-        /* gap: 2.5rem; */
-        /* place-content: center; */
-        flex-direction: row;
+        grid-template-columns: 1fr 1fr 1fr;
       }
     }
   }
