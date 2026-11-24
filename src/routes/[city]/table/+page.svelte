@@ -5,6 +5,14 @@
   import DatePicker from "$lib/components/molecules/DatePicker.svelte";
 
   let { data } = $props();
+
+  let searchQuery = $state(data.searchInput || "");
+
+  let filteredPoints = $derived(
+    data.points.filter((point) =>
+      point.location?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
 </script>
 
 <svelte:head>
@@ -14,10 +22,13 @@
 <main>
   <Viewtoggle />
   <div class="wrapper">
-    <SearchBar value={data.searchInput}/>
+    <SearchBar
+      value={searchQuery}
+      oninput={(newValue) => (searchQuery = newValue)}
+    />
   </div>
   <section>
-    {#each data.points as point}
+    {#each filteredPoints as point}
       <MeasurementListItem {point} />
     {/each}
   </section>

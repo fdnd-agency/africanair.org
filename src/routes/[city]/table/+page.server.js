@@ -10,10 +10,6 @@ export async function load({ params, url }) {
 
   let searchInput = url.searchParams.get("search");
 
-  if (searchInput) {
-    URLParams.append("filter[location][_icontains]", searchInput);
-  }
-
   URLParams.append("filter[city_id][name][_icontains]", params.city);
   URLParams.append("deep[measurements][_sort]", "-date");
   URLParams.append("deep[measurements][_limit]", "1");
@@ -31,6 +27,6 @@ export async function load({ params, url }) {
 
   return {
     points: pointsData.data,
-    searchInput: searchInput,
+    searchInput: searchInput || "",
   };
 }

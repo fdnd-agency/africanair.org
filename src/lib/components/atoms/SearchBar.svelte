@@ -1,9 +1,9 @@
 <script>
-  let { value = "" } = $props();
+  let { value = "", oninput } = $props();
 </script>
 
-<form action="" method="GET">
-  <input type="text" name="search" {value} placeholder="Search location..." />
+<form action="" method="GET" onsubmit={(e) => e.preventDefault()}>
+  <input type="text" name="search" {value} oninput={(e) => oninput?.(e.currentTarget.value)} placeholder="Search location..." />
 </form>
 
 <style>
