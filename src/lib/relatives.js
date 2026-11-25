@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
 
-const standards = {
+export const standards = {
   EU: [20, 40, 80],
   WHO: [10, 25, 50]
 };

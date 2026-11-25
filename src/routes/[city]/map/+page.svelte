@@ -6,11 +6,13 @@
   import * as maplibregl from "maplibre-gl";
   import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
   import { slugify } from "$lib/slugify.js";
+  import { selectedStandard, statusChecker } from "$lib/relatives.js";
+  import { getAqiColor } from '$lib/aqiColor.js';
   import DatePicker from "$lib/components/molecules/DatePicker.svelte";
   import Legend from "$lib/components/molecules/Legend.svelte";
   import Relatives from "$lib/components/molecules/Relatives.svelte";
   import HighMeasurements from "$lib/components/molecules/HighMeasurements.svelte";
-  import { selectedStandard, statusChecker } from "$lib/relatives.js";
+
 
   if (browser) {
     maplibregl.setWorkerUrl(maplibreWorkerUrl);
@@ -58,36 +60,42 @@
   );
 
   function syncMarkers(ModMaplibre) {
-    if (!map) return;
+      if (!map) return;
 
-    activeMarkers.forEach((m) => m.remove());
-    activeMarkers = [];
+      activeMarkers.forEach((m) => m.remove());
+      activeMarkers = [];
 
-    const MarkerConstructor = ModMaplibre?.Marker || maplibregl.Marker;
+      const MarkerConstructor = ModMaplibre?.Marker || maplibregl.Marker;
 
-    points.forEach((point) => {
-      const lng = Number(point.longitude);
-      const lat = Number(point.latitude);
-      const m = latestMeasurement(point.measurements);
-      const val = m ? Number(m.value) : null;
-      const location = point.location || point.code || "Sampling point";
-      const slug = slugify(location);
+      points.forEach((point) => {
+        const lng = Number(point.longitude);
+        const lat = Number(point.latitude);
+        const m = latestMeasurement(point.measurements);
+        const val = m ? Number(m.value) : null;
+        const location = point.location || point.code || "Sampling point";
+        const slug = slugify(location);
 
-      const status = statusChecker(val);
-      const title = `${location}${m ? `: ${val.toFixed(1)}` : ": no measurement data"}`;
+        const status = statusChecker(val);
+        const title = `${location}${m ? `: ${val.toFixed(1)}` : ": no measurement data"}`;
 
-      const el = document.createElement("a");
-      el.className = "map-point-marker";
-      el.href = `/${data.city?.slug}/detail/${slug}`;
-      el.title = title;
-      el.setAttribute("data-status", status);
+        const el = document.createElement("a");
+        el.className = "map-point-marker";
+        el.href = `/${data.city?.slug}/detail/${slug}`;
+        el.title = title;
+        el.setAttribute("data-status", status);
 
-      const marker = new MarkerConstructor({ element: el })
-        .setLngLat([lng, lat])
-        .addTo(map);
+        const dynamicColor = getAqiColor(val);
+        if (dynamicColor) {
+          el.style.backgroundColor = dynamicColor;
+          el.style.boxShadow = `0 1px 5px ${dynamicColor}`;
+        }
 
-      activeMarkers.push(marker);
-    });
+        const marker = new MarkerConstructor({ element: el })
+          .setLngLat([lng, lat])
+          .addTo(map);
+
+        activeMarkers.push(marker);
+      });
   }
 
   onMount(async () => {
@@ -159,9 +167,10 @@
       sampling_points={data.sampling_points} 
       previous_sampling_points={data.previous_sampling_points} 
     />
-    <div bind:this={mapContainer} class="map"></div>
-    <div class="desktop-styles">
+    <div bind:this={mapContainer} class="map">
       <Relatives />
+    </div>
+    <div class="desktop-styles">
       <Legend />
     </div>
     <noscript>
@@ -207,6 +216,9 @@
       padding-top: var(--spacing-m);
 
       div.map {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
         width: 100%;
         height: 57dvh;
         border-radius: var(--border-radius-m, 8px);
@@ -246,9 +258,9 @@
     box-shadow: 0 1px 5px var(--status-high, #f97316);
   }
 
-  :global(.map-point-marker[data-status="dangerous"]) {
-    background-color: var(--status-dangerous, #ef4444);
-    box-shadow: 0 1px 5px var(--status-dangerous, #ef4444);
+  :global(.map-point-marker[data-status="hazardous"]) {
+    background-color: var(--status-hazardous, #ef4444);
+    box-shadow: 0 1px 5px var(--status-hazardous, #ef4444);
   }
 
   div.desktop-styles {
